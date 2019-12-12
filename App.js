@@ -1,14 +1,9 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-
-import AppSwitchNavigator from './src/Navigations';
-
-const AppContainer = createAppContainer(AppSwitchNavigator);
+import { StyleSheet, Text } from 'react-native';
 
 const App: () => React$Node = () => (
   <>
-    <AppContainer />
+    <Text>Hello Phoenix!</Text>
   </>
 );
 
