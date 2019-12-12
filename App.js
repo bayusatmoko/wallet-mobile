@@ -1,10 +1,10 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import WalletInfo from './src/Components/WalletInfo';
+import DashboardContainer from './src/Containers/DashboardContainer';
 
 const App: () => React$Node = () => (
   <SafeAreaView>
-    <WalletInfo />
+    <DashboardContainer />
   </SafeAreaView>
 );
 

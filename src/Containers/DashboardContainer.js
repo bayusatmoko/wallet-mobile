@@ -47,10 +47,15 @@ export default class DashboardContainer extends React.PureComponent {
 
   render() {
     const { wallet, user } = this.state;
+    // const walletInfo = {
+    //   id: wallet.id,
+    //   name: user.name,
+    //   balance: wallet.balance
+    // };
     const walletInfo = {
-      id: wallet.id,
-      name: user.name,
-      balance: wallet.balance
+      id: 1,
+      name: 'Huda',
+      balance: 523000
     };
     return <WalletInfo wallet={walletInfo} />;
   }

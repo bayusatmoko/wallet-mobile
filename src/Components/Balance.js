@@ -12,7 +12,11 @@ class Balance extends React.PureComponent {
     }).format(amount);
   render() {
     const { balance } = this.props;
-    return <Text testID="balance">{this._formatCurrency(balance)}</Text>;
+    return (
+      <Text style={{ position: 'absolute', top: 120 }} testID="balance">
+        {this._formatCurrency(balance)}
+      </Text>
+    );
   }
 }
 
