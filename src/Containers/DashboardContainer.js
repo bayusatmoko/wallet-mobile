@@ -13,13 +13,13 @@ export default class DashboardContainer extends React.PureComponent {
   }
 
   async componentDidMount() {
-    await this._fecthUser();
+    await this._fetchUser();
     await this._fetchWallet();
   }
 
-  _fecthUser = async () => {
+  _fetchUser = async () => {
     const { navigation } = this.props;
-    const id = navigation.getParam('userId');
+    const id = await navigation.getParam('userId');
     const fetchUserUrl = `http://localhost:3001/users/${id}`;
     try {
       const response = await axios.get(fetchUserUrl);
@@ -33,7 +33,7 @@ export default class DashboardContainer extends React.PureComponent {
 
   _fetchWallet = async () => {
     const { navigation } = this.props;
-    const userId = navigation.getParam('userId');
+    const userId = await navigation.getParam('userId');
     const fetchWalletUrl = `http://localhost:3001/users/${userId}/wallets`;
     try {
       const response = await axios.get(fetchWalletUrl);
