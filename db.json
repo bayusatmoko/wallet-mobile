@@ -1,0 +1,124 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Bill Gates",
+      "email": "bill-gates@microsoft.com",
+      "password": "123123123123",
+      "phoneNumber": "251 11 617 2750",
+      "createdAt": "2019-11-28T13:26:15.063Z",
+      "updatedAt": "2019-11-28T13:26:15.063Z"
+    }
+  ],
+  "wallets": [
+    {
+      "id": 1,
+      "userId": 1,
+      "balance": 110000000000,
+      "createdAt": "2019-11-28T13:26:15.063Z",
+      "updatedAt": "2019-11-28T13:26:15.063Z"
+    }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "walletId": 1,
+      "type": "deposit",
+      "amount": 7700000,
+      "description": "Payslip 2019-11-28",
+      "receiverWalletId": null,
+      "createdAt": "2019-11-28T13:26:15.063Z",
+      "updatedAt": "2019-11-28T13:26:15.063Z"
+    },
+    {
+      "id": 2,
+      "walletId": 1,
+      "type": "withdraw",
+      "amount": 30,
+      "description": "Buy Cheeseburger for lunch",
+      "receiverWalletId": null,
+      "createdAt": "2019-11-28T13:26:15.063Z",
+      "updatedAt": "2019-11-28T13:26:15.063Z"
+    },
+    {
+      "id": 3,
+      "walletId": 1,
+      "type": "withdraw",
+      "amount": 100,
+      "description": "Dinner at Italian Steak House",
+      "receiverWalletId": null,
+      "createdAt": "2019-11-28T13:26:15.063Z",
+      "updatedAt": "2019-11-28T13:26:15.063Z"
+    },
+    {
+      "id": 4,
+      "walletId": 1,
+      "type": "deposit",
+      "amount": 8800000,
+      "description": "Payslip 2019-11-29",
+      "receiverWalletId": null,
+      "createdAt": "2019-11-29T13:26:15.063Z",
+      "updatedAt": "2019-11-29T13:26:15.063Z"
+    },
+    {
+      "id": 5,
+      "walletId": 1,
+      "type": "withdraw",
+      "amount": 40,
+      "description": "Buy Big Macs for lunch",
+      "receiverWalletId": null,
+      "createdAt": "2019-11-29T13:26:15.063Z",
+      "updatedAt": "2019-11-29T13:26:15.063Z"
+    },
+    {
+      "id": 6,
+      "walletId": 1,
+      "type": "withdraw",
+      "amount": 100,
+      "description": "Dinner at Italian Steak House",
+      "receiverWalletId": null,
+      "createdAt": "2019-11-29T13:26:15.063Z",
+      "updatedAt": "2019-11-29T13:26:15.063Z"
+    },
+    {
+      "id": 7,
+      "walletId": 1,
+      "type": "deposit",
+      "amount": 6600000,
+      "description": "Payslip 2019-11-30",
+      "receiverWalletId": null,
+      "createdAt": "2019-11-30T13:26:15.063Z",
+      "updatedAt": "2019-11-30T13:26:15.063Z"
+    },
+    {
+      "id": 8,
+      "walletId": 1,
+      "type": "withdraw",
+      "amount": 4000,
+      "description": "Flight to Europa",
+      "receiverWalletId": null,
+      "createdAt": "2019-11-30T13:26:15.063Z",
+      "updatedAt": "2019-11-30T13:26:15.063Z"
+    },
+    {
+      "id": 9,
+      "walletId": 1,
+      "type": "deposit",
+      "amount": 9900000,
+      "description": "Payslip 2019-12-01",
+      "receiverWalletId": null,
+      "createdAt": "2019-12-01T13:26:15.063Z",
+      "updatedAt": "2019-12-01T13:26:15.063Z"
+    },
+    {
+      "id": 10,
+      "walletId": 1,
+      "type": "deposit",
+      "amount": 999999,
+      "description": "Stock interest",
+      "receiverWalletId": null,
+      "createdAt": "2019-12-01T13:26:15.063Z",
+      "updatedAt": "2019-12-01T13:26:15.063Z"
+    }
+  ]
+}

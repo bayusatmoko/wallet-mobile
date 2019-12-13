@@ -1,12 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import DashboardContainer from './src/Containers/DashboardContainer';
 
-const App: () => React$Node = () => (
-  <>
-    <Text>Hello Phoenix!</Text>
-  </>
-);
-
-const styles = StyleSheet.create({});
+const App: () => React$Node = () => <DashboardContainer />;
 
 export default App;
