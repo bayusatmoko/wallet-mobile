@@ -7,13 +7,6 @@ import transaction from '../history-image.jpeg';
 import styles from './walletInfo.style';
 
 export default class UserInfo extends React.PureComponent {
-  _changeFormatPhoneNumber = phoneNumber => {
-    const phone = phoneNumber.replace(
-      /\D*(\d{4})\D*(\d{4})\D*(\d{4})\D*/,
-      '$1 $2 $3'
-    );
-    return phone;
-  };
   render() {
     const { user } = this.props;
     const { phoneNumber, name } = user;
@@ -25,7 +18,7 @@ export default class UserInfo extends React.PureComponent {
             {`Hi, ${name}`}
           </Text>
           <Text style={styles.textPhone} testID="user-phone">
-            {this._changeFormatPhoneNumber(phoneNumber)}
+            {phoneNumber}
           </Text>
         </View>
         <View style={styles.borderMenu}>
