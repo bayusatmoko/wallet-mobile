@@ -2,13 +2,16 @@ import React from 'react';
 import axios from 'axios';
 import { Text, View } from 'react-native';
 import WalletInfo from '../Components/WalletInfo';
+import LastTransaction from '../Components/LastTransaction';
+import config from '../../config';
 
 export default class DashboardContainer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       wallet: {},
-      user: {}
+      user: {},
+      lastTransactions: []
     };
   }
 
@@ -18,10 +21,10 @@ export default class DashboardContainer extends React.PureComponent {
   }
 
   _fetchUser = async () => {
-    const { navigation } = this.props;
-    const id = await navigation.getParam('userId');
-    const fetchUserUrl = `http://localhost:3001/users/${id}`;
     try {
+      const { navigation } = this.props;
+      const id = await navigation.getParam('userId');
+      const fetchUserUrl = `${config.API_URL}/users/${id}`;
       const response = await axios.get(fetchUserUrl);
       this.setState({
         user: response.data
@@ -32,11 +35,13 @@ export default class DashboardContainer extends React.PureComponent {
   };
 
   _fetchWallet = async () => {
-    const { navigation } = this.props;
-    const userId = await navigation.getParam('userId');
-    const fetchWalletUrl = `http://localhost:3001/users/${userId}/wallets`;
     try {
+      const { navigation } = this.props;
+      const userId = await navigation.getParam('userId');
+      const fetchWalletUrl = `${config.API_URL}/users/${userId}/wallets`;
       const response = await axios.get(fetchWalletUrl);
+      const walletId = response.data.id;
+      await this._fetchLastTransactions(walletId);
       this.setState({
         wallet: response.data
       });
@@ -45,8 +50,22 @@ export default class DashboardContainer extends React.PureComponent {
     }
   };
 
+  _fetchLastTransactions = async walletId => {
+    try {
+      const fetchLastTransactionsUrl = `${
+        config.API_URL
+      }/wallets/${walletId}/transactions?limit=5`;
+      const response = await axios.get(fetchLastTransactionsUrl);
+      this.setState({
+        lastTransactions: response.data
+      });
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   render() {
-    const { wallet, user } = this.state;
+    const { wallet, user, lastTransactions } = this.state;
     // const walletInfo = {
     //   id: wallet.id,
     //   name: user.name,
@@ -57,6 +76,12 @@ export default class DashboardContainer extends React.PureComponent {
       name: 'Huda',
       balance: 523000
     };
-    return <WalletInfo wallet={walletInfo} />;
+    console.log(lastTransactions);
+    return (
+      <>
+        <WalletInfo wallet={walletInfo} />
+        <LastTransaction transactions={lastTransactions} />
+      </>
+    );
   }
 }
