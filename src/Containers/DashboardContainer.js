@@ -76,11 +76,10 @@ export default class DashboardContainer extends React.PureComponent {
       name: 'Huda',
       balance: 523000
     };
-    console.log(lastTransactions);
     return (
       <>
         <WalletInfo wallet={walletInfo} />
-        <LastTransaction transactions={lastTransactions} />
+        <LastTransaction transactions={lastTransactions} walletId={wallet.id} />
       </>
     );
   }

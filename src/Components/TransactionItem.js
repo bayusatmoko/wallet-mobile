@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'ghostwhite',
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 5
+    marginBottom: 10,
+    padding: 10
   },
   leftPanel: {
     width: '50%',
@@ -51,13 +52,14 @@ class TransactionItem extends Component {
       minimumFractionDigits: 0
     }).format(amount);
 
-  _renderNominal = (type, nominal) => {
+  _renderNominal = (transaction, walletId) => {
+    const { receiverWalletId, type, nominal } = transaction;
     return (
       <Text
         testID="nominal"
         style={[
           styles.itemTransactionNominal,
-          type === 'DEPOSIT'
+          type === 'DEPOSIT' || receiverWalletId === walletId
             ? styles.itemTransactionDeposit
             : styles.itemTransactionTransfer
         ]}>
@@ -66,8 +68,15 @@ class TransactionItem extends Component {
     );
   };
   render() {
-    const { transaction } = this.props;
-    const { description, type, createdAt, nominal, receiver } = transaction;
+    const { transaction, walletId } = this.props;
+    const {
+      receiverWalletId,
+      description,
+      type,
+      createdAt,
+      receiver,
+      sender
+    } = transaction;
     return (
       <TouchableOpacity>
         <View style={styles.transactionItem}>
@@ -78,10 +87,14 @@ class TransactionItem extends Component {
               {description}
             </Text>
             <Text testID="type">{type}</Text>
-            <Text testID="receiver">{receiver.user.name}</Text>
+            <Text testID="receiver">
+              {receiverWalletId === walletId
+                ? `From ${sender.user.name}`
+                : `To ${receiver.user.name}`}
+            </Text>
           </View>
           <View testID="rightPanel" style={styles.rightPanel}>
-            {this._renderNominal(type, nominal)}
+            {this._renderNominal(transaction, walletId)}
             <Text testID="date">{moment(createdAt).format('D-MM-YYYY')}</Text>
           </View>
         </View>

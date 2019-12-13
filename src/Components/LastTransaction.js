@@ -15,13 +15,12 @@ const styles = StyleSheet.create({
 
 class LastTransaction extends Component {
   render() {
-    const { transactions } = this.props;
-    console.log(transactions);
+    const { transactions, walletId } = this.props;
     return (
       <View style={styles.transactionList}>
         <FlatList
           data={transactions}
-          renderItem={({ item }) => <TransactionItem transaction={item} />}
+          renderItem={({ item }) => <TransactionItem transaction={item} walletId={walletId}/>}
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
