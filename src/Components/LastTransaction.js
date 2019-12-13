@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
+import TransactionItem from './TransactionItem';
+
+const styles = StyleSheet.create({
+  transactionList: {
+    marginTop: 150,
+    width: '100%',
+    flex: 1,
+    alignItems: 'center',
+    paddingRight: 10,
+    paddingLeft: 10
+  }
+});
 
 class LastTransaction extends Component {
   render() {
-    const transactions = this.props;
+    const { transactions } = this.props;
+    console.log(transactions);
     return (
-      <View>
+      <View style={styles.transactionList}>
         <FlatList
-          horizontal
-          testID="categories-flat-list"
           data={transactions}
-          renderItem={({ item }) => <Text>{item.amount}</Text>}
+          renderItem={({ item }) => <TransactionItem transaction={item} />}
+          keyExtractor={(item, index) => index.toString()}
         />
       </View>
     );
