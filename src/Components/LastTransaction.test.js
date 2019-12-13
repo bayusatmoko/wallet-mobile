@@ -63,7 +63,7 @@ describe('LastTransaction', () => {
     });
     it('should render FlatList with props transactions with length is 5', () => {
       expect(wrapper.find('FlatList').length).toBe(1);
-      expect(wrapper.find('FlatList').props().data.transactions.length).toBe(5);
+      expect(wrapper.find('FlatList').props().data.length).toBe(5);
     });
   });
 });
