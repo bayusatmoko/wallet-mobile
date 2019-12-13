@@ -45,38 +45,29 @@ const styles = StyleSheet.create({
 });
 
 class TransactionItem extends Component {
-  _formatCurrency = amount =>
-    new Intl.NumberFormat(locale, {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(amount);
-
-  _renderNominal = (transaction, walletId) => {
-    const { receiverWalletId, type, nominal } = transaction;
-    return (
-      <Text
-        testID="nominal"
-        style={[
-          styles.itemTransactionNominal,
-          type === 'DEPOSIT' || receiverWalletId === walletId
-            ? styles.itemTransactionDeposit
-            : styles.itemTransactionTransfer
-        ]}>
-        {this._formatCurrency(nominal)}
-      </Text>
-    );
+  _setNominalStyle = (transaction, walletId) => {
+    if (
+      transaction.type === 'DEPOSIT' ||
+      transaction.receiverWalletId === walletId
+    ) {
+      return styles.itemTransactionDeposit;
+    }
+    return styles.itemTransactionTransfer;
   };
+
+  _renderSenderReceiver = (transaction, walletId) => {
+    if (transaction.type === TransactionItem.TYPE.DEPOSIT) {
+      return '';
+    }
+    if (transaction.receiverWalletId === walletId) {
+      return `From ${transaction.sender.user.name}`;
+    }
+    return `To ${transaction.receiver.user.name}`;
+  };
+
   render() {
     const { transaction, walletId } = this.props;
-    const {
-      receiverWalletId,
-      description,
-      type,
-      createdAt,
-      receiver,
-      sender
-    } = transaction;
+    const { description, type, createdAt, nominal } = transaction;
     return (
       <TouchableOpacity>
         <View style={styles.transactionItem}>
@@ -88,19 +79,32 @@ class TransactionItem extends Component {
             </Text>
             <Text testID="type">{type}</Text>
             <Text testID="receiver">
-              {receiverWalletId === walletId
-                ? `From ${sender.user.name}`
-                : `To ${receiver.user.name}`}
+              {this._renderSenderReceiver(transaction, walletId)}
             </Text>
           </View>
           <View testID="rightPanel" style={styles.rightPanel}>
-            {this._renderNominal(transaction, walletId)}
-            <Text testID="date">{moment(createdAt).format('D-MM-YYYY')}</Text>
+            <Text
+              testID="nominal"
+              style={[
+                styles.itemTransactionNominal,
+                this._setNominalStyle(transaction, walletId)
+              ]}>
+              {formatCurrency(nominal)}
+            </Text>
+            <Text testID="date">
+              {moment(createdAt).format(TransactionItem.DATEFORMAT)}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
     );
   }
 }
+
+TransactionItem.TYPE = {
+  DEPOSIT: 'DEPOSIT',
+  TRANSFER: 'TRANSFER'
+};
+TransactionItem.DATEFORMAT = 'D-MM-YYYY';
 
 export default TransactionItem;

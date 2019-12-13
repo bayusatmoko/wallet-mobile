@@ -39,6 +39,8 @@
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
     "jest": "^24.9.0",
+    "jest-emotion": "^10.0.26",
+    "jest-styled-components": "^6.3.4",
     "metro-react-native-babel-preset": "^0.56.0",
     "prop-types": "latest",
     "react-test-renderer": "16.9.0"
