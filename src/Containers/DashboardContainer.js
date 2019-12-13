@@ -49,10 +49,10 @@ export default class DashboardContainer extends React.PureComponent {
   render() {
     const { wallet, user } = this.state;
     return (
-      <>
+      <View>
         <UserInfo user={user} />
         <WalletInfo wallet={wallet} />
-      </>
+      </View>
     );
   }
 }

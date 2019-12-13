@@ -9,15 +9,16 @@ describe('UserInfo', () => {
     beforeEach(() => {
       userInfo = {
         id: 1,
+        phoneNumber: '0876363',
         name: 'Huda'
       };
       wrapper = shallow(<UserInfo user={userInfo} />);
     });
     it('should render balance info', () => {
-      const textId = wrapper.find({ testID: 'user-id' });
+      const textPhone = wrapper.find({ testID: 'user-phone' });
       const textName = wrapper.find({ testID: 'user-name' });
 
-      expect(textId.props().children).toBe(userInfo.id);
+      expect(textPhone.props().children).toBe(userInfo.phoneNumber);
       expect(textName.props().children).toBe('Hi, ' + userInfo.name);
     });
   });
