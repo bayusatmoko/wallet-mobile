@@ -49,14 +49,16 @@ describe('Service', () => {
   });
 
   describe('getLastTransactionsByWalletId', () => {
-    it('should return 5 last transactions of wallet when fetch from server by wallet id', async () => {
-      const wallet = {
+    let wallet;
+    let lastTransactions;
+    beforeEach(() => {
+      wallet = {
         id: 1,
         userId: 1,
         name: 'Fariz',
         balance: '500000'
       };
-      const lastTransactions = [
+      lastTransactions = [
         {
           id: 1,
           walletId: 1,
@@ -108,11 +110,24 @@ describe('Service', () => {
           updatedAt: '2019-11-29T13:26:15.063Z'
         }
       ];
+    });
+    it('should return 5 last transactions of wallet when fetch from server by wallet id', async () => {
       axios.get.mockResolvedValueOnce({ data: lastTransactions });
 
       const response = await getLastTransactionsByWalletId(wallet.id);
 
       expect(response.data).toEqual(lastTransactions);
+      expect(axios.get).toHaveBeenCalledTimes(1);
+      expect(axios.get).toHaveBeenCalled();
+    });
+
+    it('should return throw error when failing to fetch from server by wallet id', async () => {
+      const expectedResult = 'Network Error';
+      axios.get.mockRejectedValueOnce(new Error(expectedResult));
+
+      await expect(
+        getLastTransactionsByWalletId(wallet.id)
+      ).rejects.toThrowError(expectedResult);
       expect(axios.get).toHaveBeenCalledTimes(1);
       expect(axios.get).toHaveBeenCalled();
     });
