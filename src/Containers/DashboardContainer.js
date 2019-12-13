@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Text, View } from 'react-native';
 import WalletInfo from '../Components/WalletInfo';
+import UserInfo from '../Components/UserInfo';
 
 export default class DashboardContainer extends React.PureComponent {
   constructor(props) {
@@ -19,8 +20,8 @@ export default class DashboardContainer extends React.PureComponent {
 
   _fetchUser = async () => {
     const { navigation } = this.props;
-    const id = await navigation.getParam('userId');
-    const fetchUserUrl = `http://localhost:3001/users/${id}`;
+    const id = 1;
+    const fetchUserUrl = `http://localhost:3000/users/${id}`;
     try {
       const response = await axios.get(fetchUserUrl);
       this.setState({
@@ -33,8 +34,8 @@ export default class DashboardContainer extends React.PureComponent {
 
   _fetchWallet = async () => {
     const { navigation } = this.props;
-    const userId = await navigation.getParam('userId');
-    const fetchWalletUrl = `http://localhost:3001/users/${userId}/wallets`;
+    const userId = 1;
+    const fetchWalletUrl = `http://localhost:3000/users/${userId}/wallets`;
     try {
       const response = await axios.get(fetchWalletUrl);
       this.setState({
@@ -47,16 +48,11 @@ export default class DashboardContainer extends React.PureComponent {
 
   render() {
     const { wallet, user } = this.state;
-    // const walletInfo = {
-    //   id: wallet.id,
-    //   name: user.name,
-    //   balance: wallet.balance
-    // };
-    const walletInfo = {
-      id: 1,
-      name: 'Huda',
-      balance: 523000
-    };
-    return <WalletInfo wallet={walletInfo} />;
+    return (
+      <>
+        <UserInfo user={user} />
+        <WalletInfo wallet={wallet} />
+      </>
+    );
   }
 }

@@ -20,7 +20,7 @@ describe('DashboardContainer', () => {
 
       wallet = {
         id: 1,
-        userId: userInfo.id,
+        name: userInfo.name,
         balance: 'IDR500,000'
       };
 
@@ -47,10 +47,12 @@ describe('DashboardContainer', () => {
       jest.resetAllMocks();
     });
 
-    it('should render balance info', () => {
-      const walletInfo = wrapper.find('WalletInfo');
+    it('should render user and wallet info', () => {
+      const userInfoElement = wrapper.find('UserInfo');
+      const walletInfoElement = wrapper.find('WalletInfo');
 
-      expect(walletInfo.props().wallet).toEqual(walletDetail);
+      expect(userInfoElement.props().user).toEqual(userInfo);
+      expect(walletInfoElement.props().wallet).toEqual(walletDetail);
     });
   });
 });
