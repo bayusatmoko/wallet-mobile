@@ -34,6 +34,12 @@ const styles = StyleSheet.create({
   itemTransactionNominal: {
     fontWeight: 'bold',
     fontSize: 16
+  },
+  itemTransactionDeposit: {
+    color: 'green'
+  },
+  itemTransactionTransfer: {
+    color: 'red'
   }
 });
 
@@ -44,6 +50,21 @@ class TransactionItem extends Component {
       currency: 'IDR',
       minimumFractionDigits: 0
     }).format(amount);
+
+  _renderNominal = (type, nominal) => {
+    return (
+      <Text
+        testID="nominal"
+        style={[
+          styles.itemTransactionNominal,
+          type === 'DEPOSIT'
+            ? styles.itemTransactionDeposit
+            : styles.itemTransactionTransfer
+        ]}>
+        {this._formatCurrency(nominal)}
+      </Text>
+    );
+  };
   render() {
     const { transaction } = this.props;
     const { description, type, createdAt, nominal, receiver } = transaction;
@@ -60,9 +81,7 @@ class TransactionItem extends Component {
             <Text testID="receiver">{receiver.user.name}</Text>
           </View>
           <View testID="rightPanel" style={styles.rightPanel}>
-            <Text testID="nominal" style={styles.itemTransactionNominal}>
-              {this._formatCurrency(nominal)}
-            </Text>
+            {this._renderNominal(type, nominal)}
             <Text testID="date">{moment(createdAt).format('D-MM-YYYY')}</Text>
           </View>
         </View>
