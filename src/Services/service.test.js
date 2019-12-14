@@ -2,22 +2,33 @@ import axios from 'axios';
 import getUserById from './getUserById';
 import getWalletByUserId from './getWalletByUserId';
 import getLastTransactionsByWalletId from './getLastTransactionsByWalletId';
+import findUser from './findUser';
 
 jest.mock('axios');
 
 describe('Service', () => {
+  let userInfo;
+  let errorLogin;
+  let url;
+  beforeEach(() => {
+    userInfo = {
+      id: 1,
+      name: 'Huda',
+      phoneNumber: '08237283',
+      email: 'huda@gmail.com'
+    };
+    url = 'http://localhost:3000';
+    errorLogin = {
+      data: {
+        message: '"password" length must be at least 8 characters long'
+      }
+    };
+  });
   afterEach(() => {
     jest.resetAllMocks();
   });
   describe('getUserById', () => {
     it('should return user data when fetch from server', async () => {
-      const userInfo = {
-        id: 1,
-        name: 'Huda',
-        phoneNumber: '08237283',
-        email: 'huda@gmail.com'
-      };
-
       axios.get.mockResolvedValueOnce({ data: userInfo });
 
       const response = await getUserById(userInfo.id);
@@ -130,6 +141,36 @@ describe('Service', () => {
       ).rejects.toThrowError(expectedResult);
       expect(axios.get).toHaveBeenCalledTimes(1);
       expect(axios.get).toHaveBeenCalled();
+    });
+  });
+
+  describe('findUser', () => {
+    it('should return user data when login with email and password', async () => {
+      const payload = {
+        username: 'fadelay@gmail.com',
+        password: 'Bankbtpn99'
+      };
+
+      axios.post.mockResolvedValueOnce({ data: userInfo });
+
+      const response = await findUser(payload.username, payload.password);
+
+      expect(response.data).toEqual(userInfo);
+      expect(axios.post).toHaveBeenCalledWith(`${url}/login`, payload);
+    });
+
+    it('should return user data when login with phonenumber and password', async () => {
+      const payload = {
+        username: '004516728312',
+        password: 'Bankbtpn99'
+      };
+
+      axios.post.mockResolvedValueOnce({ data: userInfo });
+
+      const response = await findUser(payload.username, payload.password);
+
+      expect(response.data).toEqual(userInfo);
+      expect(axios.post).toHaveBeenCalledWith(`${url}/login`, payload);
     });
   });
 });
