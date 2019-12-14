@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
 import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { Button, Text, View, TextInput } from 'react-native';
 
 class TransactionForm extends PureComponent {
   constructor(props) {
@@ -18,23 +18,22 @@ class TransactionForm extends PureComponent {
   };
 
   render() {
-    const { nominal, description } = this.state;
     const { title } = this.props;
     console.log(title);
     return (
       <View>
         <Text>{title}</Text>
         <TextInput
+          label="Amount"
           style={{ borderWidth: 1 }}
           testID="input-amount"
           onChangeText={text => this.setState({ nominal: text })}
-          value={nominal}
         />
         <TextInput
+          label="Description"
           style={{ borderWidth: 1 }}
           testID="input-description"
           onChangeText={text => this.setState({ description: text })}
-          value={description}
         />
         <Button testID="button" onPress={this._handleSubmit} title="Submit" />
       </View>

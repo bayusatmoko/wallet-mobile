@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import { View, TextInput, Button } from 'react-native';
 import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { Button, View, TextInput } from 'react-native';
 
 class ReceiverSearch extends PureComponent {
   constructor(props) {
@@ -19,15 +19,28 @@ class ReceiverSearch extends PureComponent {
   render() {
     const { query } = this.state;
     return (
-      <View>
-        <TextInput
-          style={{ borderWidth: 1 }}
-          testID="input"
-          onChangeText={text => this.setState({ query: text })}
-          value={query}
-        />
-        <Button testID="button" onPress={this._handleSubmit} title="Search" />
-      </View>
+      <>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+          }}>
+          <TextInput
+            style={{ width: '80%' }}
+            testID="input"
+            label="Email"
+            autoCapitalize="none"
+            onChangeText={text => this.setState({ query: text })}
+            value={query}
+          />
+          <Button
+            style={{ width: '20%' }}
+            testID="button"
+            onPress={this._handleSubmit}
+            title="Search"
+          />
+        </View>
+      </>
     );
   }
 }
