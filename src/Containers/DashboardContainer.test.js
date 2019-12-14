@@ -10,6 +10,7 @@ describe('DashboardContainer', () => {
     let userInfo;
     let walletDetail;
     let wrapper;
+    let lastTransactions;
     beforeEach(async () => {
       userInfo = {
         id: 1,
@@ -30,12 +31,66 @@ describe('DashboardContainer', () => {
         balance: wallet.balance
       };
 
+      lastTransactions = [
+        {
+          id: 1,
+          walletId: 1,
+          type: 'deposit',
+          amount: 7700000,
+          description: 'Payslip 2019-11-28',
+          receiverWalletId: null,
+          createdAt: '2019-11-28T13:26:15.063Z',
+          updatedAt: '2019-11-28T13:26:15.063Z'
+        },
+        {
+          id: 2,
+          walletId: 1,
+          type: 'withdraw',
+          amount: 30,
+          description: 'Buy Cheeseburger for lunch',
+          receiverWalletId: null,
+          createdAt: '2019-11-28T13:26:15.063Z',
+          updatedAt: '2019-11-28T13:26:15.063Z'
+        },
+        {
+          id: 3,
+          walletId: 1,
+          type: 'withdraw',
+          amount: 100,
+          description: 'Dinner at Italian Steak House',
+          receiverWalletId: null,
+          createdAt: '2019-11-28T13:26:15.063Z',
+          updatedAt: '2019-11-28T13:26:15.063Z'
+        },
+        {
+          id: 4,
+          walletId: 1,
+          type: 'deposit',
+          amount: 8800000,
+          description: 'Payslip 2019-11-29',
+          receiverWalletId: null,
+          createdAt: '2019-11-29T13:26:15.063Z',
+          updatedAt: '2019-11-29T13:26:15.063Z'
+        },
+        {
+          id: 5,
+          walletId: 1,
+          type: 'withdraw',
+          amount: 40,
+          description: 'Buy Big Macs for lunch',
+          receiverWalletId: null,
+          createdAt: '2019-11-29T13:26:15.063Z',
+          updatedAt: '2019-11-29T13:26:15.063Z'
+        }
+      ];
+
       const navigation = {
         getParam: jest.fn()
       };
       axios.get
         .mockResolvedValueOnce({ data: userInfo })
-        .mockResolvedValueOnce({ data: wallet });
+        .mockResolvedValueOnce({ data: wallet })
+        .mockResolvedValue({ data: lastTransactions });
       navigation.getParam
         .mockResolvedValueOnce(userInfo.id)
         .mockResolvedValueOnce(wallet.id);
@@ -53,6 +108,16 @@ describe('DashboardContainer', () => {
 
       expect(userInfoElement.props().user).toEqual(userInfo);
       expect(walletInfoElement.props().wallet).toEqual(walletDetail);
+    });
+
+    it('should render LastTransaction', () => {
+      expect(wrapper.find('LastTransaction').length).toBe(1);
+    });
+
+    it('should render LastTransaction with transctions data from server', () => {
+      expect(wrapper.find('LastTransaction').props().transactions).toEqual(
+        lastTransactions
+      );
     });
   });
 });
