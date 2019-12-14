@@ -8,11 +8,18 @@ import styles from './walletInfo.style';
 import payee from '../payee-img.jpg';
 
 export default class MenuComponent extends React.PureComponent {
+  _handlePress = menu => () => {
+    const { onPress } = this.props;
+    onPress(menu);
+  };
+
   render() {
     return (
       <>
         <View style={styles.borderMenu}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            testID="menu-transfer"
+            onPress={this._handlePress('Transfer')}>
             <View style={{ alignItems: 'center' }}>
               <Image style={styles.transferImage} source={transferImage} />
               <Text>Transfer</Text>
