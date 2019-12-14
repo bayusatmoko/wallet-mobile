@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import moment from 'moment';
-import formatCurrency from '../Utils/formatCurrency';
-import Intl from 'intl';
-import locale from 'intl/locale-data/jsonp/id-ID';
+import React, { Component } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Balance from './Balance';
 
 const styles = StyleSheet.create({
   transactionItem: {
@@ -89,7 +87,7 @@ class TransactionItem extends Component {
                 styles.itemTransactionNominal,
                 this._setNominalStyle(transaction, walletId)
               ]}>
-              {formatCurrency(nominal)}
+              <Balance balance={nominal} />
             </Text>
             <Text testID="date">
               {moment(createdAt).format(TransactionItem.DATEFORMAT)}
