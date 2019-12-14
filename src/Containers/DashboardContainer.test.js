@@ -11,6 +11,7 @@ describe('DashboardContainer', () => {
     let walletDetail;
     let wrapper;
     let lastTransactions;
+    let navigation;
     beforeEach(async () => {
       userInfo = {
         id: 1,
@@ -84,7 +85,8 @@ describe('DashboardContainer', () => {
         }
       ];
 
-      const navigation = {
+      navigation = {
+        navigate: jest.fn(),
         getParam: jest.fn()
       };
       axios.get
@@ -118,6 +120,12 @@ describe('DashboardContainer', () => {
       expect(wrapper.find('LastTransaction').props().transactions).toEqual(
         lastTransactions
       );
+    });
+
+    it('should call navigate with "Transfer" when menu item transfer is pressed', () => {
+      wrapper.find('MenuComponent').simulate('press', 'Transfer');
+
+      expect(navigation.navigate).toHaveBeenCalledWith('Transfer');
     });
   });
 });

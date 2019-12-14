@@ -63,13 +63,18 @@ export default class DashboardContainer extends React.Component {
     }
   };
 
+  _handleMenuPress = menuItem => {
+    const { navigation } = this.props;
+    navigation.navigate(menuItem);
+  };
+
   render() {
     const { wallet, user, lastTransactions } = this.state;
     return (
       <View>
         <UserInfo user={user} />
         <WalletInfo wallet={wallet} />
-        <MenuComponent />
+        <MenuComponent onPress={this._handleMenuPress} />
         <LastTransaction transactions={lastTransactions} walletId={wallet.id} />
       </View>
     );
