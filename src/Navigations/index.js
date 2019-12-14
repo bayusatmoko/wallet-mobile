@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import DashboardContainer from '../Containers/DashboardContainer';
+import DepositContainer from '../Containers/DepositContainer';
 import TransferContainer from '../Containers/TransferContainer';
 
 const navigationOptions = ({ navigation }) => ({
@@ -15,6 +16,9 @@ const AppNavigator = createStackNavigator({
   },
   Transfer: {
     screen: TransferContainer
+  },
+  Deposit: {
+    screen: DepositContainer
   }
 });
 
