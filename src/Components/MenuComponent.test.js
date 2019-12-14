@@ -21,5 +21,13 @@ describe('MenuComponent', () => {
 
       expect(mockedOnPress).toHaveBeenCalledWith('Transfer');
     });
+
+    it('should called onPress with "Deposit" when menu-deposit is pressed', () => {
+      const menuTransfer = wrapper.find({ testID: 'menu-deposit' });
+
+      menuTransfer.simulate('press');
+
+      expect(mockedOnPress).toHaveBeenCalledWith('Deposit');
+    });
   });
 });

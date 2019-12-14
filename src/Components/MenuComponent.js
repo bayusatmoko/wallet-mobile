@@ -25,10 +25,12 @@ export default class MenuComponent extends React.PureComponent {
               <Text>Transfer</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            testID="menu-deposit"
+            onPress={this._handlePress('Deposit')}>
             <View style={{ alignItems: 'center', marginLeft: 12 }}>
               <Image style={styles.payeeImage} source={payeeImage} />
-              <Text>Top Up</Text>
+              <Text>Deposit</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity>
