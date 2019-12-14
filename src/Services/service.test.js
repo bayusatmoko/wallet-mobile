@@ -1,4 +1,7 @@
 import axios from 'axios';
+import config from '../../config';
+import addTransaction from './addTransaction';
+import getUserByEmail from './getUserByEmaill';
 import getUserById from './getUserById';
 import getWalletByUserId from './getWalletByUserId';
 import getLastTransactionsByWalletId from './getLastTransactionsByWalletId';
@@ -25,6 +28,24 @@ describe('Service', () => {
       expect(response.data).toEqual(userInfo);
       expect(axios.get).toHaveBeenCalledTimes(1);
       expect(axios.get).toHaveBeenCalled();
+    });
+  });
+
+  describe('getUserByEmail', () => {
+    it('should return user data when fetch from server', async () => {
+      const userInfo = {
+        id: 1,
+        name: 'Huda',
+        phoneNumber: '08237283',
+        email: 'huda@gmail.com'
+      };
+
+      axios.get.mockResolvedValueOnce({ data: userInfo });
+
+      const response = await getUserByEmail(userInfo.email);
+
+      expect(response.data).toEqual(userInfo);
+      expect(axios.get).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -130,6 +151,17 @@ describe('Service', () => {
       ).rejects.toThrowError(expectedResult);
       expect(axios.get).toHaveBeenCalledTimes(1);
       expect(axios.get).toHaveBeenCalled();
+    });
+
+    it('should send transaction to server', async () => {
+      axios.post.mockResolvedValueOnce({ data: lastTransactions[0] });
+
+      await addTransaction(lastTransactions[0]);
+
+      expect(axios.post).toHaveBeenCalledWith(
+        `${config.API_URL}/transactions`,
+        lastTransactions[0]
+      );
     });
   });
 });
