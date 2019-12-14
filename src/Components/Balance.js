@@ -20,7 +20,7 @@ class Balance extends React.PureComponent {
           Your Balance:
         </Text>
         <Text style={styles.textBalance} testID="balance">
-          Rp1.000.000.000
+          {this._formatCurrency(balance)}
         </Text>
       </View>
     );
