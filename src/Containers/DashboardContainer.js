@@ -1,8 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import { Text, View } from 'react-native';
+import { Text, View, Platform } from 'react-native';
 import WalletInfo from '../Components/WalletInfo';
 import UserInfo from '../Components/UserInfo';
+import MenuComponent from '../Components/MenuComponent';
+
+const URL =
+  Platform.OS === 'ios' ? 'http://localhost:3000' : 'http://172.20.10.6:3000';
 
 export default class DashboardContainer extends React.PureComponent {
   constructor(props) {
@@ -21,7 +25,7 @@ export default class DashboardContainer extends React.PureComponent {
   _fetchUser = async () => {
     const { navigation } = this.props;
     const id = 1;
-    const fetchUserUrl = `http://localhost:3000/users/${id}`;
+    const fetchUserUrl = `${URL}/users/${id}`;
     try {
       const response = await axios.get(fetchUserUrl);
       this.setState({
@@ -35,7 +39,7 @@ export default class DashboardContainer extends React.PureComponent {
   _fetchWallet = async () => {
     const { navigation } = this.props;
     const userId = 1;
-    const fetchWalletUrl = `http://localhost:3000/users/${userId}/wallets`;
+    const fetchWalletUrl = `${URL}/users/${userId}/wallets`;
     try {
       const response = await axios.get(fetchWalletUrl);
       this.setState({
@@ -49,10 +53,11 @@ export default class DashboardContainer extends React.PureComponent {
   render() {
     const { wallet, user } = this.state;
     return (
-      <>
+      <View>
         <UserInfo user={user} />
         <WalletInfo wallet={wallet} />
-      </>
+        <MenuComponent />
+      </View>
     );
   }
 }
