@@ -65,12 +65,14 @@ export default class DashboardContainer extends React.Component {
 
   render() {
     const { wallet, user, lastTransactions } = this.state;
+    const { navigation } = this.props;
     return (
       <View>
         <UserInfo user={user} />
         <WalletInfo wallet={wallet} />
         <MenuComponent />
         <LastTransaction transactions={lastTransactions} walletId={wallet.id} />
+        <MenuComponent navigation={navigation} />
       </View>
     );
   }

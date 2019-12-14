@@ -11,7 +11,7 @@ describe('Config', () => {
 
     it('should return base url with localhost form when the platform is android', () => {
       Platform.OS = PLATFORM.ANDROID;
-      const expectedURL = 'http://10.0.2.2:3000';
+      const expectedURL = 'http://172.20.10.6:3000';
 
       expect(getBaseURL()).toEqual(expectedURL);
     });
