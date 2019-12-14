@@ -52,11 +52,12 @@ export default class DashboardContainer extends React.PureComponent {
 
   render() {
     const { wallet, user } = this.state;
+    const { navigation } = this.props;
     return (
       <View>
         <UserInfo user={user} />
         <WalletInfo wallet={wallet} />
-        <MenuComponent />
+        <MenuComponent navigation={navigation} />
       </View>
     );
   }
