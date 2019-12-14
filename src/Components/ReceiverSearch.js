@@ -21,6 +21,7 @@ class ReceiverSearch extends PureComponent {
     return (
       <View>
         <TextInput
+          style={{ borderWidth: 1 }}
           testID="input"
           onChangeText={text => this.setState({ query: text })}
           value={query}

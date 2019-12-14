@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { View, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button } from 'react-native';
 import PropTypes from 'prop-types';
 
-class ReceiverSearch extends PureComponent {
+class TransactionForm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,15 +18,23 @@ class ReceiverSearch extends PureComponent {
   };
 
   render() {
+    const { nominal, description } = this.state;
+    const { title } = this.props;
+    console.log(title);
     return (
       <View>
+        <Text>{title}</Text>
         <TextInput
+          style={{ borderWidth: 1 }}
           testID="input-amount"
           onChangeText={text => this.setState({ nominal: text })}
+          value={nominal}
         />
         <TextInput
+          style={{ borderWidth: 1 }}
           testID="input-description"
           onChangeText={text => this.setState({ description: text })}
+          value={description}
         />
         <Button testID="button" onPress={this._handleSubmit} title="Submit" />
       </View>
@@ -34,8 +42,8 @@ class ReceiverSearch extends PureComponent {
   }
 }
 
-ReceiverSearch.propTypes = {
+TransactionForm.propTypes = {
   onSubmit: PropTypes.func.isRequired
 };
 
-export default ReceiverSearch;
+export default TransactionForm;
