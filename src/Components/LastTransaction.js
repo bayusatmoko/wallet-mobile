@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 import TransactionItem from './TransactionItem';
+import MenuComponent from './MenuComponent';
 
 const styles = StyleSheet.create({
   transactionList: {
-    marginTop: 150,
+    marginTop: 50,
     width: '100%',
-    flex: 1,
     alignItems: 'center',
     paddingRight: 10,
     paddingLeft: 10

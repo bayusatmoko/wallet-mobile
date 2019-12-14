@@ -1,11 +1,12 @@
 import React from 'react';
-import axios from 'axios';
-import { Text, View } from 'react-native';
+import { Text, View, Platform } from 'react-native';
 import WalletInfo from '../Components/WalletInfo';
 import getUserById from '../Services/getUserById';
 import getWalletByUserId from '../Services/getWalletByUserId';
 import LastTransaction from '../Components/LastTransaction';
 import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
+import UserInfo from '../Components/UserInfo';
+import MenuComponent from '../Components/MenuComponent';
 
 export default class DashboardContainer extends React.Component {
   constructor(props) {
@@ -64,22 +65,13 @@ export default class DashboardContainer extends React.Component {
 
   render() {
     const { wallet, user, lastTransactions } = this.state;
-    // const walletInfo = {
-    //   id: wallet.id,
-    //   name: user.name,
-    //   balance: wallet.balance
-    // };
-    const walletInfo = {
-      id: 1,
-      name: 'Huda',
-      balance: 523000
-    };
-    console.log(lastTransactions);
     return (
-      <>
-        <WalletInfo wallet={walletInfo} />
+      <View>
+        <UserInfo user={user} />
+        <WalletInfo wallet={wallet} />
+        <MenuComponent />
         <LastTransaction transactions={lastTransactions} walletId={wallet.id} />
-      </>
+      </View>
     );
   }
 }

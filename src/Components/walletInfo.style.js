@@ -5,30 +5,30 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   backgroundImages: {
-    height: 200,
+    height: 220,
     width: '100%',
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40
   },
-  textId: {
+  textPhone: {
     position: 'absolute',
-    top: 60,
+    top: 110,
     fontWeight: 'bold',
     paddingLeft: 20,
-    fontSize: 20,
-    color: 'white'
+    fontSize: 17,
+    color: 'black'
   },
   textName: {
     position: 'absolute',
-    top: 20,
+    top: 70,
     fontWeight: 'bold',
     paddingLeft: 20,
     fontSize: 30,
-    color: 'white'
+    color: 'black'
   },
   borderMenu: {
     position: 'absolute',
-    top: 150,
+    top: 170,
     backgroundColor: 'white',
     height: 80,
     width: '90%',
@@ -56,21 +56,29 @@ const styles = StyleSheet.create({
     height: 43
   },
   textBalance: {
-    fontSize: 30,
+    fontSize: 23,
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    alignSelf: 'center'
   },
   borderBalance: {
     position: 'absolute',
-    top: 90,
+    top: 80,
+    left: 170,
     marginLeft: 20,
-    paddingLeft: 10,
-    width: 160,
+    paddingTop: 10,
+    paddingBottom: 10,
+    width: 220,
     borderRadius: 10,
-    backgroundColor: 'blue',
+    backgroundColor: '#002984',
     fontWeight: 'bold',
     fontSize: 30,
-    color: 'white'
+    color: 'white',
+  },
+  payee: {
+    marginTop: 7,
+    width: 40,
+    height: 34
   }
 });
 
