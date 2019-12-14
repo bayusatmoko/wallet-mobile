@@ -122,7 +122,7 @@ describe('DashboardContainer', () => {
       );
     });
 
-    it('should call navigate with "Transfer" when menu item transfer is pressed', () => {
+    it('should call navigate with menu path when menu item is pressed', () => {
       wrapper.find('MenuComponent').simulate('press', 'Transfer');
 
       expect(navigation.navigate).toHaveBeenCalledWith('Transfer');

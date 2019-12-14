@@ -63,20 +63,19 @@ describe('TransactionItem', () => {
   });
   describe('#render', () => {
     it('should render description, amount, transaction type, date and receiver', () => {
-      const expectedAmount = 'IDR11,111';
       const expectedText = '';
       const expectedDate = moment(transaction.createdAt).format('D-MM-YYYY');
 
       const wrapper = shallow(<TransactionItem transaction={transaction} />);
       const description = wrapper.find({ testID: 'description' });
-      const nominal = wrapper.find({ testID: 'nominal' });
+      const nominal = wrapper.find('Balance');
       const type = wrapper.find({ testID: 'type' });
       const date = wrapper.find({ testID: 'date' });
       const receiver = wrapper.find({ testID: 'receiver' });
 
       expect(description.props().children).toBe(transaction.description);
       expect(type.props().children).toBe(transaction.type);
-      expect(nominal.props().children).toBe(expectedAmount);
+      expect(nominal.props().balance).toBe(transaction.nominal);
       expect(date.props().children).toBe(expectedDate);
       expect(receiver.props().children).toBe(expectedText);
     });
