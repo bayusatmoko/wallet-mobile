@@ -1,9 +1,14 @@
 import React from 'react';
-import axios from 'axios';
 import { shallow } from 'enzyme';
+import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
+import getUserById from '../Services/getUserById';
+import getWalletByUserId from '../Services/getWalletByUserId';
 import DashboardContainer from './DashboardContainer';
 
-jest.mock('axios');
+jest.mock('../Services/getUserById', () => jest.fn());
+jest.mock('../Services/getWalletByUserId', () => jest.fn());
+jest.mock('../Services/getLastTransactionsByWalletId', () => jest.fn());
+
 describe('DashboardContainer', () => {
   describe('#render', () => {
     let wallet;
@@ -89,10 +94,12 @@ describe('DashboardContainer', () => {
         navigate: jest.fn(),
         getParam: jest.fn()
       };
-      axios.get
-        .mockResolvedValueOnce({ data: userInfo })
-        .mockResolvedValueOnce({ data: wallet })
-        .mockResolvedValue({ data: lastTransactions });
+
+      getUserById.mockResolvedValueOnce({ data: userInfo });
+      getWalletByUserId.mockResolvedValueOnce({ data: wallet });
+      getLastTransactionsByWalletId.mockResolvedValueOnce({
+        data: lastTransactions
+      });
       navigation.getParam
         .mockResolvedValueOnce(userInfo.id)
         .mockResolvedValueOnce(wallet.id);
@@ -102,6 +109,14 @@ describe('DashboardContainer', () => {
 
     afterEach(() => {
       jest.resetAllMocks();
+    });
+
+    it('should call service function getUserById', () => {
+      expect(getUserById).toHaveBeenCalledWith(userInfo.id);
+    });
+
+    it('should call service function getWalletByUserId', () => {
+      expect(getWalletByUserId).toHaveBeenCalledWith(wallet.id);
     });
 
     it('should render user and wallet info', () => {
@@ -126,6 +141,17 @@ describe('DashboardContainer', () => {
       wrapper.find('MenuComponent').simulate('press', 'Transfer');
 
       expect(navigation.navigate).toHaveBeenCalledWith('Transfer');
+    });
+
+    it('should fetch from server when refreshed', async () => {
+      const refreshControl = wrapper.find('ScrollViewMock').props()
+        .refreshControl;
+
+      refreshControl.props.onRefresh();
+      await flushPromises();
+
+      expect(getUserById).toHaveBeenCalledTimes(2);
+      expect(getWalletByUserId).toHaveBeenCalledTimes(2);
     });
   });
 });

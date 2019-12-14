@@ -1,12 +1,12 @@
 import React from 'react';
-import { Text, View, Platform } from 'react-native';
+import { RefreshControl, ScrollView } from 'react-native';
+import LastTransaction from '../Components/LastTransaction';
+import MenuComponent from '../Components/MenuComponent';
+import UserInfo from '../Components/UserInfo';
 import WalletInfo from '../Components/WalletInfo';
+import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
 import getUserById from '../Services/getUserById';
 import getWalletByUserId from '../Services/getWalletByUserId';
-import LastTransaction from '../Components/LastTransaction';
-import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
-import UserInfo from '../Components/UserInfo';
-import MenuComponent from '../Components/MenuComponent';
 
 export default class DashboardContainer extends React.Component {
   constructor(props) {
@@ -14,19 +14,25 @@ export default class DashboardContainer extends React.Component {
     this.state = {
       wallet: {},
       user: {},
-      lastTransactions: []
+      lastTransactions: [],
+      isRefreshing: false,
+      errorMessage: ''
     };
   }
 
   async componentDidMount() {
+    await this._refreshData();
+  }
+
+  _refreshData = async () => {
+    this.setState({ isRefreshing: true });
     await this._fetchUser();
     await this._fetchWallet();
-  }
+    this.setState({ isRefreshing: false });
+  };
 
   _fetchUser = async () => {
     try {
-      // const { navigation } = this.props;
-      // const id = await navigation.getParam('userId');
       const id = 1;
       const response = await getUserById(id);
       this.setState({
@@ -39,8 +45,6 @@ export default class DashboardContainer extends React.Component {
 
   _fetchWallet = async () => {
     try {
-      // const { navigation } = this.props;
-      // const userId = await navigation.getParam('userId');
       const userId = 1;
       const response = await getWalletByUserId(userId);
       this.setState({
@@ -69,14 +73,25 @@ export default class DashboardContainer extends React.Component {
   };
 
   render() {
-    const { wallet, user, lastTransactions } = this.state;
+    const { wallet, user, lastTransactions, isRefreshing } = this.state;
     return (
-      <View>
-        <UserInfo user={user} />
-        <WalletInfo wallet={wallet} />
-        <MenuComponent onPress={this._handleMenuPress} />
-        <LastTransaction transactions={lastTransactions} walletId={wallet.id} />
-      </View>
+      <>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={this._refreshData}
+            />
+          }>
+          <UserInfo user={user} />
+          <WalletInfo wallet={wallet} />
+          <MenuComponent onPress={this._handleMenuPress} />
+          <LastTransaction
+            transactions={lastTransactions}
+            walletId={wallet.id}
+          />
+        </ScrollView>
+      </>
     );
   }
 }
