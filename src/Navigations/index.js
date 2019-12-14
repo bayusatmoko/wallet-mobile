@@ -1,8 +1,9 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Image, View, Text } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import DashboardContainer from '../Containers/DashboardContainer';
-import TransactionList from '../Components/TransactionList';
+import TransactionHistoryContainer from '../Containers/TransactionHistoryContainer';
+import background from '../background.jpg';
 
 const AppNavigator = createStackNavigator(
   {
@@ -13,7 +14,16 @@ const AppNavigator = createStackNavigator(
       })
     },
     TransactionHistory: {
-      screen: TransactionList
+      screen: TransactionHistoryContainer,
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: 'Transaction History',
+        headerTitleStyle: {
+          textAlign: 'center',
+          fontWeight: 'bold',
+          fontSize: 20,
+          alignSelf: 'center',
+        }
+      })
     }
   },
   { initialRouteName: 'Home' }

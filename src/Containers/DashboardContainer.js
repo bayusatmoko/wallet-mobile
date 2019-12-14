@@ -65,7 +65,6 @@ export default class DashboardContainer extends React.Component {
 
   render() {
     const { wallet, user, lastTransactions } = this.state;
-    const { wallet, user } = this.state;
     const { navigation } = this.props;
     return (
       <View>
