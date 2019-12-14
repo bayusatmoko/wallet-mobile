@@ -5,6 +5,7 @@ import transferImage from '../transafer.jpeg';
 import payeeImage from '../payee.jpeg';
 import transaction from '../history-image.jpeg';
 import styles from './walletInfo.style';
+import payee from '../payee-img.jpg';
 
 export default class UserInfo extends React.PureComponent {
   render() {
@@ -20,26 +21,6 @@ export default class UserInfo extends React.PureComponent {
           <Text style={styles.textPhone} testID="user-phone">
             {phoneNumber}
           </Text>
-        </View>
-        <View style={styles.borderMenu}>
-          <TouchableOpacity>
-            <View style={{ alignItems: 'center' }}>
-              <Image style={styles.transferImage} source={transferImage} />
-              <Text>Transfer</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={{ alignItems: 'center', marginLeft: 12 }}>
-              <Image style={styles.payeeImage} source={payeeImage} />
-              <Text>Payee</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={{ alignItems: 'center' }}>
-              <Image style={styles.transactionImage} source={transaction} />
-              <Text>Transaction</Text>
-            </View>
-          </TouchableOpacity>
         </View>
       </>
     );
