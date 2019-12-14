@@ -16,7 +16,7 @@ describe('ReceiverItem', () => {
         id: 1
       }
     };
-    wrapper = shallow(<ReceiverItem user={user} onPress={mockedOnPress} />);
+    wrapper = shallow(<ReceiverItem receiver={user} onPress={mockedOnPress} />);
   });
 
   afterEach(() => {
