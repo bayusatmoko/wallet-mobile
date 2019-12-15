@@ -137,12 +137,6 @@ describe('DashboardContainer', () => {
       );
     });
 
-    it('should call navigate with menu path when menu item is pressed', () => {
-      wrapper.find('MenuComponent').simulate('press', 'Transfer');
-
-      expect(navigation.navigate).toHaveBeenCalledWith('Transfer');
-    });
-
     it('should fetch from server when refreshed', async () => {
       const refreshControl = wrapper.find('ScrollViewMock').props()
         .refreshControl;
@@ -152,6 +146,16 @@ describe('DashboardContainer', () => {
 
       expect(getUserById).toHaveBeenCalledTimes(2);
       expect(getWalletByUserId).toHaveBeenCalledTimes(2);
+    });
+
+    it('should call navigate with menu path when menu item is pressed', () => {
+      const onRefresh = jest.fn();
+
+      wrapper.find('MenuComponent').simulate('press', 'Transfer');
+
+      expect(navigation.navigate).toHaveBeenCalledWith('Transfer', {
+        onRefresh
+      });
     });
   });
 });

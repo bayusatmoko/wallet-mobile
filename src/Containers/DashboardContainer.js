@@ -69,7 +69,7 @@ export default class DashboardContainer extends React.Component {
 
   _handleMenuPress = menuItem => {
     const { navigation } = this.props;
-    navigation.navigate(menuItem);
+    navigation.navigate(menuItem, { onRefresh: this._refreshData });
   };
 
   render() {
