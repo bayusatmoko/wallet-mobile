@@ -1,9 +1,9 @@
 import React from 'react';
-import { Image, View, Text } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import DashboardContainer from '../Containers/DashboardContainer';
+import DepositContainer from '../Containers/DepositContainer';
+import TransferContainer from '../Containers/TransferContainer';
 import TransactionHistoryContainer from '../Containers/TransactionHistoryContainer';
-import background from '../background.jpg';
 
 const AppNavigator = createStackNavigator(
   {
@@ -13,6 +13,12 @@ const AppNavigator = createStackNavigator(
         header: null
       })
     },
+    Transfer: {
+      screen: TransferContainer
+    },
+    Deposit: {
+      screen: DepositContainer
+    },
     TransactionHistory: {
       screen: TransactionHistoryContainer,
       navigationOptions: ({ navigation }) => ({
@@ -21,7 +27,7 @@ const AppNavigator = createStackNavigator(
           textAlign: 'center',
           fontWeight: 'bold',
           fontSize: 20,
-          alignSelf: 'center',
+          alignSelf: 'center'
         }
       })
     }

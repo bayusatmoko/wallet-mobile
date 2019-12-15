@@ -5,13 +5,8 @@ import MenuComponent from './MenuComponent';
 describe('MenuComponent', () => {
   let wrapper;
   let mockedOnPress = jest.fn();
-  let navigation;
   beforeEach(() => {
-    navigation = {
-      navigate: jest.fn()
-    };
-
-    wrapper = shallow(<MenuComponent navigation={navigation} />);
+    wrapper = shallow(<MenuComponent onPress={mockedOnPress} />);
   });
 
   afterEach(() => {
@@ -19,12 +14,20 @@ describe('MenuComponent', () => {
   });
 
   describe('#render', () => {
-    it('should called onPress with "TransferHistory" when menu-transaction-history is pressed', () => {
-      const menuTransfer = wrapper.find({ testID: 'menu-transaction-history' });
+    it('should called onPress with "Transfer" when menu-transfer is pressed', () => {
+      const menuTransfer = wrapper.find({ testID: 'menu-transfer' });
 
       menuTransfer.simulate('press');
 
-      expect(navigation.navigate).toHaveBeenCalledWith('TransactionHistory');
+      expect(mockedOnPress).toHaveBeenCalledWith('Transfer');
+    });
+
+    it('should called onPress with "Deposit" when menu-deposit is pressed', () => {
+      const menuTransfer = wrapper.find({ testID: 'menu-deposit' });
+
+      menuTransfer.simulate('press');
+
+      expect(mockedOnPress).toHaveBeenCalledWith('Deposit');
     });
   });
 });

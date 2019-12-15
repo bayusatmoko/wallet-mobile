@@ -1,7 +1,7 @@
 import React from 'react';
-import getWalletByUserId from '../Services/getWalletByUserId';
-import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import TransactionHistory from '../Components/TransactionHistory';
+import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
+import getWalletByUserId from '../Services/getWalletByUserId';
 import { ScrollView, View } from 'react-native';
 import TransactionFilter from '../Components/TransactionFilter';
 
