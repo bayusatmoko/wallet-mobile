@@ -1,9 +1,9 @@
-import React from 'react';
 import { shallow } from 'enzyme';
-import TransactionItem from './TransactionItem';
-import moment from 'moment';
 import { matchers } from 'jest-emotion';
+import moment from 'moment';
+import React from 'react';
 import TransactionDetail from './TransactionDetail';
+
 expect.extend(matchers);
 
 describe('TransactionDetail', () => {

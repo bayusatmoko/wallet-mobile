@@ -9,9 +9,7 @@ describe('Balance', () => {
       const wrapper = shallow(<Balance balance={balance} />);
       const expectedResult = 'IDR500,000';
 
-      const textBalance = wrapper.find({ testID: 'balance' });
-
-      expect(textBalance.props().children).toBe(expectedResult);
+      expect(wrapper.props().children).toBe(expectedResult);
     });
   });
 });

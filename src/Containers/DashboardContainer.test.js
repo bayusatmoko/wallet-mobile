@@ -1,9 +1,14 @@
 import React from 'react';
-import axios from 'axios';
 import { shallow } from 'enzyme';
+import getUserById from '../Services/getUserById';
+import getWalletByUserId from '../Services/getWalletByUserId';
+import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
 import DashboardContainer from './DashboardContainer';
 
-jest.mock('axios');
+jest.mock('../Services/getUserById', () => jest.fn());
+jest.mock('../Services/getWalletByUserId', () => jest.fn());
+jest.mock('../Services/getLastTransactionsByWalletId', () => jest.fn());
+
 describe('DashboardContainer', () => {
   describe('#render', () => {
     let wallet;
@@ -11,6 +16,7 @@ describe('DashboardContainer', () => {
     let walletDetail;
     let wrapper;
     let lastTransactions;
+    let navigation;
     beforeEach(async () => {
       userInfo = {
         id: 1,
@@ -84,13 +90,16 @@ describe('DashboardContainer', () => {
         }
       ];
 
-      const navigation = {
+      navigation = {
+        navigate: jest.fn(),
         getParam: jest.fn()
       };
-      axios.get
-        .mockResolvedValueOnce({ data: userInfo })
-        .mockResolvedValueOnce({ data: wallet })
-        .mockResolvedValue({ data: lastTransactions });
+
+      getUserById.mockResolvedValue({ data: userInfo });
+      getWalletByUserId.mockResolvedValue({ data: wallet });
+      getLastTransactionsByWalletId.mockResolvedValue({
+        data: lastTransactions
+      });
       navigation.getParam
         .mockResolvedValueOnce(userInfo.id)
         .mockResolvedValueOnce(wallet.id);
@@ -100,6 +109,14 @@ describe('DashboardContainer', () => {
 
     afterEach(() => {
       jest.resetAllMocks();
+    });
+
+    it('should call service function getUserById', () => {
+      expect(getUserById).toHaveBeenCalledWith(userInfo.id);
+    });
+
+    it('should call service function getWalletByUserId', () => {
+      expect(getWalletByUserId).toHaveBeenCalledWith(wallet.id);
     });
 
     it('should render user and wallet info', () => {
@@ -118,6 +135,39 @@ describe('DashboardContainer', () => {
       expect(wrapper.find('LastTransaction').props().transactions).toEqual(
         lastTransactions
       );
+    });
+
+    it('should fetch from server when refreshed', async () => {
+      const refreshControl = wrapper.find('ScrollViewMock').props()
+        .refreshControl;
+
+      refreshControl.props.onRefresh();
+      await flushPromises();
+
+      expect(getUserById).toHaveBeenCalledTimes(2);
+      expect(getWalletByUserId).toHaveBeenCalledTimes(2);
+      expect(getLastTransactionsByWalletId).toHaveBeenCalledTimes(2);
+    });
+
+    it('should call navigate with menu path when menu item is pressed', () => {
+      wrapper.find('MenuComponent').simulate('press', 'Transfer');
+
+      expect(navigation.navigate).toHaveBeenCalledWith('Transfer', {
+        onRefresh: expect.any(Function)
+      });
+    });
+
+    it('should render failed notification when failed to fetch from server', async () => {
+      getUserById.mockRejectedValueOnce(Error('Network Error'));
+      getWalletByUserId.mockRejectedValueOnce(Error('Network Error'));
+      getLastTransactionsByWalletId.mockRejectedValueOnce(
+        Error('Network Error')
+      );
+
+      wrapper = shallow(<DashboardContainer navigation={navigation} />);
+      await flushPromises();
+
+      expect(wrapper.find('FailedNotification').length).toBe(1);
     });
   });
 });

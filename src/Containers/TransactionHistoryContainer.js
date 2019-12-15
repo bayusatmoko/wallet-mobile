@@ -1,8 +1,7 @@
 import React from 'react';
-import getWalletByUserId from '../Services/getWalletByUserId';
-import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import TransactionHistory from '../Components/TransactionHistory';
-import { ScrollView, View } from 'react-native';
+import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
+import getWalletByUserId from '../Services/getWalletByUserId';
 
 export default class TransactionHistoryContainer extends React.Component {
   constructor(props) {
