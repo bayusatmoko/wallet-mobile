@@ -6,9 +6,11 @@ import Balance from './Balance';
 const SuccessNotification = props => {
   const { balance } = props;
   return (
-    <View>
-      <Text>Transaction success!</Text>
-      <Text>
+    <View style={{ marginTop: 80 }}>
+      <Text style={{ color: 'green', fontSize: 30, alignSelf: 'center' }}>
+        Transaction success!
+      </Text>
+      <Text style={{ color: 'green', fontSize: 30, alignSelf: 'center' }}>
         <Balance balance={balance} />
       </Text>
     </View>
