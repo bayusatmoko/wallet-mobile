@@ -83,7 +83,10 @@ describe('TransactionHistory', () => {
     it('should transaction and wallet in transaction history page', async () => {
       await flushPromises();
       const RenderItem = wrapper.find('FlatList').props().renderItem;
-      const KeyExtractor = wrapper.find('FlatList').props().keyExtractor(transactions[0]);
+      const KeyExtractor = wrapper
+        .find('FlatList')
+        .props()
+        .keyExtractor(transactions[0]);
       const renderItemWrapper = shallow(
         <RenderItem item={transactions[0]} walletId={walletId} />
       );
@@ -92,7 +95,7 @@ describe('TransactionHistory', () => {
       expect(renderItemWrapper.find('TransactionDetail').props().walletId).toBe(
         walletId
       );
-      expect(KeyExtractor).toBe(transactions[0].id);
+      expect(KeyExtractor).toBe(`${transactions[0].id}`);
     });
   });
 });

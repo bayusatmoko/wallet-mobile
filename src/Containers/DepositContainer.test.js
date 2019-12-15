@@ -61,7 +61,9 @@ describe('DepositContainer', () => {
     });
 
     it('should not render success notification but render failed notification when failed to deposit', async () => {
-      axios.post.mockRejectedValue(Error('Network Error'));
+      axios.post.mockRejectedValue({
+        response: { data: { message: 'Network Error' } }
+      });
       wrapper = shallow(<DepositContainer />);
 
       wrapper.find('TransactionForm').simulate('submit', transaction);

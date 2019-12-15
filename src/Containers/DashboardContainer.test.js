@@ -158,8 +158,12 @@ describe('DashboardContainer', () => {
     });
 
     it('should render failed notification when failed to fetch from server', async () => {
-      getUserById.mockRejectedValueOnce(Error('Network Error'));
-      getWalletByUserId.mockRejectedValueOnce(Error('Network Error'));
+      getUserById.mockRejectedValueOnce({
+        response: { data: { message: 'Network Error' } }
+      });
+      getWalletByUserId.mockRejectedValueOnce({
+        response: { data: { message: 'Network Error' } }
+      });
       getLastTransactionsByWalletId.mockRejectedValueOnce(
         Error('Network Error')
       );
