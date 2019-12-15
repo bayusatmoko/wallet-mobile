@@ -28,7 +28,8 @@ class TransferContainer extends Component {
       this.setState({
         selectedReceiver: data,
         errorSearch: '',
-        isSearched: true
+        isSearched: true,
+        isSubmitted: false
       });
     } catch (error) {
       this.setState({
@@ -96,7 +97,7 @@ class TransferContainer extends Component {
           {isSearched && (
             <TransactionForm
               onSubmit={this._handleSubmit}
-              title={`Transfer to ${name} (${email})`}
+              title={`Transfer to \n${name} \n(${email})`}
             />
           )}
           {isSubmitted && this._renderNotification()}

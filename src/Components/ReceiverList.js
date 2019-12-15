@@ -13,7 +13,7 @@ const ReceiverList = props => {
   return (
     <FlatList
       data={receivers}
-      keyExtractor={item => item.id}
+      keyExtractor={item => `${item.id}`}
       renderItem={({ item }) => (
         <ReceiverItem receiver={item} onPress={_handlePress(item)} />
       )}
