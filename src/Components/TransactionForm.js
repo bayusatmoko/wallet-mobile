@@ -7,19 +7,28 @@ class TransactionForm extends PureComponent {
     super(props);
     this.state = {
       nominal: 0,
-      description: ''
+      description: '',
+      isError: false
     };
   }
+
+  _checkIsNominalInRange = nominal => {
+    const isInRange = nominal >= 1000 && nominal <= 100000000;
+    this.setState({ isError: !isInRange });
+    return isInRange;
+  };
 
   _handleSubmit = () => {
     const { nominal, description } = this.state;
     const { onSubmit } = this.props;
-    onSubmit({ nominal, description });
+    if (this._checkIsNominalInRange(nominal)) {
+      onSubmit({ nominal, description });
+    }
   };
 
   render() {
     const { title } = this.props;
-    console.log(title);
+    const { isError } = this.state;
     return (
       <View style={{ marginTop: 50 }}>
         <View style={{ backgroundColor: 'lightgrey' }}>
@@ -44,7 +53,10 @@ class TransactionForm extends PureComponent {
             marginTop: 30
           }}
           testID="input-amount"
-          onChangeText={text => this.setState({ nominal: text })}
+          onChangeText={text => {
+            this.setState({ nominal: text });
+            this._checkIsNominalInRange(text);
+          }}
         />
         <TextInput
           placeholder="Description"
@@ -54,6 +66,11 @@ class TransactionForm extends PureComponent {
         />
         <View style={{ marginTop: 30 }}>
           <Button testID="button" onPress={this._handleSubmit} title="Submit" />
+          {isError && (
+            <Text testID="text-error">
+              Transaction amount must be in range of Rp1.000 to Rp100.000.000
+            </Text>
+          )}
         </View>
       </View>
     );
