@@ -7,11 +7,11 @@ import styles from './walletInfo.style';
 import payee from '../payee-img.jpg';
 
 export default class MenuComponent extends React.PureComponent {
-
   _handleTransaction = () => {
     const { navigation } = this.props;
     navigation.navigate('TransactionHistory');
-  }
+  };
+
   render() {
     return (
       <>
@@ -34,7 +34,9 @@ export default class MenuComponent extends React.PureComponent {
               <Text>Payee</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this._handleTransaction}>
+          <TouchableOpacity
+            testID="menu-transaction-history"
+            onPress={this._handleTransaction}>
             <View style={{ alignItems: 'center' }}>
               <Image style={styles.transactionImage} source={transaction} />
               <Text>Transaction</Text>

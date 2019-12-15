@@ -3,6 +3,7 @@ import getWalletByUserId from '../Services/getWalletByUserId';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import TransactionHistory from '../Components/TransactionHistory';
 import { ScrollView, View } from 'react-native';
+import TransactionFilter from '../Components/TransactionFilter';
 
 export default class TransactionHistoryContainer extends React.Component {
   constructor(props) {
@@ -10,7 +11,8 @@ export default class TransactionHistoryContainer extends React.Component {
     this.state = {
       wallet: {},
       user: {},
-      transactions: []
+      transactions: [],
+      searchByDescription: ''
     };
   }
 
@@ -44,10 +46,34 @@ export default class TransactionHistoryContainer extends React.Component {
     }
   };
 
+  _displayTransaction = transactions => {
+    const filteredDescription = this._filterByDescription(transactions);
+    return filteredDescription;
+  };
+
+  _filterByDescription(list) {
+    const { searchByDescription } = this.state;
+    return list.filter(transaction =>
+      transaction.description.includes(searchByDescription)
+    );
+  }
+
+  _handleDescription = newDescription => {
+    this.setState({
+      searchByDescription: newDescription
+    });
+  };
+
   render() {
     const { wallet, transactions } = this.state;
     return (
-      <TransactionHistory transactions={transactions} walletId={wallet.id} />
+      <>
+        <TransactionFilter onHandleDescription={this._handleDescription} />
+        <TransactionHistory
+          transactions={this._displayTransaction(transactions)}
+          walletId={wallet.id}
+        />
+      </>
     );
   }
 }

@@ -11,6 +11,7 @@ describe('DashboardContainer', () => {
     let walletDetail;
     let wrapper;
     let lastTransactions;
+    let navigation;
     beforeEach(async () => {
       userInfo = {
         id: 1,
@@ -84,22 +85,20 @@ describe('DashboardContainer', () => {
         }
       ];
 
-      const navigation = {
-        getParam: jest.fn()
+      navigation = {
+        navigate: jest.fn()
       };
       axios.get
         .mockResolvedValueOnce({ data: userInfo })
         .mockResolvedValueOnce({ data: wallet })
         .mockResolvedValue({ data: lastTransactions });
-      navigation.getParam
-        .mockResolvedValueOnce(userInfo.id)
-        .mockResolvedValueOnce(wallet.id);
+
       wrapper = shallow(<DashboardContainer navigation={navigation} />);
       await flushPromises();
     });
 
     afterEach(() => {
-      jest.resetAllMocks();
+      jest.clearAllMocks();
     });
 
     it('should render user and wallet info', () => {
