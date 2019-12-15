@@ -1,25 +1,38 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import DashboardContainer from '../Containers/DashboardContainer';
 import DepositContainer from '../Containers/DepositContainer';
 import TransferContainer from '../Containers/TransferContainer';
+import TransactionHistoryContainer from '../Containers/TransactionHistoryContainer';
 
-const navigationOptions = ({ navigation }) => ({
-  header: null
-});
-
-const AppNavigator = createStackNavigator({
-  Home: {
-    screen: DashboardContainer,
-    navigationOptions
+const AppNavigator = createStackNavigator(
+  {
+    Home: {
+      screen: DashboardContainer,
+      navigationOptions: ({ navigation }) => ({
+        header: null
+      })
+    },
+    Transfer: {
+      screen: TransferContainer
+    },
+    Deposit: {
+      screen: DepositContainer
+    },
+    TransactionHistory: {
+      screen: TransactionHistoryContainer,
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: 'Transaction History',
+        headerTitleStyle: {
+          textAlign: 'center',
+          fontWeight: 'bold',
+          fontSize: 20,
+          alignSelf: 'center'
+        }
+      })
+    }
   },
-  Transfer: {
-    screen: TransferContainer
-  },
-  Deposit: {
-    screen: DepositContainer
-  }
-});
+  { initialRouteName: 'Home' }
+);
 
 export default AppNavigator;

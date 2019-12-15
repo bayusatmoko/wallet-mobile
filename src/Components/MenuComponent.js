@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
-import background from '../background.jpg';
 import transferImage from '../transafer.jpeg';
 import payeeImage from '../payee.jpeg';
 import transaction from '../history-image.jpeg';
@@ -39,7 +38,7 @@ export default class MenuComponent extends React.PureComponent {
               <Text>Payee</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this._handlePress('TransactionHistory')}>
             <View style={{ alignItems: 'center' }}>
               <Image style={styles.transactionImage} source={transaction} />
               <Text>Transaction</Text>

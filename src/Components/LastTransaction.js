@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { FlatList, View, Text, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import TransactionItem from './TransactionItem';
-import MenuComponent from './MenuComponent';
 
 const styles = StyleSheet.create({
   transactionList: {
@@ -20,7 +19,9 @@ class LastTransaction extends Component {
       <View style={styles.transactionList}>
         <FlatList
           data={transactions}
-          renderItem={({ item }) => <TransactionItem transaction={item} walletId={walletId}/>}
+          renderItem={({ item }) => (
+            <TransactionItem transaction={item} walletId={walletId} />
+          )}
           keyExtractor={(item, index) => index.toString()}
         />
       </View>

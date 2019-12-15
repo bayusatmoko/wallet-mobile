@@ -1,15 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { createAppContainer } from 'react-navigation';
-import AppSwitchNavigator from './src/Navigations';
-import DashboardContainer from './src/Containers/DashboardContainer';
+import AppNavigator from './src/Navigations';
 
-const AppContainer = createAppContainer(AppSwitchNavigator);
+const AppContainer = createAppContainer(AppNavigator);
 
 const App: () => React$Node = () => {
   return (
     <>
-      <AppContainer style={{ top: 'never', bottom: 'never' }} />
+      <AppContainer />
     </>
   );
 };
