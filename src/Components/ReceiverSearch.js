@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import { Text } from 'react-native';
 import { Button, View, TextInput } from 'react-native';
 
 class ReceiverSearch extends PureComponent {
@@ -20,21 +21,27 @@ class ReceiverSearch extends PureComponent {
     const { query } = this.state;
     return (
       <>
+        <View>
+          <Text style={{ color: 'blue', fontSize: 20, marginLeft: 30, marginTop: 50 }}>
+            Search Email Payee
+          </Text>
+        </View>
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            marginTop: 50
           }}>
           <TextInput
-            style={{ width: '80%' }}
+            style={{ width: '70%', borderBottomWidth: 1, marginLeft: 30 }}
             testID="input"
-            label="Email"
+            placeholder="Email"
             autoCapitalize="none"
             onChangeText={text => this.setState({ query: text })}
             value={query}
           />
           <Button
-            style={{ width: '20%' }}
+            style={{ width: '20%', borderWidth: 1 }}
             testID="button"
             onPress={this._handleSubmit}
             title="Search"
