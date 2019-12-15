@@ -41,6 +41,11 @@ class TransferContainer extends Component {
     }
   };
 
+  _updateDashboard = async () => {
+    const onRefresh = this.props.navigation.getParam('onRefresh');
+    await onRefresh();
+  };
+
   _handleSubmit = async ({ nominal, description }) => {
     const { selectedReceiver } = this.state;
     const walletId = 1;
@@ -51,8 +56,9 @@ class TransferContainer extends Component {
       description,
       type: 'TRANSFER'
     };
-    this.setState({ isSubmitted: true });
     await this._addTransaction(newTransaction);
+    this.setState({ isSubmitted: true });
+    await this._updateDashboard();
   };
 
   _renderNotification = () => {

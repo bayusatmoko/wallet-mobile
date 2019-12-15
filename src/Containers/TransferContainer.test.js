@@ -36,14 +36,23 @@ describe('TransferContainer', () => {
     description: 'Payslip 2019-11-28'
   };
   const API_URL = 'http://localhost:3000';
+  let navigation;
+  const onRefresh = jest.fn();
+
   beforeEach(() => {
+    navigation = {
+      getParam: jest.fn().mockReturnValue(onRefresh),
+      goBack: jest.fn()
+    };
     when(axios.get)
       .calledWith('http://localhost:3000/users?email=hudah@btpn.com')
       .mockResolvedValue({ data: users[1] })
       .calledWith('http://localhost:3000/users/1/wallets')
       .mockResolvedValue({ data: users[0].wallet });
     axios.post.mockResolvedValue({ data: transaction });
-    wrapper = shallow(<TransferContainer API_URL={API_URL} />);
+    wrapper = shallow(
+      <TransferContainer API_URL={API_URL} navigation={navigation} />
+    );
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -72,6 +81,15 @@ describe('TransferContainer', () => {
         `${API_URL}/transactions`,
         transaction
       );
+    });
+
+    it('should call onRefresh when button submit is clicked', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
+      await flushPromises();
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+
+      expect(onRefresh).toHaveBeenCalled();
     });
 
     it('should not render any notification when not submitted yet', () => {
