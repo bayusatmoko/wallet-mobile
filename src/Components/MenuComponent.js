@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
-import transferImage from '../transafer.jpeg';
-import payeeImage from '../payee.jpeg';
-import transaction from '../history-image.jpeg';
+import transferImage from '../Assets/Images/transafer.jpeg';
+import payeeImage from '../Assets/Images/payee.jpeg';
+import transaction from '../Assets/Images/history-image.jpeg';
 import styles from './walletInfo.style';
-import payee from '../payee-img.jpg';
+import payee from '../Assets/Images/payee-img.jpg';
 
 export default class MenuComponent extends React.PureComponent {
   _handlePress = menu => () => {

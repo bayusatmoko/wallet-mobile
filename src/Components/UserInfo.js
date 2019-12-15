@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
-import background from '../background.jpg';
+import background from '../Assets/Images/background.jpg';
 import styles from './walletInfo.style';
 
 export default class UserInfo extends React.PureComponent {

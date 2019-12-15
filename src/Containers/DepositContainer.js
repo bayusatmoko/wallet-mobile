@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import PropTypes from 'prop-types';
 import FailedNotification from '../Components/FailedNotification';
 import SuccessNotification from '../Components/SuccessNotification';
 import TransactionForm from '../Components/TransactionForm';
@@ -24,7 +23,7 @@ class DepositContainer extends Component {
       const { data: wallet } = await getWalletByUserId(USER_ID);
       this.setState({ balance: wallet.balance, errorTransaction: '' });
     } catch (error) {
-      this.setState({ errorTransaction: error.message });
+      this.setState({ errorTransaction: error.response.data.message });
     }
   };
 

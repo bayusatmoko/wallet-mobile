@@ -21,7 +21,7 @@ class TransactionHistory extends Component {
         renderItem={({ item }) => (
           <TransactionDetail transaction={item} walletId={walletId} />
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => `${item.id}`}
       />
     );
   }
