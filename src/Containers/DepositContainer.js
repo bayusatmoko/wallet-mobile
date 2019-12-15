@@ -28,6 +28,11 @@ class DepositContainer extends Component {
     }
   };
 
+  _updateDashboard = async () => {
+    const onRefresh = this.props.navigation.getParam('onRefresh');
+    await onRefresh();
+  };
+
   _handleSubmit = async ({ nominal, description }) => {
     const walletId = 1;
     const newTransaction = {
@@ -37,8 +42,9 @@ class DepositContainer extends Component {
       description,
       type: 'DEPOSIT'
     };
-    this.setState({ isSubmitted: true });
     await this._addTransaction(newTransaction);
+    this.setState({ isSubmitted: true });
+    await this._updateDashboard();
   };
 
   _renderNotification = () => {

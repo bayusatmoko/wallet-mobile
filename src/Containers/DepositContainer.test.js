@@ -18,13 +18,19 @@ describe('DepositContainer', () => {
     nominal: 1250,
     description: 'Payslip 2019-11-28'
   };
+  let navigation;
+  const onRefresh = jest.fn();
 
   const API_URL = 'http://localhost:3000';
 
   beforeEach(() => {
+    navigation = {
+      getParam: jest.fn().mockReturnValue(onRefresh),
+      goBack: jest.fn()
+    };
     axios.post.mockResolvedValue({ data: transaction });
     axios.get.mockResolvedValue({ data: wallet });
-    wrapper = shallow(<DepositContainer />);
+    wrapper = shallow(<DepositContainer navigation={navigation} />);
   });
 
   afterEach(() => {
@@ -40,6 +46,13 @@ describe('DepositContainer', () => {
         `${API_URL}/transactions`,
         transaction
       );
+    });
+
+    it('should call onRefresh when button submit is clicked', async () => {
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+
+      expect(onRefresh).toHaveBeenCalled();
     });
 
     it('should not render any notification when not submitted yet', () => {
