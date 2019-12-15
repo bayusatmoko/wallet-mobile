@@ -7,11 +7,9 @@ const FailedNotification = props => {
   return (
     <View style={{ marginTop: 80 }}>
       <Text style={{ color: 'red', fontSize: 30, alignSelf: 'center' }}>
-        An error occurred! Please try again in a few minutes.
+        An error has occured!
       </Text>
-      <Text
-        style={{ color: 'green', fontSize: 30, alignSelf: 'center' }}
-        testID="text-message">
+      <Text style={{ color: 'red', fontSize: 30, alignSelf: 'center' }} testID="text-message">
         {message}
       </Text>
     </View>

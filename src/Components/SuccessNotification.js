@@ -8,9 +8,10 @@ const SuccessNotification = props => {
   return (
     <View style={{ marginTop: 80 }}>
       <Text style={{ color: 'green', fontSize: 30, alignSelf: 'center' }}>
-        Transaction success!
+        Success!
       </Text>
       <Text style={{ color: 'green', fontSize: 30, alignSelf: 'center' }}>
+        {'Your balance: '}
         <Balance balance={balance} />
       </Text>
     </View>

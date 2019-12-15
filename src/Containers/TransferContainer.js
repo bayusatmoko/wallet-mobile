@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types';
 import FailedNotification from '../Components/FailedNotification';
 import ReceiverSearch from '../Components/ReceiverSearch';
@@ -17,6 +17,7 @@ class TransferContainer extends Component {
       errorTransaction: '',
       errorSearch: '',
       isSubmitted: false,
+      isSearched: false,
       balance: 0
     };
   }
@@ -24,9 +25,16 @@ class TransferContainer extends Component {
   _handleSearch = async userEmail => {
     try {
       const { data } = await getUserByEmail(userEmail);
-      this.setState({ selectedReceiver: data, errorSearch: '' });
+      this.setState({
+        selectedReceiver: data,
+        errorSearch: '',
+        isSearched: true
+      });
     } catch (error) {
-      this.setState({ errorSearch: error.message, selectedReceiver: {} });
+      this.setState({
+        errorSearch: error.response.data.message,
+        selectedReceiver: {}
+      });
     }
   };
 
@@ -37,7 +45,10 @@ class TransferContainer extends Component {
       const { data: wallet } = await getWalletByUserId(USER_ID);
       this.setState({ balance: wallet.balance, errorTransaction: '' });
     } catch (error) {
-      this.setState({ errorTransaction: error.message, selectedReceiver: {} });
+      this.setState({
+        errorTransaction: error.response.data.message,
+        selectedReceiver: {}
+      });
     }
   };
 
@@ -57,7 +68,7 @@ class TransferContainer extends Component {
       type: 'TRANSFER'
     };
     await this._addTransaction(newTransaction);
-    this.setState({ isSubmitted: true });
+    this.setState({ isSubmitted: true, isSearched: false });
     await this._updateDashboard();
   };
 
@@ -70,20 +81,27 @@ class TransferContainer extends Component {
   };
 
   render() {
-    const { selectedReceiver, errorSearch, isSubmitted } = this.state;
+    const {
+      selectedReceiver,
+      errorSearch,
+      isSubmitted,
+      isSearched
+    } = this.state;
     const { name, email } = selectedReceiver;
     return (
-      <View>
-        <ReceiverSearch onSubmit={this._handleSearch} />
-        {errorSearch !== '' && <FailedNotification message={errorSearch} />}
-        {name && (
-          <TransactionForm
-            title={`Transfer to ${name} (${email})`}
-            onSubmit={this._handleSubmit}
-          />
-        )}
-        {isSubmitted && this._renderNotification()}
-      </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View>
+          {!isSearched && <ReceiverSearch onSubmit={this._handleSearch} />}
+          {errorSearch !== '' && <FailedNotification message={errorSearch} />}
+          {isSearched && (
+            <TransactionForm
+              onSubmit={this._handleSubmit}
+              title={`Transfer to ${name} (${email})`}
+            />
+          )}
+          {isSubmitted && this._renderNotification()}
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

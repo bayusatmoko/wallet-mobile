@@ -14,7 +14,10 @@ const AppNavigator = createStackNavigator(
       })
     },
     Transfer: {
-      screen: TransferContainer
+      screen: TransferContainer,
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: 'Transfer'
+      })
     },
     Deposit: {
       screen: DepositContainer

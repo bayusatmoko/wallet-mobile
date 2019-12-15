@@ -144,5 +144,23 @@ describe('TransferContainer', () => {
       expect(wrapper.find('FailedNotification').length).toBe(1);
       expect(wrapper.find('TransactionForm').length).toBe(0);
     });
+
+    it('should not render receiver search when already searched', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', users[1].email);
+      await flushPromises();
+
+      expect(wrapper.find('ReceiverSearch')).toHaveLength(0);
+      expect(wrapper.find('TransactionForm')).toHaveLength(1);
+    });
+
+    it('should render Receiver Search and success notification when done transfer', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
+      await flushPromises();
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+
+      expect(wrapper.find('ReceiverSearch')).toHaveLength(1);
+      expect(wrapper.find('SuccessNotification')).toHaveLength(1);
+    });
   });
 });
