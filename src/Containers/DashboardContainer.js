@@ -1,5 +1,6 @@
 import React from 'react';
-import { RefreshControl, ScrollView } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
+import FailedNotification from '../Components/FailedNotification';
 import LastTransaction from '../Components/LastTransaction';
 import MenuComponent from '../Components/MenuComponent';
 import UserInfo from '../Components/UserInfo';
@@ -38,8 +39,8 @@ export default class DashboardContainer extends React.Component {
       this.setState({
         user: response.data
       });
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      this.setState({ errorMessage: error.message });
     }
   };
 
@@ -48,11 +49,12 @@ export default class DashboardContainer extends React.Component {
       const userId = 1;
       const response = await getWalletByUserId(userId);
       this.setState({
-        wallet: response.data
+        wallet: response.data,
+        errorMessage: ''
       });
       this._fetchLastTransaction(response.data.id);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      this.setState({ errorMessage: error.message });
     }
   };
 
@@ -60,10 +62,11 @@ export default class DashboardContainer extends React.Component {
     try {
       const response = await getLastTransactionsByWalletId(walletId);
       this.setState({
-        lastTransactions: response.data
+        lastTransactions: response.data,
+        errorMessage: ''
       });
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      this.setState({ errorMessage: error.message });
     }
   };
 
@@ -73,25 +76,27 @@ export default class DashboardContainer extends React.Component {
   };
 
   render() {
-    const { wallet, user, lastTransactions, isRefreshing } = this.state;
+    const {
+      wallet,
+      user,
+      lastTransactions,
+      isRefreshing,
+      errorMessage
+    } = this.state;
     return (
-      <>
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={this._refreshData}
-            />
-          }>
-          <UserInfo user={user} />
-          <WalletInfo wallet={wallet} />
-          <MenuComponent onPress={this._handleMenuPress} />
-          <LastTransaction
-            transactions={lastTransactions}
-            walletId={wallet.id}
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={this._refreshData}
           />
-        </ScrollView>
-      </>
+        }>
+        <UserInfo user={user} />
+        <WalletInfo wallet={wallet} />
+        <MenuComponent onPress={this._handleMenuPress} />
+        {errorMessage !== '' && <FailedNotification message={errorMessage} />}
+        <LastTransaction transactions={lastTransactions} walletId={wallet.id} />
+      </ScrollView>
     );
   }
 }
