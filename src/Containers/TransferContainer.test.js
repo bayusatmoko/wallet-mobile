@@ -142,6 +142,7 @@ describe('TransferContainer', () => {
 
       expect(wrapper.find('ReceiverList').length).toBe(0);
       expect(wrapper.find('FailedNotification').length).toBe(1);
+      expect(wrapper.find('TransactionForm').length).toBe(0);
     });
   });
 });

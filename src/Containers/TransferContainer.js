@@ -26,7 +26,7 @@ class TransferContainer extends Component {
       const { data } = await getUserByEmail(userEmail);
       this.setState({ selectedReceiver: data, errorSearch: '' });
     } catch (error) {
-      this.setState({ errorSearch: error.message });
+      this.setState({ errorSearch: error.message, selectedReceiver: {} });
     }
   };
 
@@ -37,7 +37,7 @@ class TransferContainer extends Component {
       const { data: wallet } = await getWalletByUserId(USER_ID);
       this.setState({ balance: wallet.balance, errorTransaction: '' });
     } catch (error) {
-      this.setState({ errorTransaction: error.message });
+      this.setState({ errorTransaction: error.message, selectedReceiver: {} });
     }
   };
 
