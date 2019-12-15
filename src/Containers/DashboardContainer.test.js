@@ -4,6 +4,12 @@ import getUserById from '../Services/getUserById';
 import getWalletByUserId from '../Services/getWalletByUserId';
 import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
 import DashboardContainer from './DashboardContainer';
+import axios from 'axios';
+
+jest.mock('../Services/getUserById', () => jest.fn());
+jest.mock('../Services/getWalletByUserId', () => jest.fn());
+jest.mock('../Services/getLastTransactionsByWalletId', () => jest.fn());
+jest.mock('axios');
 
 jest.mock('../Services/getUserById', () => jest.fn());
 jest.mock('../Services/getWalletByUserId', () => jest.fn());
@@ -103,12 +109,34 @@ describe('DashboardContainer', () => {
       navigation.getParam
         .mockResolvedValueOnce(userInfo.id)
         .mockResolvedValueOnce(wallet.id);
+
+      getUserById.mockResolvedValue({ data: userInfo });
+      getWalletByUserId.mockResolvedValue({ data: wallet });
+      getLastTransactionsByWalletId.mockResolvedValue({
+        data: lastTransactions
+      });
+      navigation.getParam
+        .mockResolvedValueOnce(userInfo.id)
+        .mockResolvedValueOnce(wallet.id);
+      axios.get
+        .mockResolvedValueOnce({ data: userInfo })
+        .mockResolvedValueOnce({ data: wallet })
+        .mockResolvedValue({ data: lastTransactions });
+
       wrapper = shallow(<DashboardContainer navigation={navigation} />);
       await flushPromises();
     });
 
     afterEach(() => {
-      jest.resetAllMocks();
+      jest.clearAllMocks();
+    });
+
+    it('should call service function getUserById', () => {
+      expect(getUserById).toHaveBeenCalledWith(userInfo.id);
+    });
+
+    it('should call service function getWalletByUserId', () => {
+      expect(getWalletByUserId).toHaveBeenCalledWith(wallet.id);
     });
 
     it('should call service function getUserById', () => {
