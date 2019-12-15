@@ -5,9 +5,15 @@ import PropTypes from 'prop-types';
 const FailedNotification = props => {
   const { message } = props;
   return (
-    <View>
-      <Text>Transaction failed! Please try again in a few minutes.</Text>
-      <Text testID="text-message">{message}</Text>
+    <View style={{ marginTop: 80 }}>
+      <Text style={{ color: 'red', fontSize: 30, alignSelf: 'center' }}>
+        Transaction failed! Please try again in a few minutes.
+      </Text>
+      <Text
+        style={{ color: 'green', fontSize: 30, alignSelf: 'center' }}
+        testID="text-message">
+        {message}
+      </Text>
     </View>
   );
 };
