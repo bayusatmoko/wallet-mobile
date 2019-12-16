@@ -2,8 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { shallow } from 'enzyme';
 import TransactionHistoryContainer from './TransactionHistoryContainer';
+import getWalletByUserId from '../Services/getWalletByUserId';
+import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 
+jest.mock('../Services/getWalletByUserId', () => jest.fn());
+jest.mock('../Services/getTransactionsByWalletId', () => jest.fn());
 jest.mock('axios');
+
 describe('TransactionHistoryContainer', () => {
   describe('#render', () => {
     let wallet;
@@ -69,9 +74,9 @@ describe('TransactionHistoryContainer', () => {
         }
       ];
 
-      axios.get
-        .mockResolvedValueOnce({ data: wallet })
-        .mockResolvedValue({ data: transactions });
+      getWalletByUserId.mockResolvedValueOnce({ data: wallet });
+      getTransactionsByWalletId.mockResolvedValueOnce({ data: transactions });
+
       wrapper = shallow(<TransactionHistoryContainer />);
       await flushPromises();
     });
@@ -82,6 +87,31 @@ describe('TransactionHistoryContainer', () => {
 
     it('should render transactions', () => {
       expect(wrapper.find('TransactionHistory').length).toBe(1);
+    });
+
+    it('should render transactions filter by description', async () => {
+      const wrapperTransactionFilter = wrapper.find('TransactionFilter');
+      wrapperTransactionFilter.simulate(
+        'handleDescription',
+        transactions[0].description
+      );
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual([
+        transactions[0]
+      ]);
+    });
+
+    it('should render transactions filter by nominal', async () => {
+      const wrapperTransactionFilter = wrapper.find('TransactionFilter');
+      wrapperTransactionFilter.simulate(
+        'handleAmount',
+        transactions[0].nominal
+      );
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual([
+        transactions[0]
+      ]);
     });
 
     it('should render error network when the wallet backend is down', async () => {
@@ -105,9 +135,8 @@ describe('TransactionHistoryContainer', () => {
     });
 
     it('should render no transaction found when user has no transaction', async () => {
-      axios.get
-        .mockResolvedValueOnce({ data: wallet })
-        .mockResolvedValueOnce({ data: [] });
+      getWalletByUserId.mockResolvedValueOnce({ data: wallet });
+      getTransactionsByWalletId.mockResolvedValueOnce({ data: [] });
       wrapper = shallow(<TransactionHistoryContainer />);
       await flushPromises();
 
@@ -190,6 +219,32 @@ describe('TransactionHistoryContainer', () => {
       const orderBy = 'asc';
 
       wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by filter description with keyword "Payslip 2019-11-28"', async () => {
+      const expectedResult = [transactions[0]];
+      const filterDescription = 'Payslip 2019-11-28';
+
+      wrapper
+        .find('TransactionFilter')
+        .simulate('handleDescription', filterDescription);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by filter amount with keyword "7700000"', async () => {
+      const expectedResult = [transactions[0]];
+      const filterAmount = '7700000';
+
+      wrapper.find('TransactionFilter').simulate('handleAmount', filterAmount);
       await flushPromises();
 
       expect(wrapper.find('TransactionHistory').props().transactions).toEqual(

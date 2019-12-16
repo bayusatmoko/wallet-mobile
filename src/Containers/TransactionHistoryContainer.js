@@ -1,9 +1,10 @@
 import React from 'react';
+import TransactionHistory from '../Components/TransactionHistory';
+import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import getWalletByUserId from '../Services/getWalletByUserId';
+import { ScrollView, View } from 'react-native';
 import TransactionFilter from '../Components/TransactionFilter';
 import TransactionSort from '../Components/TransactionSort';
-import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
-import TransactionHistory from '../Components/TransactionHistory';
 import Error from '../Components/Error';
 import NoTransactionsFound from '../Components/NoTransactionsFound';
 
@@ -16,6 +17,7 @@ export default class TransactionHistoryContainer extends React.Component {
       transactions: [],
       error: '',
       searchByDescription: '',
+      searchAmount: '',
       sortColumn: TransactionSort.COLUMN.DATE,
       orderBy: TransactionSort.ORDER.DESC
     };
@@ -70,12 +72,16 @@ export default class TransactionHistoryContainer extends React.Component {
       return <NoTransactionsFound />;
     }
     const filteredDescription = this._filterByDescription(sortedDescription);
+    const filteredAmount = this._filterByAmount(filteredDescription);
     return (
       <>
-        <TransactionFilter onHandleDescription={this._handleDescription} />
+        <TransactionFilter
+          onHandleDescription={this._handleDescription}
+          onHandleAmount={this._handleAmount}
+        />
         <TransactionSort onSort={this._handleSort} />
         <TransactionHistory
-          transactions={filteredDescription}
+          transactions={filteredAmount}
           walletId={wallet.id}
         />
       </>
@@ -89,16 +95,11 @@ export default class TransactionHistoryContainer extends React.Component {
     );
   }
 
-  _handleDescription = newDescription => {
-    this.setState({
-      searchByDescription: newDescription
-    });
-  };
-
-  _handleDescription = newDescription => {
-    this.setState({
-      searchByDescription: newDescription
-    });
+  _filterByAmount = list => {
+    const { searchAmount } = this.state;
+    return list.filter(transaction =>
+      transaction.nominal.toString().includes(searchAmount)
+    );
   };
 
   _handleSort = (sortColumn, orderBy) => {
@@ -131,6 +132,18 @@ export default class TransactionHistoryContainer extends React.Component {
       return this._sortByDate();
     }
     return this._sortByNominal();
+  };
+
+  _handleDescription = newDescription => {
+    this.setState({
+      searchByDescription: newDescription
+    });
+  };
+
+  _handleAmount = newAmount => {
+    this.setState({
+      searchAmount: newAmount
+    });
   };
 
   render() {
