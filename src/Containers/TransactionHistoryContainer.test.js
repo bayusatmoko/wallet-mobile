@@ -94,7 +94,10 @@ describe('TransactionHistoryContainer', () => {
 
     it('should render error network when the transactions backend is down', async () => {
       axios.get.mockResolvedValueOnce({ data: wallet });
-      axios.get.mockRejectedValue(Error('Network error'));
+      const errorMessage = 'Network Error';
+      axios.get.mockRejectedValue({
+        response: { data: { message: errorMessage } }
+      });
       wrapper = shallow(<TransactionHistoryContainer />);
       await flushPromises();
 
