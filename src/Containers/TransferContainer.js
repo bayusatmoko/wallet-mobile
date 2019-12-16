@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
-import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import PropTypes from 'prop-types';
+import {
+  ActivityIndicator,
+  Keyboard,
+  Modal,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
 import FailedNotification from '../Components/FailedNotification';
 import ReceiverSearch from '../Components/ReceiverSearch';
 import SuccessNotification from '../Components/SuccessNotification';
@@ -18,12 +24,14 @@ class TransferContainer extends Component {
       errorSearch: '',
       isSubmitted: false,
       isSearched: false,
+      isLoading: false,
       balance: 0
     };
   }
 
   _handleSearch = async userEmail => {
     try {
+      this.setState({ isLoading: true });
       const { data } = await getUserByEmail(userEmail);
       this.setState({
         selectedReceiver: data,
@@ -68,6 +76,7 @@ class TransferContainer extends Component {
       description,
       type: 'TRANSFER'
     };
+    this.setState({ isLoading: true });
     await this._addTransaction(newTransaction);
     this.setState({ isSubmitted: true, isSearched: false });
     await this._updateDashboard();
@@ -81,17 +90,32 @@ class TransferContainer extends Component {
     return <SuccessNotification balance={balance} />;
   };
 
+  _renderLoading = () => {
+    setTimeout(() => {
+      this.setState({ isLoading: false });
+    }, 2000);
+    return (
+      <Modal transparent={false} visible={this.state.isLoading}>
+        <View style={styles.loading}>
+          <ActivityIndicator />
+        </View>
+      </Modal>
+    );
+  };
+
   render() {
     const {
       selectedReceiver,
       errorSearch,
       isSubmitted,
-      isSearched
+      isSearched,
+      isLoading
     } = this.state;
     const { name, email } = selectedReceiver;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
+          {isLoading && this._renderLoading()}
           {!isSearched && <ReceiverSearch onSubmit={this._handleSearch} />}
           {errorSearch !== '' && <FailedNotification message={errorSearch} />}
           {isSearched && (
@@ -106,6 +130,14 @@ class TransferContainer extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%'
+  }
+});
 
 TransferContainer.propTypes = {};
 
