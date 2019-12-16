@@ -83,5 +83,32 @@ describe('TransactionHistoryContainer', () => {
     it('should render transactions', () => {
       expect(wrapper.find('TransactionHistory').length).toBe(1);
     });
+
+    it('should render error network when the wallet backend is down', async () => {
+      axios.get.mockRejectedValue(Error('Network error'));
+      wrapper = shallow(<TransactionHistoryContainer />);
+      await flushPromises();
+
+      expect(wrapper.find('Error')).toHaveLength(1);
+    });
+
+    it('should render error network when the transactions backend is down', async () => {
+      axios.get.mockResolvedValueOnce({ data: wallet });
+      axios.get.mockRejectedValue(Error('Network error'));
+      wrapper = shallow(<TransactionHistoryContainer />);
+      await flushPromises();
+
+      expect(wrapper.find('Error')).toHaveLength(1);
+    });
+
+    it('should render no transaction found when user has no transaction', async () => {
+      axios.get
+        .mockResolvedValueOnce({ data: wallet })
+        .mockResolvedValueOnce({ data: [] });
+      wrapper = shallow(<TransactionHistoryContainer />);
+      await flushPromises();
+
+      expect(wrapper.find('NoTransactionsFound')).toHaveLength(1);
+    });
   });
 });

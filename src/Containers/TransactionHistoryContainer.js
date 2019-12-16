@@ -3,6 +3,8 @@ import getWalletByUserId from '../Services/getWalletByUserId';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import TransactionHistory from '../Components/TransactionHistory';
 import { ScrollView, View } from 'react-native';
+import Error from '../Components/Error';
+import NoTransactionsFound from '../Components/NoTransactionsFound';
 
 export default class TransactionHistoryContainer extends React.Component {
   constructor(props) {
@@ -10,7 +12,8 @@ export default class TransactionHistoryContainer extends React.Component {
     this.state = {
       wallet: {},
       user: {},
-      transactions: []
+      transactions: [],
+      error: ''
     };
   }
 
@@ -28,8 +31,10 @@ export default class TransactionHistoryContainer extends React.Component {
         wallet: response.data
       });
       this._fetchTransaction(response.data.id);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      this.setState({
+        error: error.message
+      });
     }
   };
 
@@ -39,15 +44,27 @@ export default class TransactionHistoryContainer extends React.Component {
       this.setState({
         transactions: response.data
       });
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      this.setState({
+        error: error.message
+      });
     }
   };
 
-  render() {
-    const { wallet, transactions } = this.state;
+  _displayTransaction = () => {
+    const { wallet, transactions, error } = this.state;
+    if (error) {
+      return <Error message={error} />;
+    }
+    if (transactions.length === 0) {
+      return <NoTransactionsFound />;
+    }
     return (
       <TransactionHistory transactions={transactions} walletId={wallet.id} />
     );
+  };
+
+  render() {
+    return <>{this._displayTransaction()}</>;
   }
 }

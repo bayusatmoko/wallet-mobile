@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import Intl from 'intl';
 import locale from 'intl/locale-data/jsonp/id-ID';
 import styles from './walletInfo.style';
+import PropTypes from 'prop-types';
 
 class Balance extends React.PureComponent {
   _formatCurrency = amount =>
@@ -26,5 +27,9 @@ class Balance extends React.PureComponent {
     );
   }
 }
+
+Balance.propTypes = {
+  balance: PropTypes.number.isRequired
+};
 
 export default Balance;

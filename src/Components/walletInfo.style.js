@@ -73,12 +73,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#002984',
     fontWeight: 'bold',
     fontSize: 30,
-    color: 'white',
+    color: 'white'
   },
   payee: {
     marginTop: 7,
     width: 40,
     height: 34
+  },
+  backgroundError: {
+    backgroundColor: 'red',
+    alignSelf: 'center',
+    width: 300,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    borderRadius: 20
+  },
+  textError: {
+    marginTop: 10,
+    fontSize: 20,
+    textAlign: 'center'
   }
 });
 

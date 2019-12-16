@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 import TransactionItem from './TransactionItem';
-import MenuComponent from './MenuComponent';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   transactionList: {
@@ -29,4 +29,21 @@ class LastTransaction extends Component {
     );
   }
 }
+
 export default LastTransaction;
+
+LastTransaction.propTypes = {
+  transactions: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      walletId: PropTypes.number,
+      type: PropTypes.string,
+      amount: PropTypes.number,
+      description: PropTypes.string,
+      receiverWalletId: PropTypes.number,
+      createdAt: PropTypes.string,
+      updatedAt: PropTypes.string
+    }).isRequired
+  ),
+  walletId: PropTypes.number.isRequired
+};
