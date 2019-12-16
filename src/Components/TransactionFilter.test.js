@@ -16,5 +16,18 @@ describe('TransactionFilter', () => {
 
       expect(filterDescription).toHaveBeenCalledWith(searchDescription);
     });
+
+    it('should call the props function with the filter amount value', () => {
+      const searchAmount = '9000';
+      const filterAmount = jest.fn();
+      const wrapper = shallow(
+        <TransactionFilter onHandleAmount={filterAmount} />
+      );
+
+      const inputAmount = wrapper.find({ testID: 'input-amount' });
+      inputAmount.simulate('changeText', searchAmount);
+
+      expect(filterAmount).toHaveBeenCalledWith(searchAmount);
+    });
   });
 });
