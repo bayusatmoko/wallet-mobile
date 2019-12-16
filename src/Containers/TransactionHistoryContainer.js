@@ -1,8 +1,9 @@
 import React from 'react';
 import getWalletByUserId from '../Services/getWalletByUserId';
+import TransactionFilter from '../Components/TransactionFilter';
+import TransactionSort from '../Components/TransactionSort';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import TransactionHistory from '../Components/TransactionHistory';
-import TransactionFilter from '../Components/TransactionFilter';
 import Error from '../Components/Error';
 import NoTransactionsFound from '../Components/NoTransactionsFound';
 
@@ -14,7 +15,9 @@ export default class TransactionHistoryContainer extends React.Component {
       user: {},
       transactions: [],
       error: '',
-      searchByDescription: ''
+      searchByDescription: '',
+      sortColumn: TransactionSort.COLUMN.DATE,
+      orderBy: TransactionSort.ORDER.DESC
     };
   }
 
@@ -59,18 +62,23 @@ export default class TransactionHistoryContainer extends React.Component {
 
   _displayTransaction = () => {
     const { wallet, transactions, error } = this.state;
+    const sortedDescription = this._sortTransactions(transactions);
     if (error && error !== "Transaction doesn't exist!") {
       return <Error message={error} />;
     }
     if (transactions.length === 0) {
       return <NoTransactionsFound />;
     }
-    const filteredDescription = this._filterByDescription(transactions);
+    const filteredDescription = this._filterByDescription(sortedDescription);
     return (
-      <TransactionHistory
-        transactions={this._displayTransaction(filteredDescription)}
-        walletId={wallet.id}
-      />
+      <>
+        <TransactionFilter onHandleDescription={this._handleDescription} />
+        <TransactionSort onSort={this._handleSort} />
+        <TransactionHistory
+          transactions={filteredDescription}
+          walletId={wallet.id}
+        />
+      </>
     );
   };
 
@@ -87,12 +95,36 @@ export default class TransactionHistoryContainer extends React.Component {
     });
   };
 
+  _handleDescription = newDescription => {
+    this.setState({
+      searchByDescription: newDescription
+    });
+  };
+
+  _handleSort = (sortColumn, orderBy) => {
+    this.setState({ sortColumn, orderBy });
+  };
+
+  _sortByDate = () => {
+    const { transactions, orderBy } = this.state;
+    return [...transactions].sort((a, b) => {
+      if (orderBy === 'desc') {
+        return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+      }
+      return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+    });
+  };
+
+  _sortTransactions = () => {
+    const { sortColumn } = this.state;
+    if (sortColumn === 'date') {
+      return this._sortByDate();
+    }
+    return this._sortByNominal();
+  };
+
   render() {
-    return (
-      <>
-        <TransactionFilter onHandleDescription={this._handleDescription} />
-        {this._displayTransaction()}
-      </>
-    );
+    const { wallet, transactions } = this.state;
+    return <>{this._displayTransaction()}</>;
   }
 }

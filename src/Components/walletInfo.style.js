@@ -80,21 +80,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 34
   },
-  backgroundError: {
-    backgroundColor: 'red',
-    alignSelf: 'center',
-    width: 300,
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-    borderRadius: 20
-  },
-  textError: {
-    marginTop: 10,
-    fontSize: 20,
-    textAlign: 'center'
-  },
   menuDeposit: {
     alignItems: 'center',
     marginLeft: 12
@@ -148,6 +133,21 @@ const styles = StyleSheet.create({
   },
   itemTransactionTransfer: {
     color: 'red'
+  },
+  backgroundError: {
+    backgroundColor: 'red',
+    alignSelf: 'center',
+    width: 300,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    borderRadius: 20
+  },
+  textError: {
+    marginTop: 10,
+    fontSize: 20,
+    textAlign: 'center'
   }
 });
 

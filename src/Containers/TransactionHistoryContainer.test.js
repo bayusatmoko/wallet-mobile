@@ -34,7 +34,7 @@ describe('TransactionHistoryContainer', () => {
           amount: 30,
           description: 'Buy Cheeseburger for lunch',
           receiverWalletId: null,
-          createdAt: '2019-11-28T13:26:15.063Z',
+          createdAt: '2019-11-27T13:26:15.063Z',
           updatedAt: '2019-11-28T13:26:15.063Z'
         },
         {
@@ -44,7 +44,7 @@ describe('TransactionHistoryContainer', () => {
           amount: 100,
           description: 'Dinner at Italian Steak House',
           receiverWalletId: null,
-          createdAt: '2019-11-28T13:26:15.063Z',
+          createdAt: '2019-11-26T13:26:15.063Z',
           updatedAt: '2019-11-28T13:26:15.063Z'
         },
         {
@@ -54,7 +54,7 @@ describe('TransactionHistoryContainer', () => {
           amount: 8800000,
           description: 'Payslip 2019-11-29',
           receiverWalletId: null,
-          createdAt: '2019-11-29T13:26:15.063Z',
+          createdAt: '2019-11-25T13:26:15.063Z',
           updatedAt: '2019-11-29T13:26:15.063Z'
         },
         {
@@ -64,7 +64,7 @@ describe('TransactionHistoryContainer', () => {
           amount: 40,
           description: 'Buy Big Macs for lunch',
           receiverWalletId: null,
-          createdAt: '2019-11-29T13:26:15.063Z',
+          createdAt: '2019-11-24T13:26:15.063Z',
           updatedAt: '2019-11-29T13:26:15.063Z'
         }
       ];
@@ -112,6 +112,38 @@ describe('TransactionHistoryContainer', () => {
       await flushPromises();
 
       expect(wrapper.find('NoTransactionsFound')).toHaveLength(1);
+    });
+
+    it('should render transactions by ascending date', async () => {
+      const expectedResult = [
+        transactions[4],
+        transactions[3],
+        transactions[2],
+        transactions[1],
+        transactions[0]
+      ];
+      const sortColumn = 'date';
+      const orderBy = 'asc';
+
+      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by descending date', async () => {
+      const expectedResult = transactions;
+      const sortColumn = 'date';
+      const orderBy = 'desc';
+
+      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
     });
   });
 });
