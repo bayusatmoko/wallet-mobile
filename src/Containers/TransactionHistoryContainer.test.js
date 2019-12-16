@@ -84,6 +84,68 @@ describe('TransactionHistoryContainer', () => {
       expect(wrapper.find('TransactionHistory').length).toBe(1);
     });
 
+    it('should render error network when the wallet backend is down', async () => {
+      axios.get.mockRejectedValue(Error('Network error'));
+      wrapper = shallow(<TransactionHistoryContainer />);
+      await flushPromises();
+
+      expect(wrapper.find('Error')).toHaveLength(1);
+    });
+
+    it('should render error network when the transactions backend is down', async () => {
+      axios.get.mockResolvedValueOnce({ data: wallet });
+      const errorMessage = 'Network Error';
+      axios.get.mockRejectedValue({
+        response: { data: { message: errorMessage } }
+      });
+      wrapper = shallow(<TransactionHistoryContainer />);
+      await flushPromises();
+
+      expect(wrapper.find('Error')).toHaveLength(1);
+    });
+
+    it('should render no transaction found when user has no transaction', async () => {
+      axios.get
+        .mockResolvedValueOnce({ data: wallet })
+        .mockResolvedValueOnce({ data: [] });
+      wrapper = shallow(<TransactionHistoryContainer />);
+      await flushPromises();
+
+      expect(wrapper.find('NoTransactionsFound')).toHaveLength(1);
+    });
+
+    it('should render transactions by ascending date', async () => {
+      const expectedResult = [
+        transactions[4],
+        transactions[3],
+        transactions[2],
+        transactions[1],
+        transactions[0]
+      ];
+      const sortColumn = 'date';
+      const orderBy = 'asc';
+
+      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by descending date', async () => {
+      const expectedResult = transactions;
+      const sortColumn = 'date';
+      const orderBy = 'desc';
+
+      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
     it('should render transactions by ascending date', async () => {
       const expectedResult = [
         transactions[4],

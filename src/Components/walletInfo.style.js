@@ -27,8 +27,7 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   borderMenu: {
-    position: 'absolute',
-    top: 170,
+    marginTop: -40,
     backgroundColor: 'white',
     height: 80,
     width: '90%',
@@ -41,7 +40,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignSelf: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 30
   },
   transferImage: {
     width: 50,
@@ -133,6 +133,21 @@ const styles = StyleSheet.create({
   },
   itemTransactionTransfer: {
     color: 'red'
+  },
+  backgroundError: {
+    backgroundColor: 'red',
+    alignSelf: 'center',
+    width: 300,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    borderRadius: 20
+  },
+  textError: {
+    marginTop: 10,
+    fontSize: 20,
+    textAlign: 'center'
   }
 });
 
