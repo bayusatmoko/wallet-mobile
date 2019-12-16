@@ -14,9 +14,10 @@ export default class LoginContainer extends React.Component {
   }
 
   async componentDidMount() {
+    await SInfo.deleteItem('isLogin', {});
     const isLogin = await SInfo.getItem('isLogin', {});
     if (isLogin === 'true') {
-      // this.props.navigation.navigate('Home');
+      this.props.navigation.navigate('Home');
     }
   }
 
@@ -35,10 +36,10 @@ export default class LoginContainer extends React.Component {
       if (response.data) {
         await SInfo.setItem('isLogin', 'true', {});
       }
+      this.props.navigation.navigate('Home');
     } catch (error) {
       this.setState({ error: error.response.data.message });
     }
-    // this.props.navigation.navigate('Home');
   };
 
   render() {

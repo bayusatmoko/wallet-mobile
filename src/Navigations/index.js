@@ -1,16 +1,20 @@
 import React from 'react';
-import { Image, View, Text } from 'react-native';
+import { Text } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import DashboardContainer from '../Containers/DashboardContainer';
 import TransactionHistoryContainer from '../Containers/TransactionHistoryContainer';
-import background from '../background.jpg';
+import LoginContainer from '../Containers/LoginContainer';
 
 const AppNavigator = createStackNavigator(
   {
+    Login: {
+      screen: LoginContainer
+    },
     Home: {
       screen: DashboardContainer,
       navigationOptions: ({ navigation }) => ({
-        header: null
+        header: null,
+        headerRight: <Text>logout</Text>
       })
     },
     TransactionHistory: {
@@ -21,12 +25,12 @@ const AppNavigator = createStackNavigator(
           textAlign: 'center',
           fontWeight: 'bold',
           fontSize: 20,
-          alignSelf: 'center',
+          alignSelf: 'center'
         }
       })
     }
   },
-  { initialRouteName: 'Home' }
+  { initialRouteName: 'Login' }
 );
 
 export default AppNavigator;
