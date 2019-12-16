@@ -145,5 +145,37 @@ describe('TransactionHistoryContainer', () => {
         expectedResult
       );
     });
+
+    it('should render transactions by ascending date', async () => {
+      const expectedResult = [
+        transactions[4],
+        transactions[3],
+        transactions[2],
+        transactions[1],
+        transactions[0]
+      ];
+      const sortColumn = 'date';
+      const orderBy = 'asc';
+
+      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by descending date', async () => {
+      const expectedResult = transactions;
+      const sortColumn = 'date';
+      const orderBy = 'desc';
+
+      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
   });
 });

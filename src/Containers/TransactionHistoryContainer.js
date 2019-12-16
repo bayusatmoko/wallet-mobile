@@ -124,7 +124,6 @@ export default class TransactionHistoryContainer extends React.Component {
   };
 
   render() {
-    const { wallet, transactions } = this.state;
     return <>{this._displayTransaction()}</>;
   }
 }
