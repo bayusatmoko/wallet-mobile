@@ -55,7 +55,7 @@ export default class TransactionHistoryContainer extends React.Component {
         });
       }
       return this.setState({
-        error: "Transaction doesn't exist!"
+        error: TransactionHistoryContainer.DOESNT_EXIST
       });
     }
   };
@@ -63,7 +63,7 @@ export default class TransactionHistoryContainer extends React.Component {
   _displayTransaction = () => {
     const { wallet, transactions, error } = this.state;
     const sortedDescription = this._sortTransactions(transactions);
-    if (error && error !== "Transaction doesn't exist!") {
+    if (error && error !== TransactionHistoryContainer.DOESNT_EXIST) {
       return <Error message={error} />;
     }
     if (transactions.length === 0) {
@@ -127,3 +127,4 @@ export default class TransactionHistoryContainer extends React.Component {
     return <>{this._displayTransaction()}</>;
   }
 }
+TransactionHistoryContainer.DOESNT_EXIST = "Transaction doesn't exist!";
