@@ -58,7 +58,13 @@ class TransactionDetail extends Component {
     return (
       <TouchableOpacity>
         <View>
-          <Text testID="date" style={{ backgroundColor: 'lightgrey', padding: 10, color: 'black' }}>
+          <Text
+            testID="date"
+            style={{
+              backgroundColor: 'lightgrey',
+              padding: 10,
+              color: 'black'
+            }}>
             {moment(createdAt).format(TransactionDetail.DATEFORMAT)}
           </Text>
         </View>
