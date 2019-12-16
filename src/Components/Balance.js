@@ -1,7 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Text, View } from 'react-native';
 import Intl from 'intl';
 import locale from 'intl/locale-data/jsonp/id-ID';
+import PropTypes from 'prop-types';
 
 class Balance extends React.PureComponent {
   _formatCurrency = amount =>
@@ -13,7 +14,7 @@ class Balance extends React.PureComponent {
 
   render() {
     const { balance } = this.props;
-    return <>{this._formatCurrency(balance)}</>;
+    return <Text>{this._formatCurrency(balance)}</Text>;
   }
 }
 
