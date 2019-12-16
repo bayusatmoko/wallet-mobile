@@ -1,13 +1,14 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import PropTypes from 'prop-types';
 import PayeeItem from './PayeeItem';
+import styles from './walletInfo.style';
 
 const PayeeList = props => {
-  const { payees, onPress } = props;
+  const { payees, onPressPayee } = props;
 
   const _handlePress = item => () => {
-    onPress(item);
+    onPressPayee(item);
   };
 
   return (
@@ -15,7 +16,7 @@ const PayeeList = props => {
       data={payees}
       keyExtractor={item => `${item.id}`}
       renderItem={({ item }) => (
-        <PayeeItem payee={item} onPress={_handlePress(item)} />
+        <PayeeItem payee={item} onPressPayee={_handlePress(item)} />
       )}
     />
   );
@@ -29,11 +30,11 @@ PayeeList.propTypes = {
       nickName: PropTypes.string.isRequired,
       payee: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        phoneNumber: PropTypes.string.isRequired,
+        phoneNumber: PropTypes.string.isRequired
       }).isRequired
     }).isRequired
   ).isRequired,
-  onPress: PropTypes.func.isRequired
+  onPressPayee: PropTypes.func.isRequired
 };
 
 export default PayeeList;

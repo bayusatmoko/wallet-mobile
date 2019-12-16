@@ -9,12 +9,15 @@ import getUserByEmail from '../Services/getUserByEmaill';
 import getWalletByUserId from '../Services/getWalletByUserId';
 import getPayeeByUserId from '../Services/getPayeeByUserId';
 import PayeeList from '../Components/PayeeList';
+import AddPayeeForm from '../Components/AddPayeeForm';
+import axios from 'axios';
 
 class TransferContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedReceiver: {},
+      payeeSelected: false,
       payees: [],
       errorTransaction: '',
       errorSearch: '',
@@ -89,14 +92,55 @@ class TransferContainer extends Component {
     return <SuccessNotification balance={balance} />;
   };
 
+  _handlePayee = async payee => {
+    const { data } = await getUserByEmail(payee.payeeData.email);
+    this.setState({
+      isSearched: true,
+      payeeSelected: true,
+      payees: [],
+      isSubmitted: false,
+      selectedReceiver: {
+        name: payee.payeeData.name,
+        email: payee.payeeData.email,
+        wallet: data.wallet
+      }
+    });
+  };
+
+  _handleFavourite = async payeeFavourited => {
+    console.log(payeeFavourited);
+    const USER_ID = 1;
+    await axios.post('http://localhost:3000/payees', payeeFavourited);
+    const { data } = await getPayeeByUserId(USER_ID);
+    this.setState({ payees: data });
+  };
+
+  _isFavourited = () => {
+    const { payees, selectedReceiver } = this.state;
+    console.log(payees);
+    console.log(selectedReceiver);
+    const condition = payees.some(
+      payee => payee.payeeUserId === selectedReceiver.id
+    );
+    console.log(condition);
+    return condition;
+    //return true;
+  };
+
   render() {
+    const USER_ID = 1;
     const {
       selectedReceiver,
+      payeeSelected,
       errorSearch,
       isSubmitted,
       isSearched,
       payees
     } = this.state;
+    let receiver = selectedReceiver;
+    if (receiver.payeeData) {
+      receiver = receiver.payeeData;
+    }
     const { name, email } = selectedReceiver;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -104,13 +148,22 @@ class TransferContainer extends Component {
           {!isSearched && <ReceiverSearch onSubmit={this._handleSearch} />}
           {errorSearch !== '' && <FailedNotification message={errorSearch} />}
           {isSearched && (
-            <TransactionForm
-              onSubmit={this._handleSubmit}
-              title={`Transfer to \n${name} \n(${email})`}
-            />
+            <>
+              {!payeeSelected && !this._isFavourited() && (
+                <AddPayeeForm
+                  id={USER_ID}
+                  receiverId={receiver.id}
+                  onAddFavourite={this._handleFavourite}
+                />
+              )}
+              <TransactionForm
+                onSubmit={this._handleSubmit}
+                title={`Transfer to \n${name} \n(${email})`}
+              />
+            </>
           )}
           {isSubmitted && this._renderNotification()}
-          <PayeeList payees={payees} onPress={() => {}} />
+          <PayeeList payees={payees} onPressPayee={this._handlePayee} />
         </View>
       </TouchableWithoutFeedback>
     );

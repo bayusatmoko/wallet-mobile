@@ -24,7 +24,7 @@ describe('ReceiverList', () => {
   describe('#render', () => {
     it('should render ReceiverItem with receiver props', () => {
       const wrapper = shallow(
-        <PayeeList payees={payees} onPress={mockedOnPress} />
+        <PayeeList payees={payees} onPressPayee={mockedOnPress} />
       );
 
       const PayeeItem = wrapper.find('FlatList').props().renderItem;
@@ -35,12 +35,14 @@ describe('ReceiverList', () => {
 
     it('should call onPress={} when ReceiverItem is clicked', () => {
       const wrapper = shallow(
-        <PayeeList payees={payees} onPress={mockedOnPress} />
+        <PayeeList payees={payees} onPressPayee={mockedOnPress} />
       );
 
       const PayeeItem = wrapper.find('FlatList').props().renderItem;
-      const receiverItemWrapper = shallow(<PayeeItem item={payees[0]} />);
-      receiverItemWrapper.simulate('press', payees[0]);
+      const receiverItemWrapper = shallow(
+        <PayeeItem item={payees[0]} onPressPayee={mockedOnPress} />
+      );
+      receiverItemWrapper.simulate('pressPayee', payees[0]);
 
       expect(mockedOnPress).toHaveBeenCalledWith(payees[0]);
     });

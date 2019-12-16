@@ -18,7 +18,7 @@ describe('ReceiverItem', () => {
   };
   beforeEach(() => {
     mockedOnPress = jest.fn();
-    wrapper = shallow(<PayeeItem payee={payee} onPress={mockedOnPress} />);
+    wrapper = shallow(<PayeeItem payee={payee} onPressPayee={mockedOnPress} />);
   });
 
   afterEach(() => {

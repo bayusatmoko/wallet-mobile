@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     width: '90%',
     borderRadius: 20,
     shadowColor: 'black',
-    shadowOffset: { width: 0, heigh: 2 },
+    shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     shadowOpacity: 1,
     elevation: 10,
@@ -79,6 +79,29 @@ const styles = StyleSheet.create({
     marginTop: 7,
     width: 40,
     height: 34
+  },
+  borderPayee: {
+    backgroundColor: 'white',
+    width: '90%',
+    height: 60,
+    alignSelf: 'center',
+    borderRadius: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 4,
+    shadowOpacity: 1,
+    elevation: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 10
+  },
+  textPayee: {
+    marginLeft: 30,
+    marginTop: 5,
+    fontSize: 15,
+    fontWeight: 'bold'
   }
 });
 
