@@ -12,7 +12,8 @@ export default class TransactionHistoryContainer extends React.Component {
       wallet: {},
       user: {},
       transactions: [],
-      searchByDescription: ''
+      searchByDescription: '',
+      searchAmount: ''
     };
   }
 
@@ -22,14 +23,12 @@ export default class TransactionHistoryContainer extends React.Component {
 
   _fetchWallet = async () => {
     try {
-      // const { navigation } = this.props;
-      // const userId = await navigation.getParam('userId');
       const userId = 1;
       const response = await getWalletByUserId(userId);
       this.setState({
         wallet: response.data
       });
-      this._fetchTransaction(response.data.id);
+      await this._fetchTransaction(response.data.id);
     } catch (e) {
       console.log(e.message);
     }
@@ -42,21 +41,29 @@ export default class TransactionHistoryContainer extends React.Component {
         transactions: response.data
       });
     } catch (e) {
-      console.log(e.message);
+      console.error(e);
     }
   };
 
-  _displayTransaction = transactions => {
+  _displayTransaction = () => {
+    const { transactions } = this.state;
     const filteredDescription = this._filterByDescription(transactions);
-    return filteredDescription;
+    return this._filterByAmount(filteredDescription);
   };
 
-  _filterByDescription(list) {
+  _filterByDescription = list => {
     const { searchByDescription } = this.state;
     return list.filter(transaction =>
       transaction.description.includes(searchByDescription)
     );
-  }
+  };
+
+  _filterByAmount = list => {
+    const { searchAmount } = this.state;
+    return list.filter(transaction =>
+      transaction.nominal.toString().includes(searchAmount)
+    );
+  };
 
   _handleDescription = newDescription => {
     this.setState({
@@ -64,13 +71,22 @@ export default class TransactionHistoryContainer extends React.Component {
     });
   };
 
+  _handleAmount = newAmount => {
+    this.setState({
+      searchAmount: newAmount
+    });
+  };
+
   render() {
     const { wallet, transactions } = this.state;
     return (
       <>
-        <TransactionFilter onHandleDescription={this._handleDescription} />
+        <TransactionFilter
+          onHandleDescription={this._handleDescription}
+          onHandleAmount={this._handleAmount}
+        />
         <TransactionHistory
-          transactions={this._displayTransaction(transactions)}
+          transactions={this._displayTransaction()}
           walletId={wallet.id}
         />
       </>

@@ -18,6 +18,14 @@ class TransactionFilter extends Component {
     onHandleDescription(text);
   };
 
+  _handleAmount = text => {
+    const { onHandleAmount } = this.props;
+    this.setState({
+      amount: text
+    });
+    onHandleAmount(text);
+  };
+
   render() {
     const { description, amount } = this.state;
     return (
@@ -33,6 +41,19 @@ class TransactionFilter extends Component {
           }}
           testID="input-description"
           onChangeText={text => this._handleDescription(text)}
+          autoCapitalize="none"
+        />
+        <TextInput
+          placeholder="Filter By Amount"
+          style={{
+            marginLeft: 10,
+            borderBottomWidth: 1,
+            marginBottom: 30,
+            marginTop: 30,
+            width: '90%'
+          }}
+          testID="input-amount"
+          onChangeText={text => this._handleAmount(text)}
           autoCapitalize="none"
         />
       </View>
