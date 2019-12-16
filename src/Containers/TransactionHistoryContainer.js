@@ -4,6 +4,7 @@ import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import getWalletByUserId from '../Services/getWalletByUserId';
 import { ScrollView, View } from 'react-native';
 import TransactionFilter from '../Components/TransactionFilter';
+import TransactionSort from '../Components/TransactionSort';
 
 export default class TransactionHistoryContainer extends React.Component {
   constructor(props) {
@@ -12,7 +13,9 @@ export default class TransactionHistoryContainer extends React.Component {
       wallet: {},
       user: {},
       transactions: [],
-      searchByDescription: ''
+      searchByDescription: '',
+      sortColumn: 'date',
+      orderBy: 'desc'
     };
   }
 
@@ -47,7 +50,8 @@ export default class TransactionHistoryContainer extends React.Component {
   };
 
   _displayTransaction = transactions => {
-    const filteredDescription = this._filterByDescription(transactions);
+    const sortedDescription = this._sortTransactions(transactions);
+    const filteredDescription = this._filterByDescription(sortedDescription);
     return filteredDescription;
   };
 
@@ -64,11 +68,38 @@ export default class TransactionHistoryContainer extends React.Component {
     });
   };
 
+  _handleSort = (sortColumn, orderBy) => {
+    this.setState({ sortColumn, orderBy });
+  };
+
+  _sortByDate = () => {
+    const { transactions, orderBy } = this.state;
+    return [...transactions].sort((a, b) => {
+      if (orderBy === 'desc') {
+        return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+      }
+      return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+    });
+  };
+
+  _sortTransactions = () => {
+    const { sortColumn } = this.state;
+    let sortedTransaction;
+    if (sortColumn === 'date') {
+      sortedTransaction = this._sortByDate();
+    }
+    if (sortColumn === 'nominal') {
+      sortedTransaction = this._sortByNominal();
+    }
+    return sortedTransaction;
+  };
+
   render() {
     const { wallet, transactions } = this.state;
     return (
       <>
         <TransactionFilter onHandleDescription={this._handleDescription} />
+        <TransactionSort onSort={this._handleSort} />
         <TransactionHistory
           transactions={this._displayTransaction(transactions)}
           walletId={wallet.id}
