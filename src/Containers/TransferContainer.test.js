@@ -35,6 +35,19 @@ describe('TransferContainer', () => {
     nominal: 1250,
     description: 'Payslip 2019-11-28'
   };
+  const payees = [
+    {
+      id: 1,
+      userId: 1,
+      payeeId: 2,
+      nickName: 'Si Upin',
+      payee: {
+        name: 'Fadel',
+        email: 'fadelcf@gmail.com',
+        phoneNumber: '081234567890'
+      }
+    }
+  ];
   const API_URL = 'http://localhost:3000';
   let navigation;
   const onRefresh = jest.fn();
@@ -48,7 +61,9 @@ describe('TransferContainer', () => {
       .calledWith('http://localhost:3000/users?email=hudah@btpn.com')
       .mockResolvedValue({ data: users[1] })
       .calledWith('http://localhost:3000/users/1/wallets')
-      .mockResolvedValue({ data: users[0].wallet });
+      .mockResolvedValue({ data: users[0].wallet })
+      .calledWith('http://localhost:3000/users/1/payees')
+      .mockResolvedValue({ data: payees });
     axios.post.mockResolvedValue({ data: transaction });
     wrapper = shallow(
       <TransferContainer API_URL={API_URL} navigation={navigation} />
@@ -144,7 +159,6 @@ describe('TransferContainer', () => {
       wrapper.find('ReceiverSearch').simulate('submit', 'fadele@btpn.com');
       await flushPromises();
 
-      expect(wrapper.find('ReceiverList').length).toBe(0);
       expect(wrapper.find('FailedNotification').length).toBe(1);
       expect(wrapper.find('TransactionForm').length).toBe(0);
     });
@@ -165,6 +179,20 @@ describe('TransferContainer', () => {
 
       expect(wrapper.find('ReceiverSearch')).toHaveLength(1);
       expect(wrapper.find('SuccessNotification')).toHaveLength(1);
+    });
+
+    it('should called get with correct parameter when loading component', async () => {
+      await flushPromises();
+      expect(axios.get).toHaveBeenCalledWith(
+        'http://localhost:3000/users/1/payees'
+      );
+    });
+
+    it('should contain payee in PayeeList props', async () => {
+      await flushPromises();
+      expect(wrapper.find('PayeeList').props().payees).toContainEqual(
+        payees[0]
+      );
     });
   });
 });

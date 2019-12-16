@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import PropTypes from 'prop-types';
 import FailedNotification from '../Components/FailedNotification';
 import ReceiverSearch from '../Components/ReceiverSearch';
 import SuccessNotification from '../Components/SuccessNotification';
@@ -8,18 +7,27 @@ import TransactionForm from '../Components/TransactionForm';
 import addTransaction from '../Services/addTransaction';
 import getUserByEmail from '../Services/getUserByEmaill';
 import getWalletByUserId from '../Services/getWalletByUserId';
+import getPayeeByUserId from '../Services/getPayeeByUserId';
+import PayeeList from '../Components/PayeeList';
 
 class TransferContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedReceiver: {},
+      payees: [],
       errorTransaction: '',
       errorSearch: '',
       isSubmitted: false,
       isSearched: false,
       balance: 0
     };
+  }
+
+  async componentDidMount() {
+    const USER_ID = 1;
+    const { data } = await getPayeeByUserId(USER_ID);
+    this.setState({ payees: data });
   }
 
   _handleSearch = async userEmail => {
@@ -86,7 +94,8 @@ class TransferContainer extends Component {
       selectedReceiver,
       errorSearch,
       isSubmitted,
-      isSearched
+      isSearched,
+      payees
     } = this.state;
     const { name, email } = selectedReceiver;
     return (
@@ -101,6 +110,7 @@ class TransferContainer extends Component {
             />
           )}
           {isSubmitted && this._renderNotification()}
+          <PayeeList payees={payees} onPress={() => {}} />
         </View>
       </TouchableWithoutFeedback>
     );
