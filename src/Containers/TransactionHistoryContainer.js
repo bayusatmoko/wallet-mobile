@@ -81,6 +81,16 @@ export default class TransactionHistoryContainer extends React.Component {
     });
   };
 
+  _sortByNominal = () => {
+    const { transactions, orderBy } = this.state;
+    return [...transactions].sort((a, b) => {
+      if (orderBy === 'desc') {
+        return b.nominal - a.nominal;
+      }
+      return a.nominal - b.nominal;
+    });
+  };
+
   _sortTransactions = () => {
     const { sortColumn } = this.state;
     if (sortColumn === 'date') {

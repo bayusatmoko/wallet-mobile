@@ -48,7 +48,8 @@ TransactionSort.ORDER = {
 };
 
 TransactionSort.COLUMN = {
-  DATE: 'date'
+  DATE: 'date',
+  NOMINAL: 'nominal'
 };
 
 export default TransactionSort;
