@@ -1,13 +1,15 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import background from '../background.jpg';
-import transferImage from '../transafer.jpeg';
-import payeeImage from '../payee.jpeg';
-import transaction from '../history-image.jpeg';
 import styles from './walletInfo.style';
-import payee from '../payee-img.jpg';
+import PropTypes from 'prop-types';
 
 export default class UserInfo extends React.PureComponent {
+  _changeFormatName = (name = UserInfo.name) => {
+    const splitName = name.split(' ');
+    return splitName[0];
+  };
+
   render() {
     const { user } = this.props;
     const { phoneNumber, name } = user;
@@ -16,7 +18,7 @@ export default class UserInfo extends React.PureComponent {
         <View style={styles.backgroundWallet}>
           <Image style={styles.backgroundImages} source={background} />
           <Text style={styles.textName} testID="user-name">
-            {`Hi, ${name}`}
+            {`Hi, ${this._changeFormatName(name)}`}
           </Text>
           <Text style={styles.textPhone} testID="user-phone">
             {phoneNumber}
@@ -26,3 +28,12 @@ export default class UserInfo extends React.PureComponent {
     );
   }
 }
+
+UserInfo.propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    phoneNumber: PropTypes.string.isRequired
+  }).isRequired
+};
+
+UserInfo.name = 'User';
