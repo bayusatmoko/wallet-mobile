@@ -1,5 +1,5 @@
 import React from 'react';
-import { RefreshControl, ScrollView } from 'react-native';
+import { RefreshControl, SafeAreaView } from 'react-native';
 import FailedNotification from '../Components/FailedNotification';
 import LastTransaction from '../Components/LastTransaction';
 import MenuComponent from '../Components/MenuComponent';
@@ -88,19 +88,13 @@ export default class DashboardContainer extends React.Component {
         <UserInfo user={user} />
         <WalletInfo wallet={wallet} />
         <MenuComponent onPress={this._handleMenuPress} />
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={this._refreshData}
-            />
-          }>
-          {errorMessage !== '' && <FailedNotification message={errorMessage} />}
-          <LastTransaction
-            transactions={lastTransactions}
-            walletId={wallet.id}
-          />
-        </ScrollView>
+        {errorMessage !== '' && <FailedNotification message={errorMessage} />}
+        <LastTransaction
+          isRefreshing={isRefreshing}
+          onRefresh={this._refreshData}
+          transactions={lastTransactions}
+          walletId={wallet.id}
+        />
       </>
     );
   }

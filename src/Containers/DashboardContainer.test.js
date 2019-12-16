@@ -158,10 +158,8 @@ describe('DashboardContainer', () => {
     });
 
     it('should fetch from server when refreshed', async () => {
-      const refreshControl = wrapper.find('ScrollViewMock').props()
-        .refreshControl;
+      wrapper.find('LastTransaction').simulate('refresh');
 
-      refreshControl.props.onRefresh();
       await flushPromises();
 
       expect(getUserById).toHaveBeenCalledTimes(2);
