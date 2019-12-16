@@ -24,6 +24,7 @@ describe('DepositContainer', () => {
   const API_URL = 'http://localhost:3000';
 
   beforeEach(() => {
+    jest.useFakeTimers();
     navigation = {
       getParam: jest.fn().mockReturnValue(onRefresh),
       goBack: jest.fn()
@@ -34,6 +35,7 @@ describe('DepositContainer', () => {
   });
 
   afterEach(() => {
+    jest.useRealTimers();
     jest.clearAllMocks();
   });
 
@@ -78,6 +80,14 @@ describe('DepositContainer', () => {
       await flushPromises();
 
       expect(wrapper.find('ActivityIndicator')).toHaveLength(1);
+    });
+
+    it('should hide loading indicator when done deposit', async () => {
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+      jest.runAllTimers();
+
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(0);
     });
   });
 });

@@ -9,9 +9,7 @@ export default class WalletInfo extends React.PureComponent {
     return (
       <>
         <View style={styles.borderBalance}>
-          <Text style={{ color: 'white', alignSelf: 'center' }}>
-            Your Balance:
-          </Text>
+          <Text style={styles.textBalance}>Your Balance:</Text>
           <Text style={styles.textBalance} testID="balance">
             <Balance balance={wallet.balance} />
           </Text>
