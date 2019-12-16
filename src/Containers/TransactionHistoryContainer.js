@@ -14,8 +14,8 @@ export default class TransactionHistoryContainer extends React.Component {
       user: {},
       transactions: [],
       searchByDescription: '',
-      sortColumn: 'date',
-      orderBy: 'desc'
+      sortColumn: TransactionSort.COLUMN.DATE,
+      orderBy: TransactionSort.ORDER.DESC
     };
   }
 
@@ -84,14 +84,10 @@ export default class TransactionHistoryContainer extends React.Component {
 
   _sortTransactions = () => {
     const { sortColumn } = this.state;
-    let sortedTransaction;
     if (sortColumn === 'date') {
-      sortedTransaction = this._sortByDate();
+      return this._sortByDate();
     }
-    if (sortColumn === 'nominal') {
-      sortedTransaction = this._sortByNominal();
-    }
-    return sortedTransaction;
+    return this._sortByNominal();
   };
 
   render() {

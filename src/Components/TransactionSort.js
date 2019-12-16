@@ -5,7 +5,7 @@ class TransactionSort extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dateOrder: 'desc'
+      dateOrder: TransactionSort.ORDER.DESC
     };
   }
 
@@ -13,18 +13,18 @@ class TransactionSort extends Component {
     const { onSort } = this.props;
     const { dateOrder } = this.state;
     let updatedOrder;
-    if (sortColumn === 'date') {
+    if (sortColumn === TransactionSort.COLUMN.DATE) {
       updatedOrder = this._changeOrder(dateOrder);
-      this.setState({ dateOrder: updatedOrder, nominalOrder: '' });
+      this.setState({ dateOrder: updatedOrder });
     }
     onSort(sortColumn, updatedOrder);
   };
 
   _changeOrder = orderBy => {
-    if (orderBy === 'desc') {
-      return 'asc';
+    if (orderBy === TransactionSort.ORDER.DESC) {
+      return TransactionSort.ORDER.ASC;
     }
-    return 'desc';
+    return TransactionSort.ORDER.DESC;
   };
 
   render() {
@@ -34,11 +34,21 @@ class TransactionSort extends Component {
           title="Date"
           testID="date-toggle"
           onPress={() => {
-            this._handleSort('date');
+            this._handleSort(TransactionSort.COLUMN.DATE);
           }}
         />
       </View>
     );
   }
 }
+
+TransactionSort.ORDER = {
+  DESC: 'desc',
+  ASC: 'asc'
+};
+
+TransactionSort.COLUMN = {
+  DATE: 'date'
+};
+
 export default TransactionSort;
