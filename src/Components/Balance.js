@@ -15,16 +15,7 @@ class Balance extends React.PureComponent {
 
   render() {
     const { balance } = this.props;
-    return (
-      <View style={styles.borderBalance}>
-        <Text style={{ color: 'white', alignSelf: 'center' }}>
-          Your Balance:
-        </Text>
-        <Text style={styles.textBalance} testID="balance">
-          {this._formatCurrency(balance)}
-        </Text>
-      </View>
-    );
+    return <Text>{this._formatCurrency(balance)}</Text>;
   }
 }
 

@@ -24,7 +24,6 @@ module.exports = {
   },
   rules: {
     "react/jsx-filename-extension": "off",
-    "react/prop-types": "off",
     "comma-dangle": ["error", "never"],
     "no-underscore-dangle": "off",
     "import/no-extraneous-dependencies": "off"

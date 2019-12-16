@@ -2,7 +2,7 @@ import React from 'react';
 import getWalletByUserId from '../Services/getWalletByUserId';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import TransactionHistory from '../Components/TransactionHistory';
-import { ScrollView, View } from 'react-native';
+import TransactionFilter from '../Components/TransactionFilter';
 import Error from '../Components/Error';
 import NoTransactionsFound from '../Components/NoTransactionsFound';
 
@@ -13,7 +13,8 @@ export default class TransactionHistoryContainer extends React.Component {
       wallet: {},
       user: {},
       transactions: [],
-      error: ''
+      error: '',
+      searchByDescription: ''
     };
   }
 
@@ -64,12 +65,34 @@ export default class TransactionHistoryContainer extends React.Component {
     if (transactions.length === 0) {
       return <NoTransactionsFound />;
     }
+    const filteredDescription = this._filterByDescription(transactions);
     return (
-      <TransactionHistory transactions={transactions} walletId={wallet.id} />
+      <TransactionHistory
+        transactions={this._displayTransaction(filteredDescription)}
+        walletId={wallet.id}
+      />
     );
   };
 
+  _filterByDescription(list) {
+    const { searchByDescription } = this.state;
+    return list.filter(transaction =>
+      transaction.description.includes(searchByDescription)
+    );
+  }
+
+  _handleDescription = newDescription => {
+    this.setState({
+      searchByDescription: newDescription
+    });
+  };
+
   render() {
-    return <>{this._displayTransaction()}</>;
+    return (
+      <>
+        <TransactionFilter onHandleDescription={this._handleDescription} />
+        {this._displayTransaction()}
+      </>
+    );
   }
 }

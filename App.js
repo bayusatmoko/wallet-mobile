@@ -1,5 +1,4 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import AppNavigator from './src/Navigations';
 

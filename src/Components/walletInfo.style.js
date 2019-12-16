@@ -27,8 +27,7 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   borderMenu: {
-    position: 'absolute',
-    top: 170,
+    marginTop: -40,
     backgroundColor: 'white',
     height: 80,
     width: '90%',
@@ -41,7 +40,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignSelf: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 30
   },
   transferImage: {
     width: 50,
@@ -94,6 +94,60 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 20,
     textAlign: 'center'
+  },
+  menuDeposit: {
+    alignItems: 'center',
+    marginLeft: 12
+  },
+  menuPayee: {
+    alignItems: 'center',
+    marginLeft: 15
+  },
+  menuTransaction: {
+    alignItems: 'center'
+  },
+  textDate: {
+    backgroundColor: 'lightgrey',
+    padding: 10,
+    color: 'black'
+  },
+  textType: {
+    marginBottom: 5
+  },
+  inputDescription: {
+    marginLeft: 10,
+    borderBottomWidth: 1,
+    marginBottom: 10,
+    marginTop: 30,
+    width: '90%'
+  },
+  menuTransfer: {
+    alignItems: 'center'
+  },
+  leftPanel: {
+    marginTop: 10,
+    paddingLeft: 10
+  },
+  rightPanel: {
+    flexDirection: 'row',
+    paddingLeft: 10,
+    marginBottom: 10,
+    justifyContent: 'space-between'
+  },
+  itemTransactionDescription: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginBottom: 10
+  },
+  itemTransactionNominal: {
+    fontWeight: 'bold',
+    fontSize: 16
+  },
+  itemTransactionDeposit: {
+    color: 'green'
+  },
+  itemTransactionTransfer: {
+    color: 'red'
   }
 });
 

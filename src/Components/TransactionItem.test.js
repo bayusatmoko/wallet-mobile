@@ -63,20 +63,23 @@ describe('TransactionItem', () => {
   });
   describe('#render', () => {
     it('should render description, amount, transaction type, date and receiver', () => {
-      const expectedAmount = 'IDR11,111';
       const expectedText = '';
       const expectedDate = moment(transaction.createdAt).format('D-MM-YYYY');
 
-      const wrapper = shallow(<TransactionItem transaction={transaction} />);
-      const description = wrapper.find({ testID: 'description' });
-      const nominal = wrapper.find({ testID: 'nominal' });
-      const type = wrapper.find({ testID: 'type' });
-      const date = wrapper.find({ testID: 'date' });
-      const receiver = wrapper.find({ testID: 'receiver' });
+      const wrapperTransactionItem = shallow(
+        <TransactionItem transaction={transaction} />
+      );
+      const description = wrapperTransactionItem.find({
+        testID: 'description'
+      });
+      const nominal = wrapperTransactionItem.find('Balance');
+      const type = wrapperTransactionItem.find({ testID: 'type' });
+      const date = wrapperTransactionItem.find({ testID: 'date' });
+      const receiver = wrapperTransactionItem.find({ testID: 'receiver' });
 
       expect(description.props().children).toBe(transaction.description);
       expect(type.props().children).toBe(transaction.type);
-      expect(nominal.props().children).toBe(expectedAmount);
+      expect(nominal.props().balance).toBe(transaction.nominal);
       expect(date.props().children).toBe(expectedDate);
       expect(receiver.props().children).toBe(expectedText);
     });
@@ -120,7 +123,9 @@ describe('TransactionItem', () => {
       expect(wrapper.find({ testID: 'nominal' }).props().style).toContainEqual(
         expectedStyle
       );
-      expect(wrapper.find({ testID: 'receiver' }).props().children).toEqual(expectedText);
+      expect(wrapper.find({ testID: 'receiver' }).props().children).toEqual(
+        expectedText
+      );
     });
   });
 });
