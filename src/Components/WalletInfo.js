@@ -6,6 +6,7 @@ import styles from './walletInfo.style';
 export default class WalletInfo extends React.PureComponent {
   render() {
     const { wallet } = this.props;
+    console.log(wallet);
     return (
       <>
         <View style={styles.borderBalance}>

@@ -1,9 +1,11 @@
 import React from 'react';
-import TransactionHistory from '../Components/TransactionHistory';
-import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import getWalletByUserId from '../Services/getWalletByUserId';
 import TransactionFilter from '../Components/TransactionFilter';
 import TransactionSort from '../Components/TransactionSort';
+import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
+import TransactionHistory from '../Components/TransactionHistory';
+import Error from '../Components/Error';
+import NoTransactionsFound from '../Components/NoTransactionsFound';
 
 export default class TransactionHistoryContainer extends React.Component {
   constructor(props) {
@@ -12,6 +14,7 @@ export default class TransactionHistoryContainer extends React.Component {
       wallet: {},
       user: {},
       transactions: [],
+      error: '',
       searchByDescription: '',
       sortColumn: TransactionSort.COLUMN.DATE,
       orderBy: TransactionSort.ORDER.DESC
@@ -32,8 +35,10 @@ export default class TransactionHistoryContainer extends React.Component {
         wallet: response.data
       });
       this._fetchTransaction(response.data.id);
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      this.setState({
+        error: error.message
+      });
     }
   };
 
@@ -43,15 +48,38 @@ export default class TransactionHistoryContainer extends React.Component {
       this.setState({
         transactions: response.data
       });
-    } catch (e) {
-      console.log(e.message);
+    } catch (error) {
+      if (error.response.data.statusCode !== 404) {
+        return this.setState({
+          error: error.response.data.message
+        });
+      }
+      return this.setState({
+        error: TransactionHistoryContainer.DOESNT_EXIST
+      });
     }
   };
 
-  _displayTransaction = transactions => {
+  _displayTransaction = () => {
+    const { wallet, transactions, error } = this.state;
     const sortedDescription = this._sortTransactions(transactions);
+    if (error && error !== TransactionHistoryContainer.DOESNT_EXIST) {
+      return <Error message={error} />;
+    }
+    if (transactions.length === 0) {
+      return <NoTransactionsFound />;
+    }
     const filteredDescription = this._filterByDescription(sortedDescription);
-    return filteredDescription;
+    return (
+      <>
+        <TransactionFilter onHandleDescription={this._handleDescription} />
+        <TransactionSort onSort={this._handleSort} />
+        <TransactionHistory
+          transactions={filteredDescription}
+          walletId={wallet.id}
+        />
+      </>
+    );
   };
 
   _filterByDescription(list) {
@@ -60,6 +88,12 @@ export default class TransactionHistoryContainer extends React.Component {
       transaction.description.includes(searchByDescription)
     );
   }
+
+  _handleDescription = newDescription => {
+    this.setState({
+      searchByDescription: newDescription
+    });
+  };
 
   _handleDescription = newDescription => {
     this.setState({
@@ -100,16 +134,7 @@ export default class TransactionHistoryContainer extends React.Component {
   };
 
   render() {
-    const { wallet, transactions } = this.state;
-    return (
-      <>
-        <TransactionFilter onHandleDescription={this._handleDescription} />
-        <TransactionSort onSort={this._handleSort} />
-        <TransactionHistory
-          transactions={this._displayTransaction(transactions)}
-          walletId={wallet.id}
-        />
-      </>
-    );
+    return <>{this._displayTransaction()}</>;
   }
 }
+TransactionHistoryContainer.DOESNT_EXIST = "Transaction doesn't exist!";
