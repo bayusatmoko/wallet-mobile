@@ -40,6 +40,7 @@ describe('TransferContainer', () => {
   const onRefresh = jest.fn();
 
   beforeEach(() => {
+    jest.useFakeTimers();
     navigation = {
       getParam: jest.fn().mockReturnValue(onRefresh),
       goBack: jest.fn()
@@ -56,6 +57,7 @@ describe('TransferContainer', () => {
   });
   afterEach(() => {
     jest.clearAllMocks();
+    jest.useRealTimers();
   });
 
   describe('#render', () => {
@@ -165,6 +167,29 @@ describe('TransferContainer', () => {
 
       expect(wrapper.find('ReceiverSearch')).toHaveLength(1);
       expect(wrapper.find('SuccessNotification')).toHaveLength(1);
+    });
+
+    it('should show loading indicator when searching for receiver', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
+      await flushPromises();
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(1);
+    });
+
+    it('should hide loading indicator when searching is done', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
+      await flushPromises();
+      jest.runAllTimers();
+
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(0);
+    });
+
+    it('should show loading indicator when submit the transaction', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
+      await flushPromises();
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(1);
     });
   });
 });

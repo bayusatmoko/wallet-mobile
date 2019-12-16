@@ -72,5 +72,12 @@ describe('DepositContainer', () => {
       expect(wrapper.find('SuccessNotification').length).toBe(0);
       expect(wrapper.find('FailedNotification').length).toBe(1);
     });
+
+    it('should show loading indicator when submit the deposit', async () => {
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(1);
+    });
   });
 });

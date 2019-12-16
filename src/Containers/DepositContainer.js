@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, Modal, StyleSheet, View } from 'react-native';
 import FailedNotification from '../Components/FailedNotification';
 import SuccessNotification from '../Components/SuccessNotification';
 import TransactionForm from '../Components/TransactionForm';
@@ -12,6 +12,7 @@ class DepositContainer extends Component {
     this.state = {
       errorTransaction: '',
       isSubmitted: false,
+      isLoading: false,
       balance: 0
     };
   }
@@ -41,6 +42,7 @@ class DepositContainer extends Component {
       description,
       type: 'DEPOSIT'
     };
+    this.setState({ isLoading: true });
     await this._addTransaction(newTransaction);
     this.setState({ isSubmitted: true });
     await this._updateDashboard();
@@ -54,10 +56,24 @@ class DepositContainer extends Component {
     return <SuccessNotification balance={balance} />;
   };
 
+  _renderLoading = () => {
+    setTimeout(() => {
+      this.setState({ isLoading: false });
+    }, 2000);
+    return (
+      <Modal transparent={false} visible={this.state.isLoading}>
+        <View style={styles.loading}>
+          <ActivityIndicator />
+        </View>
+      </Modal>
+    );
+  };
+
   render() {
-    const { isSubmitted } = this.state;
+    const { isSubmitted, isLoading } = this.state;
     return (
       <View>
+        {isLoading && this._renderLoading()}
         <TransactionForm
           title="Top up your wallet"
           onSubmit={this._handleSubmit}
@@ -67,5 +83,13 @@ class DepositContainer extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%'
+  }
+});
 
 export default DepositContainer;
