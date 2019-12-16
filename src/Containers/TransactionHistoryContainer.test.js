@@ -100,5 +100,17 @@ describe('TransactionHistoryContainer', () => {
         transactions[0]
       ]);
     });
+
+    it('should render transactions filter by nominal', async () => {
+      const wrapperTransactionFilter = wrapper.find('TransactionFilter');
+      wrapperTransactionFilter.simulate(
+        'handleAmount',
+        transactions[0].nominal
+      );
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual([
+        transactions[0]
+      ]);
+    });
   });
 });
