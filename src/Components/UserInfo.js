@@ -3,6 +3,7 @@ import { Image, Text, View } from 'react-native';
 import styles from './walletInfo.style';
 import PropTypes from 'prop-types';
 import background from '../Assets/Images/background.jpg';
+import styles from './walletInfo.style';
 
 export default class UserInfo extends React.PureComponent {
   _changeFormatName = (name = UserInfo.name) => {
