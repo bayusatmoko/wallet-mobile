@@ -40,6 +40,7 @@ describe('TransferContainer', () => {
   const onRefresh = jest.fn();
 
   beforeEach(() => {
+    jest.useFakeTimers();
     navigation = {
       getParam: jest.fn().mockReturnValue(onRefresh),
       goBack: jest.fn()
@@ -56,6 +57,7 @@ describe('TransferContainer', () => {
   });
   afterEach(() => {
     jest.clearAllMocks();
+    jest.useRealTimers();
   });
 
   describe('#render', () => {
@@ -98,10 +100,12 @@ describe('TransferContainer', () => {
     });
 
     it('should not render success notification but render failed notification when failed to transfer', async () => {
-      axios.post.mockRejectedValue(Error('Network Error'));
+      axios.post.mockRejectedValue({
+        response: { data: { message: 'Network Error!' } }
+      });
       wrapper = shallow(<TransferContainer API_URL={API_URL} />);
 
-      wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
+      wrapper.find('ReceiverSearch').simulate('submit', users[1].email);
       await flushPromises();
       wrapper.find('TransactionForm').simulate('submit', transaction);
       await flushPromises();
@@ -134,7 +138,9 @@ describe('TransferContainer', () => {
     it('should render walletError when receiver is not found', async () => {
       when(axios.get)
         .calledWith('http://localhost:3000/users?email=fadele@btpn.com')
-        .mockRejectedValue(new Error('Receiver not found!'));
+        .mockRejectedValue({
+          response: { data: { message: 'Receiver not found!' } }
+        });
       wrapper = shallow(<TransferContainer API_URL={API_URL} />);
 
       wrapper.find('ReceiverSearch').simulate('submit', 'fadele@btpn.com');
@@ -143,6 +149,47 @@ describe('TransferContainer', () => {
       expect(wrapper.find('ReceiverList').length).toBe(0);
       expect(wrapper.find('FailedNotification').length).toBe(1);
       expect(wrapper.find('TransactionForm').length).toBe(0);
+    });
+
+    it('should not render receiver search when already searched', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', users[1].email);
+      await flushPromises();
+
+      expect(wrapper.find('ReceiverSearch')).toHaveLength(0);
+      expect(wrapper.find('TransactionForm')).toHaveLength(1);
+    });
+
+    it('should render Receiver Search and success notification when done transfer', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
+      await flushPromises();
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+
+      expect(wrapper.find('ReceiverSearch')).toHaveLength(1);
+      expect(wrapper.find('SuccessNotification')).toHaveLength(1);
+    });
+
+    it('should show loading indicator when searching for receiver', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
+      await flushPromises();
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(1);
+    });
+
+    it('should hide loading indicator when searching is done', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
+      await flushPromises();
+      jest.runAllTimers();
+
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(0);
+    });
+
+    it('should show loading indicator when submit the transaction', async () => {
+      wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
+      await flushPromises();
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(1);
     });
   });
 });

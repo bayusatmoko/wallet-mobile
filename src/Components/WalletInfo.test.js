@@ -10,7 +10,7 @@ describe('WalletInfo', () => {
       walletInfo = {
         id: 1,
         name: 'Huda',
-        balance: 'IDR500,000'
+        balance: 500000
       };
       wrapper = shallow(<WalletInfo wallet={walletInfo} />);
     });

@@ -139,14 +139,6 @@ describe('DashboardContainer', () => {
       expect(getWalletByUserId).toHaveBeenCalledWith(wallet.id);
     });
 
-    it('should call service function getUserById', () => {
-      expect(getUserById).toHaveBeenCalledWith(userInfo.id);
-    });
-
-    it('should call service function getWalletByUserId', () => {
-      expect(getWalletByUserId).toHaveBeenCalledWith(wallet.id);
-    });
-
     it('should render user and wallet info', () => {
       const userInfoElement = wrapper.find('UserInfo');
       const walletInfoElement = wrapper.find('WalletInfo');
@@ -186,8 +178,12 @@ describe('DashboardContainer', () => {
     });
 
     it('should render failed notification when failed to fetch from server', async () => {
-      getUserById.mockRejectedValueOnce(Error('Network Error'));
-      getWalletByUserId.mockRejectedValueOnce(Error('Network Error'));
+      getUserById.mockRejectedValueOnce({
+        response: { data: { message: 'Network Error' } }
+      });
+      getWalletByUserId.mockRejectedValueOnce({
+        response: { data: { message: 'Network Error' } }
+      });
       getLastTransactionsByWalletId.mockRejectedValueOnce(
         Error('Network Error')
       );

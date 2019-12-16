@@ -2,34 +2,7 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import moment from 'moment';
 import formatCurrency from '../Utils/formatCurrency';
-
-const styles = StyleSheet.create({
-  leftPanel: {
-    marginTop: 10,
-    paddingLeft: 10
-  },
-  rightPanel: {
-    flexDirection: 'row',
-    paddingLeft: 10,
-    marginBottom: 10,
-    justifyContent: 'space-between'
-  },
-  itemTransactionDescription: {
-    fontWeight: 'bold',
-    fontSize: 15,
-    marginBottom: 10
-  },
-  itemTransactionNominal: {
-    fontWeight: 'bold',
-    fontSize: 16
-  },
-  itemTransactionDeposit: {
-    color: 'green'
-  },
-  itemTransactionTransfer: {
-    color: 'red'
-  }
-});
+import styles from './walletInfo.style';
 
 class TransactionDetail extends Component {
   _setNominalStyle = (transaction, walletId) => {
@@ -58,7 +31,7 @@ class TransactionDetail extends Component {
     return (
       <TouchableOpacity>
         <View>
-          <Text testID="date" style={{ backgroundColor: 'lightgrey', padding: 10, color: 'black' }}>
+          <Text testID="date" style={styles.textDate}>
             {moment(createdAt).format(TransactionDetail.DATEFORMAT)}
           </Text>
         </View>
@@ -69,7 +42,7 @@ class TransactionDetail extends Component {
               style={styles.itemTransactionDescription}>
               {description}
             </Text>
-            <Text style={{ marginBottom: 5 }} testID="type">
+            <Text style={styles.textType} testID="type">
               {type}
             </Text>
           </View>

@@ -24,6 +24,7 @@ describe('DepositContainer', () => {
   const API_URL = 'http://localhost:3000';
 
   beforeEach(() => {
+    jest.useFakeTimers();
     navigation = {
       getParam: jest.fn().mockReturnValue(onRefresh),
       goBack: jest.fn()
@@ -34,6 +35,7 @@ describe('DepositContainer', () => {
   });
 
   afterEach(() => {
+    jest.useRealTimers();
     jest.clearAllMocks();
   });
 
@@ -61,7 +63,9 @@ describe('DepositContainer', () => {
     });
 
     it('should not render success notification but render failed notification when failed to deposit', async () => {
-      axios.post.mockRejectedValue(Error('Network Error'));
+      axios.post.mockRejectedValue({
+        response: { data: { message: 'Network Error' } }
+      });
       wrapper = shallow(<DepositContainer />);
 
       wrapper.find('TransactionForm').simulate('submit', transaction);
@@ -69,6 +73,21 @@ describe('DepositContainer', () => {
 
       expect(wrapper.find('SuccessNotification').length).toBe(0);
       expect(wrapper.find('FailedNotification').length).toBe(1);
+    });
+
+    it('should show loading indicator when submit the deposit', async () => {
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(1);
+    });
+
+    it('should hide loading indicator when done deposit', async () => {
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+      jest.runAllTimers();
+
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(0);
     });
   });
 });
