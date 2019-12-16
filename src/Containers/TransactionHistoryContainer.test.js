@@ -21,7 +21,7 @@ describe('TransactionHistoryContainer', () => {
           id: 1,
           walletId: 1,
           type: 'deposit',
-          amount: 7700000,
+          nominal: 7700000,
           description: 'Payslip 2019-11-28',
           receiverWalletId: null,
           createdAt: '2019-11-28T13:26:15.063Z',
@@ -31,7 +31,7 @@ describe('TransactionHistoryContainer', () => {
           id: 2,
           walletId: 1,
           type: 'withdraw',
-          amount: 30,
+          nominal: 30,
           description: 'Buy Cheeseburger for lunch',
           receiverWalletId: null,
           createdAt: '2019-11-27T13:26:15.063Z',
@@ -41,7 +41,7 @@ describe('TransactionHistoryContainer', () => {
           id: 3,
           walletId: 1,
           type: 'withdraw',
-          amount: 100,
+          nominal: 100,
           description: 'Dinner at Italian Steak House',
           receiverWalletId: null,
           createdAt: '2019-11-26T13:26:15.063Z',
@@ -51,7 +51,7 @@ describe('TransactionHistoryContainer', () => {
           id: 4,
           walletId: 1,
           type: 'deposit',
-          amount: 8800000,
+          nominal: 8800000,
           description: 'Payslip 2019-11-29',
           receiverWalletId: null,
           createdAt: '2019-11-25T13:26:15.063Z',
@@ -61,7 +61,7 @@ describe('TransactionHistoryContainer', () => {
           id: 5,
           walletId: 1,
           type: 'withdraw',
-          amount: 40,
+          nominal: 40,
           description: 'Buy Big Macs for lunch',
           receiverWalletId: null,
           createdAt: '2019-11-24T13:26:15.063Z',
@@ -84,7 +84,7 @@ describe('TransactionHistoryContainer', () => {
       expect(wrapper.find('TransactionHistory').length).toBe(1);
     });
 
-    it('should render transactions by ascending date', async () => {
+    it('should render transactions by ascending date when sort is called with setup date and order by ascending', async () => {
       const expectedResult = [
         transactions[4],
         transactions[3],
@@ -103,10 +103,48 @@ describe('TransactionHistoryContainer', () => {
       );
     });
 
-    it('should render transactions by descending date', async () => {
+    it('should render transactions by descending date when sort is called with setup date and order by descending', async () => {
       const expectedResult = transactions;
       const sortColumn = 'date';
       const orderBy = 'desc';
+
+      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by descending nominal when sort is called with setup nominal and order by descending', async () => {
+      const expectedResult = [
+        transactions[3],
+        transactions[0],
+        transactions[2],
+        transactions[4],
+        transactions[1]
+      ];
+      const sortColumn = 'nominal';
+      const orderBy = 'desc';
+
+      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by ascending nominal when sort is called with setup nominal and order by ascending', async () => {
+      const expectedResult = [
+        transactions[1],
+        transactions[4],
+        transactions[2],
+        transactions[0],
+        transactions[3]
+      ];
+      const sortColumn = 'nominal';
+      const orderBy = 'asc';
 
       wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
       await flushPromises();
