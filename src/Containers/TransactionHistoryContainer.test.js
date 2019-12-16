@@ -95,6 +95,7 @@ describe('TransactionHistoryContainer', () => {
         'handleDescription',
         transactions[0].description
       );
+      await flushPromises();
 
       expect(wrapper.find('TransactionHistory').props().transactions).toEqual([
         transactions[0]
@@ -232,6 +233,18 @@ describe('TransactionHistoryContainer', () => {
       wrapper
         .find('TransactionFilter')
         .simulate('handleDescription', filterDescription);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by filter amount with keyword "7700000"', async () => {
+      const expectedResult = [transactions[0]];
+      const filterAmount = '7700000';
+
+      wrapper.find('TransactionFilter').simulate('handleAmount', filterAmount);
       await flushPromises();
 
       expect(wrapper.find('TransactionHistory').props().transactions).toEqual(

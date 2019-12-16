@@ -93,7 +93,7 @@ export default class TransactionHistoryContainer extends React.Component {
     return list.filter(transaction =>
       transaction.description.includes(searchByDescription)
     );
-  };
+  }
 
   _filterByAmount = list => {
     const { searchAmount } = this.state;
@@ -132,6 +132,12 @@ export default class TransactionHistoryContainer extends React.Component {
       return this._sortByDate();
     }
     return this._sortByNominal();
+  };
+
+  _handleDescription = newDescription => {
+    this.setState({
+      searchByDescription: newDescription
+    });
   };
 
   _handleAmount = newAmount => {
