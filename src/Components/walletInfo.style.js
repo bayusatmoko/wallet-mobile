@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#002984',
     fontWeight: 'bold',
     fontSize: 30,
-    color: 'white',
+    color: 'white'
   },
   payee: {
     marginTop: 7,
