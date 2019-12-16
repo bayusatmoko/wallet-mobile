@@ -196,5 +196,19 @@ describe('TransactionHistoryContainer', () => {
         expectedResult
       );
     });
+
+    it('should render transactions by filter description with keyword "Payslip 2019-11-28"', async () => {
+      const expectedResult = [transactions[0]];
+      const filterDescription = 'Payslip 2019-11-28';
+
+      wrapper
+        .find('TransactionFilter')
+        .simulate('handleDescription', filterDescription);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
   });
 });

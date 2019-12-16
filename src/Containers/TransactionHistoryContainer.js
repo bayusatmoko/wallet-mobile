@@ -95,12 +95,6 @@ export default class TransactionHistoryContainer extends React.Component {
     });
   };
 
-  _handleDescription = newDescription => {
-    this.setState({
-      searchByDescription: newDescription
-    });
-  };
-
   _handleSort = (sortColumn, orderBy) => {
     this.setState({ sortColumn, orderBy });
   };
