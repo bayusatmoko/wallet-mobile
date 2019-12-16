@@ -119,7 +119,9 @@ describe('TransactionItem', () => {
       expect(wrapper.find({ testID: 'nominal' }).props().style).toContainEqual(
         expectedStyle
       );
-      expect(wrapper.find({ testID: 'receiver' }).props().children).toEqual(expectedText);
+      expect(wrapper.find({ testID: 'receiver' }).props().children).toEqual(
+        expectedText
+      );
     });
   });
 });
