@@ -1,11 +1,15 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
-import AppSwitchNavigator from './src/Navigations';
+import AppNavigator from './src/Navigations';
 
-const AppContainer = createAppContainer(AppSwitchNavigator);
+const AppContainer = createAppContainer(AppNavigator);
 
 const App: () => React$Node = () => {
-  return <AppContainer />;
-}
+  return (
+    <>
+      <AppContainer />
+    </>
+  );
+};
 
 export default App;
