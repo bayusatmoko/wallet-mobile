@@ -164,4 +164,30 @@ describe('Service', () => {
       );
     });
   });
+
+  describe('getPayeeByUserId', () => {
+    it('should return payees when fetch from server by user id', async () => {
+      const payees = [
+        {
+          id: 1,
+          userId: 1,
+          payeeId: 2,
+          nickName: 'Si Upin',
+          payee: {
+            name: 'Fadel',
+            email: 'fadelcf@gmail.com',
+            phoneNumber: '081234567890'
+          }
+        }
+      ];
+
+      axios.get.mockResolvedValueOnce({ data: payees });
+
+      const response = await getWalletByUserId(payees[0].userId);
+
+      expect(response.data).toEqual(payees);
+      expect(axios.get).toHaveBeenCalledTimes(1);
+      expect(axios.get).toHaveBeenCalled();
+    });
+  });
 });
