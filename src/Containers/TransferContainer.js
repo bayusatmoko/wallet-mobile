@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import {
-  View,
-  Keyboard,
-  TouchableWithoutFeedback,
   ActivityIndicator,
+  Keyboard,
   Modal,
-  StyleSheet
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
 } from 'react-native';
-import PropTypes from 'prop-types';
 import FailedNotification from '../Components/FailedNotification';
 import ReceiverSearch from '../Components/ReceiverSearch';
 import SuccessNotification from '../Components/SuccessNotification';

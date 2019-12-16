@@ -139,14 +139,6 @@ describe('DashboardContainer', () => {
       expect(getWalletByUserId).toHaveBeenCalledWith(wallet.id);
     });
 
-    it('should call service function getUserById', () => {
-      expect(getUserById).toHaveBeenCalledWith(userInfo.id);
-    });
-
-    it('should call service function getWalletByUserId', () => {
-      expect(getWalletByUserId).toHaveBeenCalledWith(wallet.id);
-    });
-
     it('should render user and wallet info', () => {
       const userInfoElement = wrapper.find('UserInfo');
       const walletInfoElement = wrapper.find('WalletInfo');
