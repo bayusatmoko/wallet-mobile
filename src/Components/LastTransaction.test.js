@@ -59,7 +59,9 @@ describe('LastTransaction', () => {
           updatedAt: '2019-11-29T13:26:15.063Z'
         }
       ];
-      wrapper = shallow(<LastTransaction transactions={transactions} walletId={1}/>);
+      wrapper = shallow(
+        <LastTransaction transactions={transactions} walletId={1} />
+      );
     });
     it('should render FlatList with props transactions with length is 5', () => {
       expect(wrapper.find('FlatList').length).toBe(1);

@@ -7,7 +7,7 @@ describe('Error', () => {
     let error;
     let wrapper;
     beforeEach(() => {
-      error = 'Network Error'
+      error = 'Network Error';
       wrapper = shallow(<Error message={error} />);
     });
     it('should render error', () => {
