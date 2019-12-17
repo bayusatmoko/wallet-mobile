@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createSwitchNavigator } from 'react-navigation';
 import background from '../Assets/Images/background.jpg';
@@ -8,6 +8,8 @@ import DashboardContainer from '../Containers/DashboardContainer';
 import DepositContainer from '../Containers/DepositContainer';
 import TransferContainer from '../Containers/TransferContainer';
 import TransactionHistoryContainer from '../Containers/TransactionHistoryContainer';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import ProfileContainer from '../Containers/ProfileContainer';
 import LoginContainer from '../Containers/LoginContainer';
 
 const styles = StyleSheet.create({
@@ -21,6 +23,26 @@ const AuthNavigator = createStackNavigator(
   {
     Login: {
       screen: LoginContainer
+    }
+  },
+  {
+    defaultNavigationOptions: {
+      headerTintColor: 'black',
+      headerTitleStyle: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 20,
+        alignSelf: 'center'
+      },
+      header: null
+    }
+  }
+);
+
+const ProfileNavigator = createStackNavigator(
+  {
+    Profile: {
+      screen: ProfileContainer
     }
   },
   {
@@ -82,11 +104,24 @@ const AppNavigator = createStackNavigator(
   }
 );
 
+const AppBottomNavigator = createMaterialBottomTabNavigator(
+  {
+    Home: { screen: AppNavigator },
+    Profile: { screen: ProfileNavigator }
+  },
+  {
+    initialRouteName: 'Home',
+    activeColor: '#f0edf6',
+    inactiveColor: '#3e2465',
+    barStyle: { backgroundColor: '#694fad' }
+  }
+);
+
 const AppSwitchNavigator = createSwitchNavigator(
   {
     Splash: SplashScreen,
     Auth: AuthNavigator,
-    App: AppNavigator
+    App: AppBottomNavigator
   },
   {
     initialRouteName: 'Splash'

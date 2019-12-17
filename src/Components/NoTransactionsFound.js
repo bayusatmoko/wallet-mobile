@@ -12,4 +12,4 @@ export default class NoTransactionsFound extends React.PureComponent {
   }
 }
 
-NoTransactionsFound.MESSAGE = "Transactions Doesn't Exist"
+NoTransactionsFound.MESSAGE = "Transactions Doesn't Exist";

@@ -96,13 +96,6 @@ export default class DashboardContainer extends React.Component {
     }
   }
 
-  _logout = async () => {
-    const { navigation } = this.props;
-    await SInfo.deleteItem('token', {});
-    await SInfo.deleteItem('user', {});
-    await navigation.navigate('Splash');
-  };
-
   render() {
     const { wallet, user, lastTransactions, isRefreshing } = this.state;
     return (
@@ -111,7 +104,6 @@ export default class DashboardContainer extends React.Component {
         <WalletInfo wallet={wallet} />
         <MenuComponent onPress={this._handleMenuPress} />
         {this._displayError()}
-        <Button title={'Logout'} onPress={this._logout} />
         <LastTransaction
           isRefreshing={isRefreshing}
           onRefresh={this._refreshData}
