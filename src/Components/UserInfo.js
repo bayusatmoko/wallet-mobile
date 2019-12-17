@@ -5,8 +5,9 @@ import background from '../Assets/Images/background.jpg';
 import styles from './walletInfo.style';
 
 export default class UserInfo extends React.PureComponent {
-  _changeFormatName = (name = UserInfo.name) => {
-    const splitName = name.split(' ');
+  _changeFormatName = name => {
+    const firstName = name || UserInfo.name;
+    const splitName = firstName.split(' ');
     return splitName[0];
   };
 

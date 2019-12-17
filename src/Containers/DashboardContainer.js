@@ -8,6 +8,8 @@ import WalletInfo from '../Components/WalletInfo';
 import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
 import getUserById from '../Services/getUserById';
 import getWalletByUserId from '../Services/getWalletByUserId';
+import Error from '../Components/Error';
+import NoTransactionsFound from '../Components/NoTransactionsFound';
 
 export default class DashboardContainer extends React.Component {
   constructor(props) {
@@ -32,6 +34,13 @@ export default class DashboardContainer extends React.Component {
     this.setState({ isRefreshing: false });
   };
 
+  _generateErrorMessage = error => {
+    if (error.response) {
+      return error.response.data.message;
+    }
+    return error.message;
+  };
+
   _fetchUser = async () => {
     try {
       const id = 1;
@@ -40,7 +49,7 @@ export default class DashboardContainer extends React.Component {
         user: response.data
       });
     } catch (error) {
-      this.setState({ errorMessage: error.response.data.message });
+      this.setState({ errorMessage: this._generateErrorMessage(error) });
     }
   };
 
@@ -54,7 +63,7 @@ export default class DashboardContainer extends React.Component {
       });
       this._fetchLastTransaction(response.data.id);
     } catch (error) {
-      this.setState({ errorMessage: error.response.data.message });
+      this.setState({ errorMessage: this._generateErrorMessage(error) });
     }
   };
 
@@ -66,7 +75,7 @@ export default class DashboardContainer extends React.Component {
         errorMessage: ''
       });
     } catch (error) {
-      this.setState({ errorMessage: error.response.data.message });
+      this.setState({ errorMessage: this._generateErrorMessage(error) });
     }
   };
 
@@ -75,20 +84,24 @@ export default class DashboardContainer extends React.Component {
     navigation.navigate(menuItem, { onRefresh: this._refreshData });
   };
 
+  _displayError() {
+    const { errorMessage, lastTransactions } = this.state;
+    if (errorMessage !== '') {
+      return <Error message={errorMessage} />;
+    }
+    if (lastTransactions.length === 0) {
+      return <NoTransactionsFound />;
+    }
+  }
+
   render() {
-    const {
-      wallet,
-      user,
-      lastTransactions,
-      isRefreshing,
-      errorMessage
-    } = this.state;
+    const { wallet, user, lastTransactions, isRefreshing } = this.state;
     return (
       <>
         <UserInfo user={user} />
         <WalletInfo wallet={wallet} />
         <MenuComponent onPress={this._handleMenuPress} />
-        {errorMessage !== '' && <FailedNotification message={errorMessage} />}
+        {this._displayError()}
         <LastTransaction
           isRefreshing={isRefreshing}
           onRefresh={this._refreshData}

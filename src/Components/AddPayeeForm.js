@@ -1,6 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Button, View, TextInput, StyleSheet, Alert } from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  TextInput,
+  StyleSheet,
+  Alert,
+  Image,
+  Button
+} from 'react-native';
+import favouriteIcon from '../Assets/Images/favorites.png';
+import styles from './walletInfo.style';
 
 class AddPayeeForm extends PureComponent {
   constructor(props) {
@@ -9,6 +19,13 @@ class AddPayeeForm extends PureComponent {
       nickName: '',
       addClicked: false
     };
+  }
+
+  componentDidMount() {
+    const { receiverName } = this.props;
+    this.setState({
+      nickName: receiverName
+    });
   }
 
   _handleAdd = () => {
@@ -60,30 +77,22 @@ class AddPayeeForm extends PureComponent {
     return (
       <View>
         {!addClicked && (
-          <Button
+          <TouchableOpacity
+            className="favourite-button"
             testID="favourite-button"
             color="#8020AF"
-            onPress={this._handleAdd}
-            title="Add to Favorite"
-          />
+            onPress={this._handleAdd}>
+            <Image
+              style={styles.favouriteIcon}
+              source={favouriteIcon}
+            />
+          </TouchableOpacity>
         )}
         {this._displayFavouriteForm()}
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  input: {
-    marginRight: 30,
-    marginLeft: 30,
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
-    marginBottom: 10,
-    fontSize: 20,
-    height: 50
-  }
-});
 
 AddPayeeForm.defaultProps = {
   receiverId: 0,
