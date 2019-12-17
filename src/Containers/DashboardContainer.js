@@ -87,10 +87,10 @@ export default class DashboardContainer extends React.Component {
   _displayError() {
     const { errorMessage, lastTransactions } = this.state;
     if (errorMessage !== '') {
-      return <NoTransactionsFound />;
+      return <Error message={errorMessage} />;
     }
     if (lastTransactions.length === 0) {
-      return <Error message={errorMessage} />;
+      return <NoTransactionsFound />;
     }
   }
 
