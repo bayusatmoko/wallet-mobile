@@ -19,7 +19,7 @@ export default class MenuComponent extends React.PureComponent {
           <TouchableOpacity
             testID="menu-transfer"
             onPress={this._handlePress('Transfer')}>
-            <View style={{ alignItems: 'center' }}>
+            <View style={styles.menuTransfer}>
               <Image style={styles.transferImage} source={transferImage} />
               <Text>Transfer</Text>
             </View>
@@ -27,19 +27,13 @@ export default class MenuComponent extends React.PureComponent {
           <TouchableOpacity
             testID="menu-deposit"
             onPress={this._handlePress('Deposit')}>
-            <View style={{ alignItems: 'center', marginLeft: 12 }}>
+            <View style={styles.menuDeposit}>
               <Image style={styles.payeeImage} source={payeeImage} />
               <Text>Deposit</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={{ alignItems: 'center', marginLeft: 15 }}>
-              <Image style={styles.payee} source={payee} />
-              <Text>Payee</Text>
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity onPress={this._handlePress('TransactionHistory')}>
-            <View style={{ alignItems: 'center' }}>
+            <View style={styles.menuTransaction}>
               <Image style={styles.transactionImage} source={transaction} />
               <Text>Transaction</Text>
             </View>

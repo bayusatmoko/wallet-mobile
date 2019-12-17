@@ -139,14 +139,6 @@ describe('DashboardContainer', () => {
       expect(getWalletByUserId).toHaveBeenCalledWith(wallet.id);
     });
 
-    it('should call service function getUserById', () => {
-      expect(getUserById).toHaveBeenCalledWith(userInfo.id);
-    });
-
-    it('should call service function getWalletByUserId', () => {
-      expect(getWalletByUserId).toHaveBeenCalledWith(wallet.id);
-    });
-
     it('should render user and wallet info', () => {
       const userInfoElement = wrapper.find('UserInfo');
       const walletInfoElement = wrapper.find('WalletInfo');
@@ -166,10 +158,8 @@ describe('DashboardContainer', () => {
     });
 
     it('should fetch from server when refreshed', async () => {
-      const refreshControl = wrapper.find('ScrollViewMock').props()
-        .refreshControl;
+      wrapper.find('LastTransaction').simulate('refresh');
 
-      refreshControl.props.onRefresh();
       await flushPromises();
 
       expect(getUserById).toHaveBeenCalledTimes(2);

@@ -68,12 +68,14 @@ describe('TransactionDetail', () => {
       const expectedText = '';
       const expectedDate = moment(transaction.createdAt).format('DD MMM YYYY');
 
-      const wrapper = shallow(<TransactionDetail transaction={transaction} />);
-      const description = wrapper.find({ testID: 'description' });
-      const nominal = wrapper.find({ testID: 'nominal' });
-      const type = wrapper.find({ testID: 'type' });
-      const date = wrapper.find({ testID: 'date' });
-      const receiver = wrapper.find({ testID: 'receiver' });
+      const wrapperTransaction = shallow(
+        <TransactionDetail transaction={transaction} />
+      );
+      const description = wrapperTransaction.find({ testID: 'description' });
+      const nominal = wrapperTransaction.find({ testID: 'nominal' });
+      const type = wrapperTransaction.find({ testID: 'type' });
+      const date = wrapperTransaction.find({ testID: 'date' });
+      const receiver = wrapperTransaction.find({ testID: 'receiver' });
 
       expect(description.props().children).toBe(transaction.description);
       expect(type.props().children).toBe(transaction.type);

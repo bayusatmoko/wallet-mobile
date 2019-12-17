@@ -1,11 +1,18 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import background from '../Assets/Images/background.jpg';
 import DashboardContainer from '../Containers/DashboardContainer';
 import DepositContainer from '../Containers/DepositContainer';
 import TransferContainer from '../Containers/TransferContainer';
 import TransactionHistoryContainer from '../Containers/TransactionHistoryContainer';
+
+const styles = StyleSheet.create({
+  headerBackground: {
+    height: '100%',
+    width: '100%'
+  }
+});
 
 const AppNavigator = createStackNavigator(
   {
@@ -45,7 +52,7 @@ const AppNavigator = createStackNavigator(
         alignSelf: 'center'
       },
       headerBackground: (
-        <Image source={background} style={{ height: 88, width: '100%' }} />
+        <Image source={background} style={styles.headerBackground} />
       )
     }
   }

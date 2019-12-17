@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { TextInput, View, Button, StyleSheet } from 'react-native';
+import { TextInput, View } from 'react-native';
+import styles from './walletInfo.style';
 
 class TransactionFilter extends Component {
   constructor(props) {
@@ -18,21 +19,35 @@ class TransactionFilter extends Component {
     onHandleDescription(text);
   };
 
+  _handleAmount = text => {
+    const { onHandleAmount } = this.props;
+    this.setState({
+      amount: text
+    });
+    onHandleAmount(text);
+  };
+
   render() {
-    const { description, amount } = this.state;
     return (
       <View>
         <TextInput
           placeholder="Filter By Description"
+          style={styles.inputDescription}
+          testID="input-description"
+          onChangeText={text => this._handleDescription(text)}
+          autoCapitalize="none"
+        />
+        <TextInput
+          placeholder="Filter By Amount"
           style={{
             marginLeft: 10,
             borderBottomWidth: 1,
-            marginBottom: 10,
+            marginBottom: 30,
             marginTop: 30,
             width: '90%'
           }}
-          testID="input-description"
-          onChangeText={text => this._handleDescription(text)}
+          testID="input-amount"
+          onChangeText={text => this._handleAmount(text)}
           autoCapitalize="none"
         />
       </View>
