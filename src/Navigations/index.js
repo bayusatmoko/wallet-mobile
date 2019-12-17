@@ -9,7 +9,7 @@ import TransactionHistoryContainer from '../Containers/TransactionHistoryContain
 
 const styles = StyleSheet.create({
   headerBackground: {
-    height: 88,
+    height: '100%',
     width: '100%'
   }
 });

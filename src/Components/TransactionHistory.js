@@ -7,6 +7,7 @@ class TransactionHistory extends Component {
     const { transactions, walletId } = this.props;
     return (
       <FlatList
+        scrollIndicatorInsets={{ right: 1 }}
         data={transactions}
         renderItem={({ item }) => (
           <TransactionDetail transaction={item} walletId={walletId} />

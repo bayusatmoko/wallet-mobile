@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   transactionList: {
-    marginTop: 50,
+    marginTop: 30,
     width: '100%',
     alignItems: 'center',
     paddingRight: 10,
-    paddingLeft: 10
+    paddingLeft: 10,
+    flex: 1
   }
 });
 

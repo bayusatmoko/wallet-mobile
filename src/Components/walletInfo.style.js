@@ -33,15 +33,14 @@ const styles = StyleSheet.create({
     width: '90%',
     borderRadius: 20,
     shadowColor: 'black',
-    shadowOffset: { width: 0, heigh: 2 },
+    shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     shadowOpacity: 1,
     elevation: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignSelf: 'center',
-    alignItems: 'center',
-    marginBottom: 30
+    alignItems: 'center'
   },
   transferImage: {
     width: 50,

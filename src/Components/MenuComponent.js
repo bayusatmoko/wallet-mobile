@@ -32,12 +32,6 @@ export default class MenuComponent extends React.PureComponent {
               <Text>Deposit</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.menuPayee}>
-              <Image style={styles.payee} source={payee} />
-              <Text>Payee</Text>
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity onPress={this._handlePress('TransactionHistory')}>
             <View style={styles.menuTransaction}>
               <Image style={styles.transactionImage} source={transaction} />
