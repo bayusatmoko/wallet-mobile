@@ -5,6 +5,7 @@ import getUserByEmail from './getUserByEmaill';
 import getUserById from './getUserById';
 import getWalletByUserId from './getWalletByUserId';
 import getLastTransactionsByWalletId from './getLastTransactionsByWalletId';
+import addPayee from "./addPayee";
 
 jest.mock('axios');
 
@@ -152,17 +153,6 @@ describe('Service', () => {
       expect(axios.get).toHaveBeenCalledTimes(1);
       expect(axios.get).toHaveBeenCalled();
     });
-
-    it('should send transaction to server', async () => {
-      axios.post.mockResolvedValueOnce({ data: lastTransactions[0] });
-
-      await addTransaction(lastTransactions[0]);
-
-      expect(axios.post).toHaveBeenCalledWith(
-        `${config.API_URL}/transactions`,
-        lastTransactions[0]
-      );
-    });
   });
 
   describe('getPayeeByUserId', () => {
@@ -188,6 +178,30 @@ describe('Service', () => {
       expect(response.data).toEqual(payees);
       expect(axios.get).toHaveBeenCalledTimes(1);
       expect(axios.get).toHaveBeenCalled();
+    });
+  });
+
+  describe('addPayee', () => {
+    const payee = {
+      id: 1,
+      userId: 1,
+      payeeId: 2,
+      nickName: 'Si Upin',
+      payeeData: {
+        name: 'Fadel',
+        email: 'fadelcf@gmail.com',
+        phoneNumber: '081234567890'
+      }
+    };
+    it('should send payee to server', async () => {
+      axios.post.mockResolvedValueOnce({ data: payee });
+
+      await addPayee(payee);
+
+      expect(axios.post).toHaveBeenCalledWith(
+        `${config.API_URL}/payees`,
+        payee
+      );
     });
   });
 });

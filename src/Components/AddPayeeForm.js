@@ -27,7 +27,8 @@ class AddPayeeForm extends PureComponent {
         nickName
       });
     }
-    Alert.alert('Nickname cannot be empty');
+    const nickNameEmptyError = 'Nickname cannot be empty';
+    Alert.alert(nickNameEmptyError);
   };
 
   _displayFavouriteForm = () => {
@@ -84,9 +85,14 @@ const styles = StyleSheet.create({
   }
 });
 
+AddPayeeForm.defaultProps = {
+  receiverId: 0,
+  id: 0
+};
+
 AddPayeeForm.propTypes = {
-  receiverId: PropTypes.number.isRequired,
-  id: PropTypes.number.isRequired,
+  receiverId: PropTypes.number,
+  id: PropTypes.number,
   onAddFavourite: PropTypes.func.isRequired
 };
 

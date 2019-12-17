@@ -18,6 +18,7 @@ import getPayeeByUserId from '../Services/getPayeeByUserId';
 import PayeeList from '../Components/PayeeList';
 import AddPayeeForm from '../Components/AddPayeeForm';
 import axios from 'axios';
+import addPayee from '../Services/addPayee';
 
 class TransferContainer extends Component {
   constructor(props) {
@@ -119,7 +120,7 @@ class TransferContainer extends Component {
 
   _handleFavourite = async payeeFavourited => {
     const USER_ID = 1;
-    await axios.post('http://localhost:3000/payees', payeeFavourited);
+    await addPayee(payeeFavourited);
     const { data } = await getPayeeByUserId(USER_ID);
     this.setState({ payees: data });
   };

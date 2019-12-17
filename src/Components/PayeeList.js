@@ -25,7 +25,7 @@ const PayeeList = props => {
 PayeeList.propTypes = {
   payees: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.number,
       userId: PropTypes.number.isRequired,
       nickName: PropTypes.string.isRequired,
       payee: PropTypes.shape({
@@ -40,10 +40,9 @@ PayeeList.propTypes = {
 PayeeList.defaultProps = {
   payees: [
     {
-      payee: {
-        name: 'User',
-        phoneNumber: '085207574545'
-      }
+      id: 0,
+      name: 'User',
+      phoneNumber: '085207574545'
     }
   ]
 };

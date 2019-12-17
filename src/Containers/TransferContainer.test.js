@@ -67,7 +67,11 @@ describe('TransferContainer', () => {
       .mockResolvedValue({ data: users[0].wallet })
       .calledWith('http://localhost:3000/users/1/payees')
       .mockResolvedValueOnce({ data: payees });
-    axios.post.mockResolvedValue({ data: transaction });
+    when(axios.post)
+      .calledWith('http://localhost:3000/transactions')
+      .mockResolvedValue({ data: transaction })
+      .calledWith('http://localhost:3000/payees')
+      .mockResolvedValue({ data: payees[0] });
     wrapper = shallow(
       <TransferContainer API_URL={API_URL} navigation={navigation} />
     );
