@@ -19,7 +19,8 @@ export default class TransactionHistoryContainer extends React.Component {
       searchByDescription: '',
       searchAmount: '',
       sortColumn: TransactionSort.COLUMN.DATE,
-      orderBy: TransactionSort.ORDER.DESC
+      orderBy: TransactionSort.ORDER.DESC,
+      filterAmount: ''
     };
   }
 
@@ -94,10 +95,14 @@ export default class TransactionHistoryContainer extends React.Component {
   }
 
   _filterByAmount = list => {
-    const { searchAmount } = this.state;
-    return list.filter(transaction =>
-      transaction.nominal.toString().includes(searchAmount)
-    );
+    const { searchAmount, filterAmount } = this.state;
+    if (filterAmount === 'gte') {
+      return list.filter(transaction => transaction.nominal >= searchAmount);
+    }
+    if (filterAmount === 'lte') {
+      return list.filter(transaction => transaction.nominal <= searchAmount);
+    }
+    return list;
   };
 
   _handleSort = (sortColumn, orderBy) => {
@@ -138,9 +143,10 @@ export default class TransactionHistoryContainer extends React.Component {
     });
   };
 
-  _handleAmount = newAmount => {
+  _handleAmount = (newAmount, filterAmount) => {
     this.setState({
-      searchAmount: newAmount
+      searchAmount: newAmount,
+      filterAmount
     });
   };
 
