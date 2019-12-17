@@ -25,8 +25,8 @@ describe('LoginContainer', () => {
         username: 'fadelchaidarf@gmail.com',
         password: 'Bankbtpn99'
       };
-      token = 'bayukecil';
-      userLogin.mockResolvedValue(token);
+      token = 'cuk';
+      userLogin.mockResolvedValue({ data: token });
       wrapper = shallow(<LoginContainer navigation={navigation} />);
       await flushPromises();
     });
@@ -35,7 +35,7 @@ describe('LoginContainer', () => {
       jest.clearAllMocks();
     });
 
-    it('should navigate dashboard list', () => {
+    it('should navigate dashboard list', async () => {
       wrapper
         .find({ testID: 'input-user' })
         .simulate('changeText', user.username);
@@ -43,6 +43,7 @@ describe('LoginContainer', () => {
         .find({ testID: 'input-password' })
         .simulate('changeText', user.password);
       wrapper.find('Button').simulate('press');
+      await flushPromises();
 
       expect(userLogin).toHaveBeenCalledWith(user);
       expect(SInfo.setItem).toHaveBeenCalledWith('token', token, {});

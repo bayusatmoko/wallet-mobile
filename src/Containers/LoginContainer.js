@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, View, TextInput, Text } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import findUser from '../Services/findUser';
+import userLogin from '../Services/userLogin';
 
 export default class LoginContainer extends React.Component {
   constructor(props) {
@@ -11,14 +12,6 @@ export default class LoginContainer extends React.Component {
       password: 'Bankbtpn99',
       error: 'masih kosong'
     };
-  }
-
-  async componentDidMount() {
-    await SInfo.deleteItem('isLogin', {});
-    const isLogin = await SInfo.getItem('isLogin', {});
-    if (isLogin === 'true') {
-      this.props.navigation.navigate('Home');
-    }
   }
 
   _handleNameChange = text => {
@@ -32,9 +25,9 @@ export default class LoginContainer extends React.Component {
   _handlePress = async () => {
     const { username, password } = this.state;
     try {
-      const response = await findUser(username, password);
+      const response = await userLogin({ username, password });
       if (response.data) {
-        await SInfo.setItem('isLogin', 'true', {});
+        await SInfo.setItem('token', response.data, {});
       }
       this.props.navigation.navigate('Home');
     } catch (error) {
