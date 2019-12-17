@@ -55,7 +55,7 @@ describe('TransactionFilter', () => {
 
       wrapper
         .find('Button')
-        .at(1)
+        .at(0)
         .simulate('press', filterType);
 
       expect(filterAmount).toHaveBeenCalledWith(null, filterType);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, View, TextInput, Text } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
+import jwtDecode from 'jwt-decode';
 import findUser from '../Services/findUser';
 import userLogin from '../Services/userLogin';
 
@@ -27,7 +28,10 @@ export default class LoginContainer extends React.Component {
     try {
       const response = await userLogin({ username, password });
       if (response.data) {
-        await SInfo.setItem('token', response.data, {});
+        const token = response.data.token;
+        await SInfo.setItem('token', token, {});
+        const decodedUser = jwtDecode(token);
+        await SInfo.setItem('user', JSON.stringify(decodedUser), {});
       }
       this.props.navigation.navigate('Home');
     } catch (error) {
