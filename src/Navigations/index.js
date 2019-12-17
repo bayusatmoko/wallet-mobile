@@ -1,7 +1,9 @@
 import React from 'react';
 import { Image, StyleSheet, Text } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
+import { createSwitchNavigator } from 'react-navigation';
 import background from '../Assets/Images/background.jpg';
+import SplashScreen from '../Components/SplashScreen';
 import DashboardContainer from '../Containers/DashboardContainer';
 import DepositContainer from '../Containers/DepositContainer';
 import TransferContainer from '../Containers/TransferContainer';
@@ -15,11 +17,31 @@ const styles = StyleSheet.create({
   }
 });
 
-const AppNavigator = createStackNavigator(
+const AuthNavigator = createStackNavigator(
   {
     Login: {
       screen: LoginContainer
-    },
+    }
+  },
+  {
+    initialRouteName: 'Login',
+    defaultNavigationOptions: {
+      headerTintColor: 'black',
+      headerTitleStyle: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 20,
+        alignSelf: 'center'
+      },
+      headerBackground: (
+        <Image source={background} style={styles.headerBackground} />
+      )
+    }
+  }
+);
+
+const AppNavigator = createStackNavigator(
+  {
     Home: {
       screen: DashboardContainer,
       navigationOptions: {
@@ -62,4 +84,15 @@ const AppNavigator = createStackNavigator(
   }
 );
 
-export default AppNavigator;
+const AppSwitchNavigator = createSwitchNavigator(
+  {
+    Splash: SplashScreen,
+    Auth: AuthNavigator,
+    App: AppNavigator
+  },
+  {
+    initialRouteName: 'Splash'
+  }
+);
+
+export default AppSwitchNavigator;
