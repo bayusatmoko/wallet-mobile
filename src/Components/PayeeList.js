@@ -1,0 +1,50 @@
+import React from 'react';
+import { FlatList, View } from 'react-native';
+import PropTypes from 'prop-types';
+import PayeeItem from './PayeeItem';
+import styles from './walletInfo.style';
+
+const PayeeList = props => {
+  const { payees, onPressPayee } = props;
+
+  const _handlePress = item => () => {
+    onPressPayee(item);
+  };
+
+  return (
+    <FlatList
+      data={payees}
+      keyExtractor={item => `${item.id}`}
+      renderItem={({ item }) => (
+        <PayeeItem payee={item} onPressPayee={_handlePress(item)} />
+      )}
+    />
+  );
+};
+
+PayeeList.propTypes = {
+  payees: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      userId: PropTypes.number.isRequired,
+      nickName: PropTypes.string.isRequired,
+      payee: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        phoneNumber: PropTypes.string.isRequired
+      })
+    }).isRequired
+  ),
+  onPressPayee: PropTypes.func.isRequired
+};
+
+PayeeList.defaultProps = {
+  payees: [
+    {
+      id: 0,
+      name: 'User',
+      phoneNumber: '085207574545'
+    }
+  ]
+};
+
+export default PayeeList;

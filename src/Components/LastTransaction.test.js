@@ -6,6 +6,7 @@ describe('LastTransaction', () => {
   describe('#render', () => {
     let transactions;
     let wrapper;
+    const mockedOnRefresh = jest.fn();
     beforeEach(() => {
       transactions = [
         {
@@ -59,11 +60,28 @@ describe('LastTransaction', () => {
           updatedAt: '2019-11-29T13:26:15.063Z'
         }
       ];
-      wrapper = shallow(<LastTransaction transactions={transactions} />);
+      wrapper = shallow(
+        <LastTransaction
+          transactions={transactions}
+          walletId={1}
+          isRefreshing={false}
+          onRefresh={mockedOnRefresh}
+        />
+      );
     });
+
     it('should render FlatList with props transactions with length is 5', () => {
       expect(wrapper.find('FlatList').length).toBe(1);
       expect(wrapper.find('FlatList').props().data.length).toBe(5);
+    });
+
+    it('should call onRefresh when flatlist is refreshed', () => {
+      const refreshControlWrapper = wrapper.find('FlatList').props()
+        .refreshControl;
+
+      refreshControlWrapper.props.onRefresh();
+
+      expect(mockedOnRefresh).toHaveBeenCalled();
     });
   });
 });

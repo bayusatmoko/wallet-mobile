@@ -1,8 +1,11 @@
 import axios from 'axios';
+import config from '../../config';
+import getUserByEmail from './getUserByEmaill';
 import getUserById from './getUserById';
 import getWalletByUserId from './getWalletByUserId';
 import getLastTransactionsByWalletId from './getLastTransactionsByWalletId';
 import findUser from './findUser';
+import addPayee from './addPayee';
 
 jest.mock('axios');
 
@@ -36,6 +39,24 @@ describe('Service', () => {
       expect(response.data).toEqual(userInfo);
       expect(axios.get).toHaveBeenCalledTimes(1);
       expect(axios.get).toHaveBeenCalled();
+    });
+  });
+
+  describe('getUserByEmail', () => {
+    it('should return user data when fetch from server', async () => {
+      const userInfo = {
+        id: 1,
+        name: 'Huda',
+        phoneNumber: '08237283',
+        email: 'huda@gmail.com'
+      };
+
+      axios.get.mockResolvedValueOnce({ data: userInfo });
+
+      const response = await getUserByEmail(userInfo.email);
+
+      expect(response.data).toEqual(userInfo);
+      expect(axios.get).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -171,6 +192,56 @@ describe('Service', () => {
 
       expect(response.data).toEqual(userInfo);
       expect(axios.post).toHaveBeenCalledWith(`${url}/login`, payload);
+    });
+  });
+
+  describe('getPayeeByUserId', () => {
+    it('should return payees when fetch from server by user id', async () => {
+      const payees = [
+        {
+          id: 1,
+          userId: 1,
+          payeeId: 2,
+          nickName: 'Si Upin',
+          payee: {
+            name: 'Fadel',
+            email: 'fadelcf@gmail.com',
+            phoneNumber: '081234567890'
+          }
+        }
+      ];
+
+      axios.get.mockResolvedValueOnce({ data: payees });
+
+      const response = await getWalletByUserId(payees[0].userId);
+
+      expect(response.data).toEqual(payees);
+      expect(axios.get).toHaveBeenCalledTimes(1);
+      expect(axios.get).toHaveBeenCalled();
+    });
+  });
+
+  describe('addPayee', () => {
+    const payee = {
+      id: 1,
+      userId: 1,
+      payeeId: 2,
+      nickName: 'Si Upin',
+      payeeData: {
+        name: 'Fadel',
+        email: 'fadelcf@gmail.com',
+        phoneNumber: '081234567890'
+      }
+    };
+    it('should send payee to server', async () => {
+      axios.post.mockResolvedValueOnce({ data: payee });
+
+      await addPayee(payee);
+
+      expect(axios.post).toHaveBeenCalledWith(
+        `${config.API_URL}/payees`,
+        payee
+      );
     });
   });
 });
