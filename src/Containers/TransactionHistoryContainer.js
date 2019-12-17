@@ -27,6 +27,13 @@ export default class TransactionHistoryContainer extends React.Component {
     await this._fetchWallet();
   }
 
+  _generateErrorMessage = error => {
+    if (error.response) {
+      return error.response.data.message;
+    }
+    return error.message;
+  };
+
   _fetchWallet = async () => {
     try {
       // const { navigation } = this.props;
@@ -38,9 +45,7 @@ export default class TransactionHistoryContainer extends React.Component {
       });
       this._fetchTransaction(response.data.id);
     } catch (error) {
-      this.setState({
-        error: error.message
-      });
+      this.setState({ error: this._generateErrorMessage(error) });
     }
   };
 
@@ -51,14 +56,7 @@ export default class TransactionHistoryContainer extends React.Component {
         transactions: response.data
       });
     } catch (error) {
-      if (error.response.data.statusCode !== 404) {
-        return this.setState({
-          error: error.response.data.message
-        });
-      }
-      return this.setState({
-        error: TransactionHistoryContainer.DOESNT_EXIST
-      });
+      this.setState({ error: this._generateErrorMessage(error) });
     }
   };
 

@@ -17,6 +17,13 @@ class DepositContainer extends Component {
     };
   }
 
+  _generateErrorMessage = error => {
+    if (error.response) {
+      return error.response.data.message;
+    }
+    return error.message;
+  };
+
   _addTransaction = async newTransaction => {
     const USER_ID = 1;
     try {
@@ -24,7 +31,7 @@ class DepositContainer extends Component {
       const { data: wallet } = await getWalletByUserId(USER_ID);
       this.setState({ balance: wallet.balance, errorTransaction: '' });
     } catch (error) {
-      this.setState({ errorTransaction: error.response.data.message });
+      this.setState({ errorTransaction: this._generateErrorMessage(error) });
     }
   };
 

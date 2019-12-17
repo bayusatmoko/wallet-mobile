@@ -255,5 +255,17 @@ describe('TransferContainer', () => {
 
       expect(wrapper.find('ActivityIndicator')).toHaveLength(1);
     });
+
+    it('should render FailedNotification when server is down', async () => {
+      axios.post.mockRejectedValue({ message: 'Network Error!' });
+      wrapper = shallow(<TransferContainer API_URL={API_URL} />);
+
+      wrapper.find('ReceiverSearch').simulate('submit', users[1].email);
+      await flushPromises();
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+
+      expect(wrapper.find('FailedNotification').length).toBe(1);
+    });
   });
 });

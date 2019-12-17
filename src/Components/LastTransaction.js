@@ -27,7 +27,7 @@ class LastTransaction extends Component {
           renderItem={({ item }) => (
             <TransactionItem transaction={item} walletId={walletId} />
           )}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={item => item.id.toString()}
         />
       </View>
     );
