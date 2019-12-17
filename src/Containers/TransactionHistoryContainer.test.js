@@ -251,5 +251,29 @@ describe('TransactionHistoryContainer', () => {
         expectedResult
       );
     });
+
+    it('should render Error when server is down', async () => {
+      const errorMessage = 'Network Error';
+      getWalletByUserId.mockRejectedValue({ message: errorMessage });
+      getTransactionsByWalletId.mockResolvedValueOnce({
+        message: errorMessage
+      });
+      wrapper = shallow(<TransactionHistoryContainer />);
+      await flushPromises();
+
+      expect(wrapper.find('Error')).toHaveLength(1);
+    });
+
+    it('should render Error when fail fetch transaction from server', async () => {
+      const errorMessage = 'Network Error';
+      getWalletByUserId.mockResolvedValueOnce({ data: wallet });
+      getTransactionsByWalletId.mockRejectedValue({
+        response: { data: { message: errorMessage } }
+      });
+      wrapper = shallow(<TransactionHistoryContainer />);
+      await flushPromises();
+
+      expect(wrapper.find('Error')).toHaveLength(1);
+    });
   });
 });
