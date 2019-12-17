@@ -18,6 +18,7 @@ import getPayeeByUserId from '../Services/getPayeeByUserId';
 import PayeeList from '../Components/PayeeList';
 import AddPayeeForm from '../Components/AddPayeeForm';
 import addPayee from '../Services/addPayee';
+import SuccessAddPayee from '../Components/SuccessAddPayee';
 
 class TransferContainer extends Component {
   constructor(props) {
@@ -31,7 +32,8 @@ class TransferContainer extends Component {
       isSubmitted: false,
       isSearched: false,
       isLoading: false,
-      balance: 0
+      balance: 0,
+      payeeAdded: false
     };
   }
 
@@ -56,7 +58,8 @@ class TransferContainer extends Component {
         selectedReceiver: data,
         errorSearch: '',
         isSearched: true,
-        isSubmitted: false
+        isSubmitted: false,
+        payeeAdded: false
       });
     } catch (error) {
       this.setState({
@@ -74,8 +77,9 @@ class TransferContainer extends Component {
       this.setState({ balance: wallet.balance, errorTransaction: '' });
     } catch (error) {
       this.setState({
-        errorTransaction: this._generateErrorMessage(error),
-        selectedReceiver: {}
+        errorTransaction: error.response.data.message,
+        selectedReceiver: {},
+        payeeAdded: false
       });
     }
   };
@@ -97,7 +101,7 @@ class TransferContainer extends Component {
     };
     this.setState({ isLoading: true });
     await this._addTransaction(newTransaction);
-    this.setState({ isSubmitted: true, isSearched: false });
+    this.setState({ isSubmitted: true, isSearched: false, payeeAdded: false });
     await this._updateDashboard();
   };
 
@@ -128,7 +132,7 @@ class TransferContainer extends Component {
     const USER_ID = 1;
     await addPayee(payeeFavourited);
     const { data } = await getPayeeByUserId(USER_ID);
-    this.setState({ payees: data });
+    this.setState({ payees: data, payeeAdded: true });
   };
 
   _isFavourited = () => {
@@ -158,7 +162,8 @@ class TransferContainer extends Component {
       isSubmitted,
       isSearched,
       payees,
-      isLoading
+      isLoading,
+      payeeAdded
     } = this.state;
     const { name, email } = selectedReceiver;
     return (
@@ -184,7 +189,10 @@ class TransferContainer extends Component {
             </>
           )}
           {isSubmitted && this._renderNotification()}
-          <PayeeList payees={payees} onPressPayee={this._handlePayee} />
+          {!isSearched && (
+            <PayeeList payees={payees} onPressPayee={this._handlePayee} />
+          )}
+          {payeeAdded && <SuccessAddPayee />}
         </View>
       </TouchableWithoutFeedback>
     );

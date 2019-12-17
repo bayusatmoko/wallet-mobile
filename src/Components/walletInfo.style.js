@@ -187,6 +187,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     height: 50
   },
+  payeeTitle: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 15
+  },
   container: {
     width: '80%',
     alignSelf: 'center',
