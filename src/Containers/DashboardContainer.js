@@ -1,5 +1,6 @@
 import React from 'react';
-import { RefreshControl, SafeAreaView } from 'react-native';
+import SInfo from 'react-native-sensitive-info';
+import { Button } from 'react-native';
 import FailedNotification from '../Components/FailedNotification';
 import LastTransaction from '../Components/LastTransaction';
 import MenuComponent from '../Components/MenuComponent';
@@ -28,9 +29,12 @@ export default class DashboardContainer extends React.Component {
   }
 
   _refreshData = async () => {
+    const token = await SInfo.getItem('token', {});
+    const userId = await SInfo.getItem('userId', {});
+    const walletId = await SInfo.getItem('walletId', {});
     this.setState({ isRefreshing: true });
-    await this._fetchUser();
-    await this._fetchWallet();
+    await this._fetchUser(userId, token);
+    await this._fetchWallet(userId, walletId, token);
     this.setState({ isRefreshing: false });
   };
 
@@ -41,10 +45,9 @@ export default class DashboardContainer extends React.Component {
     return error.message;
   };
 
-  _fetchUser = async () => {
+  _fetchUser = async (id, token) => {
     try {
-      const id = 1;
-      const response = await getUserById(id);
+      const response = await getUserById(id, token);
       this.setState({
         user: response.data
       });
@@ -53,23 +56,22 @@ export default class DashboardContainer extends React.Component {
     }
   };
 
-  _fetchWallet = async () => {
+  _fetchWallet = async (userId, walletId, token) => {
     try {
-      const userId = 1;
-      const response = await getWalletByUserId(userId);
+      const response = await getWalletByUserId(userId, token);
       this.setState({
         wallet: response.data,
         errorMessage: ''
       });
-      this._fetchLastTransaction(response.data.id);
+      this._fetchLastTransaction(walletId, token);
     } catch (error) {
       this.setState({ errorMessage: this._generateErrorMessage(error) });
     }
   };
 
-  _fetchLastTransaction = async walletId => {
+  _fetchLastTransaction = async (walletId, token) => {
     try {
-      const response = await getLastTransactionsByWalletId(walletId);
+      const response = await getLastTransactionsByWalletId(walletId, token);
       this.setState({
         lastTransactions: response.data,
         errorMessage: ''
@@ -94,6 +96,13 @@ export default class DashboardContainer extends React.Component {
     }
   }
 
+  _logout = async () => {
+    const { navigation } = this.props;
+    await SInfo.deleteItem('token', {});
+    await SInfo.deleteItem('user', {});
+    await navigation.navigate('Splash');
+  };
+
   render() {
     const { wallet, user, lastTransactions, isRefreshing } = this.state;
     return (
@@ -102,6 +111,7 @@ export default class DashboardContainer extends React.Component {
         <WalletInfo wallet={wallet} />
         <MenuComponent onPress={this._handleMenuPress} />
         {this._displayError()}
+        <Button title={'Logout'} onPress={this._logout} />
         <LastTransaction
           isRefreshing={isRefreshing}
           onRefresh={this._refreshData}

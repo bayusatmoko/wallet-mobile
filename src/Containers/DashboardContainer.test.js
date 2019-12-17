@@ -1,10 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { when } from 'jest-when';
+import SInfo from 'react-native-sensitive-info';
 import getUserById from '../Services/getUserById';
 import getWalletByUserId from '../Services/getWalletByUserId';
 import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
 import DashboardContainer from './DashboardContainer';
 import axios from 'axios';
+
+jest.mock('react-native-sensitive-info', () => {
+  return { setItem: jest.fn(), getItem: jest.fn() };
+});
 
 jest.mock('../Services/getUserById', () => jest.fn());
 jest.mock('../Services/getWalletByUserId', () => jest.fn());
@@ -23,6 +29,7 @@ describe('DashboardContainer', () => {
     let wrapper;
     let lastTransactions;
     let navigation;
+    let decodedResponse;
     beforeEach(async () => {
       userInfo = {
         id: 1,
@@ -96,6 +103,23 @@ describe('DashboardContainer', () => {
         }
       ];
 
+      decodedResponse = {
+        user: {
+          id: 1,
+          name: 'Fadel Chaidar Fachru',
+          email: 'fadelchaidarf@gmail.com',
+          phoneNumber: '083812345678',
+          createdAt: '2019-12-17T10:09:07.077Z',
+          updatedAt: '2019-12-17T10:09:07.077Z',
+          wallet: {
+            id: 1,
+            balance: 25657500
+          }
+        },
+        iat: 1576579241,
+        exp: 1576665641
+      };
+
       navigation = {
         navigate: jest.fn(),
         getParam: jest.fn()
@@ -122,7 +146,13 @@ describe('DashboardContainer', () => {
         .mockResolvedValueOnce({ data: userInfo })
         .mockResolvedValueOnce({ data: wallet })
         .mockResolvedValue({ data: lastTransactions });
-
+      when(SInfo.getItem)
+        .calledWith('token')
+        .mockResolvedValue('token')
+        .calledWith('userId')
+        .mockResolvedValue('1')
+        .calledWith('walletId')
+        .mockResolvedValue('1');
       wrapper = shallow(<DashboardContainer navigation={navigation} />);
       await flushPromises();
     });
@@ -132,11 +162,11 @@ describe('DashboardContainer', () => {
     });
 
     it('should call service function getUserById', () => {
-      expect(getUserById).toHaveBeenCalledWith(userInfo.id);
+      expect(getUserById).toHaveBeenCalledWith('1', 'token');
     });
 
     it('should call service function getWalletByUserId', () => {
-      expect(getWalletByUserId).toHaveBeenCalledWith(wallet.id);
+      expect(getWalletByUserId).toHaveBeenCalledWith('1', 'token');
     });
 
     it('should render user and wallet info', () => {

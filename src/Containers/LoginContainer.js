@@ -2,18 +2,24 @@ import React from 'react';
 import { Button, View, TextInput, Text } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import jwtDecode from 'jwt-decode';
-import findUser from '../Services/findUser';
 import userLogin from '../Services/userLogin';
 
 export default class LoginContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: 'fadelay@gmail.com',
-      password: 'Bankbtpn99',
-      error: 'masih kosong'
+      username: '',
+      password: '',
+      error: ''
     };
   }
+
+  _generateErrorMessage = error => {
+    if (error.response) {
+      return error.response.data.message;
+    }
+    return error.message;
+  };
 
   _handleNameChange = text => {
     this.setState({ username: text });
@@ -31,11 +37,12 @@ export default class LoginContainer extends React.Component {
         const token = response.data.token;
         await SInfo.setItem('token', token, {});
         const decodedUser = jwtDecode(token);
-        await SInfo.setItem('user', JSON.stringify(decodedUser), {});
+        await SInfo.setItem('userId', String(decodedUser.user.id), {});
+        await SInfo.setItem('walletId', String(decodedUser.user.wallet.id), {});
       }
-      this.props.navigation.navigate('Home');
+      this.props.navigation.navigate('Splash');
     } catch (error) {
-      this.setState({ error: error.response.data.message });
+      this.setState({ error: this._generateErrorMessage(error) });
     }
   };
 
@@ -45,6 +52,7 @@ export default class LoginContainer extends React.Component {
       <View>
         <View>
           <TextInput
+            autoCapitalize="none"
             testID="input-user"
             style={{
               height: 40,
@@ -56,6 +64,7 @@ export default class LoginContainer extends React.Component {
             value={username}
           />
           <TextInput
+            autoCapitalize="none"
             testID="input-password"
             style={{
               height: 40,

@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import SInfo from 'react-native-sensitive-info';
-import { when } from 'jest-when';
 import jwtDecode from 'jwt-decode';
 import userLogin from '../Services/userLogin';
 import LoginContainer from './LoginContainer';
@@ -55,7 +54,7 @@ describe('LoginContainer', () => {
       jest.clearAllMocks();
     });
 
-    it('should call login, save token and user to persistent storage and navigate to home', async () => {
+    it('should call login, save token and user to persistent storage and navigate to Splash', async () => {
       wrapper
         .find({ testID: 'input-user' })
         .simulate('changeText', user.username);
@@ -69,11 +68,17 @@ describe('LoginContainer', () => {
       expect(SInfo.setItem).toHaveBeenNthCalledWith(1, 'token', token, {});
       expect(SInfo.setItem).toHaveBeenNthCalledWith(
         2,
-        'user',
-        JSON.stringify(decodedResponse),
+        'userId',
+        '1',
         {}
       );
-      expect(navigation.navigate).toHaveBeenCalledWith('Home');
+      expect(SInfo.setItem).toHaveBeenNthCalledWith(
+        3,
+        'walletId',
+        '1',
+        {}
+      );
+      expect(navigation.navigate).toHaveBeenCalledWith('Splash');
     });
   });
 });

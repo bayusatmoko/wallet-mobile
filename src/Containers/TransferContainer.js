@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native';
+import SInfo from 'react-native-sensitive-info';
 import FailedNotification from '../Components/FailedNotification';
 import ReceiverSearch from '../Components/ReceiverSearch';
 import SuccessNotification from '../Components/SuccessNotification';
@@ -23,6 +24,9 @@ class TransferContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: 1,
+      walletId: 1,
+      token: '',
       selectedReceiver: {},
       payeeSelected: false,
       payees: [],
@@ -36,9 +40,11 @@ class TransferContainer extends Component {
   }
 
   async componentDidMount() {
-    const USER_ID = 1;
-    const { data } = await getPayeeByUserId(USER_ID);
-    this.setState({ payees: data });
+    const token = await SInfo.getItem('token', {});
+    const userId = await SInfo.getItem('userId', {});
+    const walletId = await SInfo.getItem('walletId', {});
+    const { data } = await getPayeeByUserId(userId, token);
+    this.setState({ token, userId, walletId, payees: data });
   }
 
   _generateErrorMessage = error => {
@@ -49,9 +55,10 @@ class TransferContainer extends Component {
   };
 
   _handleSearch = async userEmail => {
+    const { token } = this.state;
     try {
       this.setState({ isLoading: true });
-      const { data } = await getUserByEmail(userEmail);
+      const { data } = await getUserByEmail(userEmail, token);
       this.setState({
         selectedReceiver: data,
         errorSearch: '',
@@ -67,10 +74,10 @@ class TransferContainer extends Component {
   };
 
   _addTransaction = async newTransaction => {
-    const USER_ID = 1;
+    const { userId, token } = this.state;
     try {
-      await addTransaction(newTransaction);
-      const { data: wallet } = await getWalletByUserId(USER_ID);
+      await addTransaction(newTransaction, token);
+      const { data: wallet } = await getWalletByUserId(userId, token);
       this.setState({ balance: wallet.balance, errorTransaction: '' });
     } catch (error) {
       this.setState({
@@ -86,8 +93,7 @@ class TransferContainer extends Component {
   };
 
   _handleSubmit = async ({ nominal, description }) => {
-    const { selectedReceiver } = this.state;
-    const walletId = 1;
+    const { selectedReceiver, walletId, token } = this.state;
     const newTransaction = {
       walletId,
       receiverWalletId: selectedReceiver.wallet.id,
@@ -96,7 +102,7 @@ class TransferContainer extends Component {
       type: 'TRANSFER'
     };
     this.setState({ isLoading: true });
-    await this._addTransaction(newTransaction);
+    await this._addTransaction(newTransaction, token);
     this.setState({ isSubmitted: true, isSearched: false });
     await this._updateDashboard();
   };
@@ -110,7 +116,8 @@ class TransferContainer extends Component {
   };
 
   _handlePayee = async payee => {
-    const { data } = await getUserByEmail(payee.payeeData.email);
+    const { token } = this.state;
+    const { data } = await getUserByEmail(payee.payeeData.email, token);
     this.setState({
       isSearched: true,
       payeeSelected: true,
@@ -125,9 +132,9 @@ class TransferContainer extends Component {
   };
 
   _handleFavourite = async payeeFavourited => {
-    const USER_ID = 1;
-    await addPayee(payeeFavourited);
-    const { data } = await getPayeeByUserId(USER_ID);
+    const { userId, token } = this.state;
+    await addPayee(payeeFavourited, token);
+    const { data } = await getPayeeByUserId(userId, token);
     this.setState({ payees: data });
   };
 
