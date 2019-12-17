@@ -174,6 +174,7 @@ class TransferContainer extends Component {
                   id={USER_ID}
                   receiverId={selectedReceiver.id}
                   onAddFavourite={this._handleFavourite}
+                  receiverName={selectedReceiver.name}
                 />
               )}
               <TransactionForm
