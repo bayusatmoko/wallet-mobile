@@ -19,6 +19,7 @@ describe('TransactionFilter', () => {
 
     it('should call the props function with the filter amount value', () => {
       const searchAmount = '9000';
+      const filterType = 'lte';
       const filterAmount = jest.fn();
       const wrapper = shallow(
         <TransactionFilter onHandleAmount={filterAmount} />
@@ -27,7 +28,37 @@ describe('TransactionFilter', () => {
       const inputAmount = wrapper.find({ testID: 'input-amount' });
       inputAmount.simulate('changeText', searchAmount);
 
-      expect(filterAmount).toHaveBeenCalledWith(searchAmount);
+      expect(filterAmount).toHaveBeenCalledWith(searchAmount, filterType);
+    });
+
+    it('should call the props function with the filter amount value with filter type is greater than or equal', () => {
+      const filterType = 'gte';
+      const filterAmount = jest.fn();
+      const wrapper = shallow(
+        <TransactionFilter onHandleAmount={filterAmount} />
+      );
+
+      wrapper
+        .find('Button')
+        .at(1)
+        .simulate('press', filterType);
+
+      expect(filterAmount).toHaveBeenCalledWith(null, filterType);
+    });
+
+    it('should call the props function with the filter amount value with filter type is less than or equal', () => {
+      const filterType = 'lte';
+      const filterAmount = jest.fn();
+      const wrapper = shallow(
+        <TransactionFilter onHandleAmount={filterAmount} />
+      );
+
+      wrapper
+        .find('Button')
+        .at(1)
+        .simulate('press', filterType);
+
+      expect(filterAmount).toHaveBeenCalledWith(null, filterType);
     });
   });
 });
