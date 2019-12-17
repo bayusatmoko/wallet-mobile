@@ -31,10 +31,21 @@ PayeeList.propTypes = {
       payee: PropTypes.shape({
         name: PropTypes.string.isRequired,
         phoneNumber: PropTypes.string.isRequired
-      }).isRequired
+      })
     }).isRequired
   ),
   onPressPayee: PropTypes.func.isRequired
+};
+
+PayeeList.defaultProps = {
+  payees: [
+    {
+      payee: {
+        name: 'User',
+        phoneNumber: '085207574545'
+      }
+    }
+  ]
 };
 
 export default PayeeList;
