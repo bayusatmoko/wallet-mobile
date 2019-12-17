@@ -6,8 +6,10 @@ export default class NoTransactionsFound extends React.PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Transactions Doesn't Exist</Text>
+        <Text style={styles.text}>{NoTransactionsFound.MESSAGE}</Text>
       </View>
     );
   }
 }
+
+NoTransactionsFound.MESSAGE = "Transactions Doesn't Exist"
