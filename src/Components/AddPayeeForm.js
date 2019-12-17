@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Button, View, TextInput, StyleSheet } from 'react-native';
+import { Button, View, TextInput, StyleSheet, Alert } from 'react-native';
 
 class AddPayeeForm extends PureComponent {
   constructor(props) {
@@ -20,11 +20,14 @@ class AddPayeeForm extends PureComponent {
   _handleFavourite = () => {
     const { receiverId, id, onAddFavourite } = this.props;
     const { nickName } = this.state;
-    onAddFavourite({
-      userId: id,
-      payeeUserId: receiverId,
-      nickName
-    });
+    if (nickName) {
+      return onAddFavourite({
+        userId: id,
+        payeeUserId: receiverId,
+        nickName
+      });
+    }
+    Alert.alert('Nickname cannot be empty');
   };
 
   _displayFavouriteForm = () => {

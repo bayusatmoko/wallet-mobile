@@ -41,7 +41,7 @@ describe('TransferContainer', () => {
       userId: 1,
       payeeId: 2,
       nickName: 'Si Upin',
-      payee: {
+      payeeData: {
         name: 'Fadel',
         email: 'fadelcf@gmail.com',
         phoneNumber: '081234567890'
@@ -58,12 +58,14 @@ describe('TransferContainer', () => {
       goBack: jest.fn()
     };
     when(axios.get)
+      .calledWith('http://localhost:3000/users?email=fadelcf@gmail.com')
+      .mockResolvedValue({ data: payees[0] })
       .calledWith('http://localhost:3000/users?email=hudah@btpn.com')
       .mockResolvedValue({ data: users[1] })
       .calledWith('http://localhost:3000/users/1/wallets')
       .mockResolvedValue({ data: users[0].wallet })
       .calledWith('http://localhost:3000/users/1/payees')
-      .mockResolvedValue({ data: payees });
+      .mockResolvedValueOnce({ data: payees });
     axios.post.mockResolvedValue({ data: transaction });
     wrapper = shallow(
       <TransferContainer API_URL={API_URL} navigation={navigation} />
@@ -193,6 +195,36 @@ describe('TransferContainer', () => {
       expect(wrapper.find('PayeeList').props().payees).toContainEqual(
         payees[0]
       );
+    });
+
+    it('should select the payee to the transfer form', async () => {
+      await flushPromises();
+
+      wrapper.find('PayeeList').simulate('pressPayee', payees[0]);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionForm').props().title).toContain(
+        payees[0].payeeData.name
+      );
+    });
+
+    it('should favourite the receiver and add to the payee list', async () => {
+      const payee = {
+        userId: 1,
+        payeeUserId: 2,
+        nickName: 'Farah'
+      };
+      const searchedEmail = 'hudah@btpn.com';
+      when(axios.get)
+        .calledWith('http://localhost:3000/users/1/payees')
+        .mockResolvedValueOnce({ data: [...payees, payee] });
+
+      wrapper.find('ReceiverSearch').simulate('submit', searchedEmail);
+      await flushPromises();
+      wrapper.find('AddPayeeForm').simulate('addFavourite', payee);
+      await flushPromises();
+
+      expect(wrapper.find('PayeeList').props().payees).toContainEqual(payee);
     });
   });
 });

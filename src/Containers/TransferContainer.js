@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import FailedNotification from '../Components/FailedNotification';
 import ReceiverSearch from '../Components/ReceiverSearch';
 import SuccessNotification from '../Components/SuccessNotification';
@@ -108,7 +108,6 @@ class TransferContainer extends Component {
   };
 
   _handleFavourite = async payeeFavourited => {
-    console.log(payeeFavourited);
     const USER_ID = 1;
     await axios.post('http://localhost:3000/payees', payeeFavourited);
     const { data } = await getPayeeByUserId(USER_ID);
@@ -117,14 +116,7 @@ class TransferContainer extends Component {
 
   _isFavourited = () => {
     const { payees, selectedReceiver } = this.state;
-    console.log(payees);
-    console.log(selectedReceiver);
-    const condition = payees.some(
-      payee => payee.payeeUserId === selectedReceiver.id
-    );
-    console.log(condition);
-    return condition;
-    //return true;
+    return payees.some(payee => payee.payeeUserId === selectedReceiver.id);
   };
 
   render() {
@@ -137,10 +129,6 @@ class TransferContainer extends Component {
       isSearched,
       payees
     } = this.state;
-    let receiver = selectedReceiver;
-    if (receiver.payeeData) {
-      receiver = receiver.payeeData;
-    }
     const { name, email } = selectedReceiver;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -152,7 +140,7 @@ class TransferContainer extends Component {
               {!payeeSelected && !this._isFavourited() && (
                 <AddPayeeForm
                   id={USER_ID}
-                  receiverId={receiver.id}
+                  receiverId={selectedReceiver.id}
                   onAddFavourite={this._handleFavourite}
                 />
               )}

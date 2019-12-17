@@ -33,7 +33,7 @@ PayeeList.propTypes = {
         phoneNumber: PropTypes.string.isRequired
       }).isRequired
     }).isRequired
-  ).isRequired,
+  ),
   onPressPayee: PropTypes.func.isRequired
 };
 

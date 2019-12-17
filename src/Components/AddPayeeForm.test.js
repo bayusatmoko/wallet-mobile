@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import AddPayeeForm from './AddPayeeForm';
+import { Alert } from 'react-native';
 
 describe('AddPayeeForm', () => {
   describe('#render', () => {
@@ -50,6 +51,29 @@ describe('AddPayeeForm', () => {
         payeeUserId: receiverId,
         nickName
       });
+    });
+
+    it('should render error message "Nickname cannot be empty" when the payee nickname is empty', async () => {
+      const id = 1;
+      const receiverId = 2;
+      const mockAdd = jest.fn();
+      let spy = jest.spyOn(Alert, 'alert');
+      const wrapper = shallow(
+        <AddPayeeForm
+          id={id}
+          receiverId={receiverId}
+          onAddFavourite={mockAdd}
+        />
+      );
+      await flushPromises();
+
+      const favouriteButton = wrapper.find({ testID: 'favourite-button' });
+      favouriteButton.simulate('press');
+      const addButton = wrapper.find({ testID: 'add-button' });
+      addButton.simulate('press');
+      await flushPromises();
+
+      expect(spy).toHaveBeenCalledWith('Nickname cannot be empty');
     });
   });
 });
