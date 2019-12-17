@@ -189,7 +189,7 @@ describe('DashboardContainer', () => {
       wrapper = shallow(<DashboardContainer navigation={navigation} />);
       await flushPromises();
 
-      expect(wrapper.find('FailedNotification').length).toBe(1);
+      expect(wrapper.find('Error').length).toBe(1);
     });
 
     it('should render FailedNotification when server is not running', async () => {
@@ -201,7 +201,7 @@ describe('DashboardContainer', () => {
       wrapper = shallow(<DashboardContainer navigation={navigation} />);
       await flushPromises();
 
-      expect(wrapper.find('FailedNotification').length).toBe(1);
+      expect(wrapper.find('Error').length).toBe(1);
     });
   });
 });

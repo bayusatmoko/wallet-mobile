@@ -9,7 +9,11 @@ export default class Error extends React.PureComponent {
   }
   render() {
     const { message } = this.props;
-    return <Text style={styles.textError}>{message}</Text>;
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>{message}</Text>
+      </View>
+    );
   }
 }
 
