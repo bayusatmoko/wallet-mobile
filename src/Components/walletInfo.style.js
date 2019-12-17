@@ -61,12 +61,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   borderBalance: {
-    // position: 'absolute',
-    // top: 80,
-    // left: 170,
     marginRight: 20,
     padding: 10,
-    // paddingBottom: 10,
     marginTop: -120,
     marginBottom: 50,
     flexDirection: 'column',
