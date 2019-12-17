@@ -22,7 +22,7 @@ class TransactionForm extends PureComponent {
     const { nominal, description } = this.state;
     const { onSubmit } = this.props;
     if (this._checkIsNominalInRange(nominal)) {
-      this.setState({ nominal: 0, description: '' });
+      this.setState({ nominal: 0, description: description.length });
       onSubmit({ nominal, description });
     } else {
       Alert.alert('Amount must be between Rp1.000 and Rp100.000.000');
