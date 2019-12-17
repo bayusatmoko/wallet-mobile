@@ -56,12 +56,7 @@ export default class TransactionHistoryContainer extends React.Component {
         transactions: response.data
       });
     } catch (error) {
-      if (error.response.data.statusCode !== 404) {
-        return this.setState({ error: this._generateErrorMessage(error) });
-      }
-      return this.setState({
-        error: TransactionHistoryContainer.DOESNT_EXIST
-      });
+      this.setState({ error: this._generateErrorMessage(error) });
     }
   };
 

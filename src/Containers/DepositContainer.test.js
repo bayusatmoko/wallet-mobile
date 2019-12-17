@@ -2,6 +2,10 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import axios from 'axios';
 import DepositContainer from './DepositContainer';
+import getUserById from '../Services/getUserById';
+import getWalletByUserId from '../Services/getWalletByUserId';
+import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
+import DashboardContainer from './DashboardContainer';
 
 jest.mock('axios');
 
@@ -88,6 +92,16 @@ describe('DepositContainer', () => {
       jest.runAllTimers();
 
       expect(wrapper.find('ActivityIndicator')).toHaveLength(0);
+    });
+
+    it('should render FailedNotification when server is not running', async () => {
+      axios.post.mockRejectedValue({ message: 'Network Error' });
+      wrapper = shallow(<DepositContainer />);
+
+      wrapper.find('TransactionForm').simulate('submit', transaction);
+      await flushPromises();
+
+      expect(wrapper.find('FailedNotification').length).toBe(1);
     });
   });
 });

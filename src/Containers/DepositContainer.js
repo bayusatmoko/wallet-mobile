@@ -31,7 +31,7 @@ class DepositContainer extends Component {
       const { data: wallet } = await getWalletByUserId(USER_ID);
       this.setState({ balance: wallet.balance, errorTransaction: '' });
     } catch (error) {
-      this.setState({ errorMessage: this._generateErrorMessage(error) });
+      this.setState({ errorTransaction: this._generateErrorMessage(error) });
     }
   };
 
