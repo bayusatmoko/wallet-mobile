@@ -35,6 +35,19 @@ describe('TransferContainer', () => {
     nominal: 1250,
     description: 'Payslip 2019-11-28'
   };
+  const payees = [
+    {
+      id: 1,
+      userId: 1,
+      payeeId: 2,
+      nickName: 'Si Upin',
+      payeeData: {
+        name: 'Fadel',
+        email: 'fadelcf@gmail.com',
+        phoneNumber: '081234567890'
+      }
+    }
+  ];
   const API_URL = 'http://localhost:3000';
   let navigation;
   const onRefresh = jest.fn();
@@ -46,11 +59,19 @@ describe('TransferContainer', () => {
       goBack: jest.fn()
     };
     when(axios.get)
+      .calledWith('http://localhost:3000/users?email=fadelcf@gmail.com')
+      .mockResolvedValue({ data: payees[0] })
       .calledWith('http://localhost:3000/users?email=hudah@btpn.com')
       .mockResolvedValue({ data: users[1] })
       .calledWith('http://localhost:3000/users/1/wallets')
-      .mockResolvedValue({ data: users[0].wallet });
-    axios.post.mockResolvedValue({ data: transaction });
+      .mockResolvedValue({ data: users[0].wallet })
+      .calledWith('http://localhost:3000/users/1/payees')
+      .mockResolvedValueOnce({ data: payees });
+    when(axios.post)
+      .calledWith('http://localhost:3000/transactions')
+      .mockResolvedValue({ data: transaction })
+      .calledWith('http://localhost:3000/payees')
+      .mockResolvedValue({ data: payees[0] });
     wrapper = shallow(
       <TransferContainer API_URL={API_URL} navigation={navigation} />
     );
@@ -146,7 +167,6 @@ describe('TransferContainer', () => {
       wrapper.find('ReceiverSearch').simulate('submit', 'fadele@btpn.com');
       await flushPromises();
 
-      expect(wrapper.find('ReceiverList').length).toBe(0);
       expect(wrapper.find('FailedNotification').length).toBe(1);
       expect(wrapper.find('TransactionForm').length).toBe(0);
     });
@@ -167,6 +187,50 @@ describe('TransferContainer', () => {
 
       expect(wrapper.find('ReceiverSearch')).toHaveLength(1);
       expect(wrapper.find('SuccessNotification')).toHaveLength(1);
+    });
+
+    it('should called get with correct parameter when loading component', async () => {
+      await flushPromises();
+      expect(axios.get).toHaveBeenCalledWith(
+        'http://localhost:3000/users/1/payees'
+      );
+    });
+
+    it('should contain payee in PayeeList props', async () => {
+      await flushPromises();
+      expect(wrapper.find('PayeeList').props().payees).toContainEqual(
+        payees[0]
+      );
+    });
+
+    it('should select the payee to the transfer form', async () => {
+      await flushPromises();
+
+      wrapper.find('PayeeList').simulate('pressPayee', payees[0]);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionForm').props().title).toContain(
+        payees[0].payeeData.name
+      );
+    });
+
+    it('should favourite the receiver and add to the payee list', async () => {
+      const payee = {
+        userId: 1,
+        payeeUserId: 2,
+        nickName: 'Farah'
+      };
+      const searchedEmail = 'hudah@btpn.com';
+      when(axios.get)
+        .calledWith('http://localhost:3000/users/1/payees')
+        .mockResolvedValueOnce({ data: [...payees, payee] });
+
+      wrapper.find('ReceiverSearch').simulate('submit', searchedEmail);
+      await flushPromises();
+      wrapper.find('AddPayeeForm').simulate('addFavourite', payee);
+      await flushPromises();
+
+      expect(wrapper.find('PayeeList').props().payees).toContainEqual(payee);
     });
 
     it('should show loading indicator when searching for receiver', async () => {
