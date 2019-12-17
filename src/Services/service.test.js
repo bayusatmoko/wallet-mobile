@@ -6,6 +6,7 @@ import getWalletByUserId from './getWalletByUserId';
 import getLastTransactionsByWalletId from './getLastTransactionsByWalletId';
 import findUser from './findUser';
 import addPayee from './addPayee';
+import userLogin from './userLogin';
 
 jest.mock('axios');
 
@@ -242,6 +243,25 @@ describe('Service', () => {
         `${config.API_URL}/payees`,
         payee
       );
+    });
+  });
+
+  describe('login', () => {
+    let user;
+    let token;
+    beforeEach(() => {
+      user = {
+        username: 'fadelchaidarf@gmail.com',
+        password: 'Bankbtpn99'
+      };
+      token = 'bayukecil';
+    });
+    it('should send username and password to server and get token', async () => {
+      axios.post.mockResolvedValueOnce({ data: token });
+
+      await userLogin(user);
+
+      expect(axios.post).toHaveBeenCalledWith(`${config.API_URL}/login`, user);
     });
   });
 });

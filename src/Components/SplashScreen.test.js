@@ -12,7 +12,7 @@ describe('SplashScreen', () => {
   let navigation;
   let token;
   beforeEach(() => {
-    token = 'kontolbayucilik';
+    token = 'bayukecil';
     navigation = {
       navigate: jest.fn(),
       getParam: jest.fn()

@@ -24,7 +24,6 @@ const AuthNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'Login',
     defaultNavigationOptions: {
       headerTintColor: 'black',
       headerTitleStyle: {
@@ -68,7 +67,6 @@ const AppNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'Home',
     defaultNavigationOptions: {
       headerTintColor: 'black',
       headerTitleStyle: {
