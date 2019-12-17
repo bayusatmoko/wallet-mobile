@@ -2,8 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { shallow } from 'enzyme';
 import TransactionHistoryContainer from './TransactionHistoryContainer';
+import getWalletByUserId from '../Services/getWalletByUserId';
+import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 
+jest.mock('../Services/getWalletByUserId', () => jest.fn());
+jest.mock('../Services/getTransactionsByWalletId', () => jest.fn());
 jest.mock('axios');
+
 describe('TransactionHistoryContainer', () => {
   describe('#render', () => {
     let wallet;
@@ -21,7 +26,7 @@ describe('TransactionHistoryContainer', () => {
           id: 1,
           walletId: 1,
           type: 'deposit',
-          amount: 7700000,
+          nominal: 7700000,
           description: 'Payslip 2019-11-28',
           receiverWalletId: null,
           createdAt: '2019-11-28T13:26:15.063Z',
@@ -31,7 +36,7 @@ describe('TransactionHistoryContainer', () => {
           id: 2,
           walletId: 1,
           type: 'withdraw',
-          amount: 30,
+          nominal: 30,
           description: 'Buy Cheeseburger for lunch',
           receiverWalletId: null,
           createdAt: '2019-11-27T13:26:15.063Z',
@@ -41,7 +46,7 @@ describe('TransactionHistoryContainer', () => {
           id: 3,
           walletId: 1,
           type: 'withdraw',
-          amount: 100,
+          nominal: 100,
           description: 'Dinner at Italian Steak House',
           receiverWalletId: null,
           createdAt: '2019-11-26T13:26:15.063Z',
@@ -51,7 +56,7 @@ describe('TransactionHistoryContainer', () => {
           id: 4,
           walletId: 1,
           type: 'deposit',
-          amount: 8800000,
+          nominal: 8800000,
           description: 'Payslip 2019-11-29',
           receiverWalletId: null,
           createdAt: '2019-11-25T13:26:15.063Z',
@@ -61,7 +66,7 @@ describe('TransactionHistoryContainer', () => {
           id: 5,
           walletId: 1,
           type: 'withdraw',
-          amount: 40,
+          nominal: 40,
           description: 'Buy Big Macs for lunch',
           receiverWalletId: null,
           createdAt: '2019-11-24T13:26:15.063Z',
@@ -69,9 +74,9 @@ describe('TransactionHistoryContainer', () => {
         }
       ];
 
-      axios.get
-        .mockResolvedValueOnce({ data: wallet })
-        .mockResolvedValue({ data: transactions });
+      getWalletByUserId.mockResolvedValueOnce({ data: wallet });
+      getTransactionsByWalletId.mockResolvedValueOnce({ data: transactions });
+
       wrapper = shallow(<TransactionHistoryContainer />);
       await flushPromises();
     });
@@ -82,6 +87,31 @@ describe('TransactionHistoryContainer', () => {
 
     it('should render transactions', () => {
       expect(wrapper.find('TransactionHistory').length).toBe(1);
+    });
+
+    it('should render transactions filter by description', async () => {
+      const wrapperTransactionFilter = wrapper.find('TransactionFilter');
+      wrapperTransactionFilter.simulate(
+        'handleDescription',
+        transactions[0].description
+      );
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual([
+        transactions[0]
+      ]);
+    });
+
+    it('should render transactions filter by nominal', async () => {
+      const wrapperTransactionFilter = wrapper.find('TransactionFilter');
+      wrapperTransactionFilter.simulate(
+        'handleAmount',
+        transactions[0].nominal
+      );
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual([
+        transactions[0]
+      ]);
     });
 
     it('should render error network when the wallet backend is down', async () => {
@@ -105,16 +135,15 @@ describe('TransactionHistoryContainer', () => {
     });
 
     it('should render no transaction found when user has no transaction', async () => {
-      axios.get
-        .mockResolvedValueOnce({ data: wallet })
-        .mockResolvedValueOnce({ data: [] });
+      getWalletByUserId.mockResolvedValueOnce({ data: wallet });
+      getTransactionsByWalletId.mockResolvedValueOnce({ data: [] });
       wrapper = shallow(<TransactionHistoryContainer />);
       await flushPromises();
 
       expect(wrapper.find('NoTransactionsFound')).toHaveLength(1);
     });
 
-    it('should render transactions by ascending date', async () => {
+    it('should render transactions by ascending date when sort is called with setup date and order by ascending', async () => {
       const expectedResult = [
         transactions[4],
         transactions[3],
@@ -146,15 +175,47 @@ describe('TransactionHistoryContainer', () => {
       );
     });
 
-    it('should render transactions by ascending date', async () => {
-      const expectedResult = [
-        transactions[4],
-        transactions[3],
-        transactions[2],
-        transactions[1],
-        transactions[0]
-      ];
+    it('should render transactions by descending date when sort is called with setup date and order by descending', async () => {
+      const expectedResult = transactions;
       const sortColumn = 'date';
+      const orderBy = 'desc';
+
+      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by descending nominal when sort is called with setup nominal and order by descending', async () => {
+      const expectedResult = [
+        transactions[3],
+        transactions[0],
+        transactions[2],
+        transactions[4],
+        transactions[1]
+      ];
+      const sortColumn = 'nominal';
+      const orderBy = 'desc';
+
+      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by ascending nominal when sort is called with setup nominal and order by ascending', async () => {
+      const expectedResult = [
+        transactions[1],
+        transactions[4],
+        transactions[2],
+        transactions[0],
+        transactions[3]
+      ];
+      const sortColumn = 'nominal';
       const orderBy = 'asc';
 
       wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
@@ -165,12 +226,25 @@ describe('TransactionHistoryContainer', () => {
       );
     });
 
-    it('should render transactions by descending date', async () => {
-      const expectedResult = transactions;
-      const sortColumn = 'date';
-      const orderBy = 'desc';
+    it('should render transactions by filter description with keyword "Payslip 2019-11-28"', async () => {
+      const expectedResult = [transactions[0]];
+      const filterDescription = 'Payslip 2019-11-28';
 
-      wrapper.find('TransactionSort').simulate('sort', sortColumn, orderBy);
+      wrapper
+        .find('TransactionFilter')
+        .simulate('handleDescription', filterDescription);
+      await flushPromises();
+
+      expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
+        expectedResult
+      );
+    });
+
+    it('should render transactions by filter amount with keyword "7700000"', async () => {
+      const expectedResult = [transactions[0]];
+      const filterAmount = '7700000';
+
+      wrapper.find('TransactionFilter').simulate('handleAmount', filterAmount);
       await flushPromises();
 
       expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
