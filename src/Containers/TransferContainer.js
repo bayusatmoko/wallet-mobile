@@ -17,7 +17,6 @@ import getWalletByUserId from '../Services/getWalletByUserId';
 import getPayeeByUserId from '../Services/getPayeeByUserId';
 import PayeeList from '../Components/PayeeList';
 import AddPayeeForm from '../Components/AddPayeeForm';
-import axios from 'axios';
 import addPayee from '../Services/addPayee';
 
 class TransferContainer extends Component {
@@ -42,6 +41,13 @@ class TransferContainer extends Component {
     this.setState({ payees: data });
   }
 
+  _generateErrorMessage = error => {
+    if (error.response) {
+      return error.response.data.message;
+    }
+    return error.message;
+  };
+
   _handleSearch = async userEmail => {
     try {
       this.setState({ isLoading: true });
@@ -54,7 +60,7 @@ class TransferContainer extends Component {
       });
     } catch (error) {
       this.setState({
-        errorSearch: error.response.data.message,
+        errorSearch: this._generateErrorMessage(error),
         selectedReceiver: {}
       });
     }
@@ -68,7 +74,7 @@ class TransferContainer extends Component {
       this.setState({ balance: wallet.balance, errorTransaction: '' });
     } catch (error) {
       this.setState({
-        errorTransaction: error.response.data.message,
+        errorTransaction: this._generateErrorMessage(error),
         selectedReceiver: {}
       });
     }

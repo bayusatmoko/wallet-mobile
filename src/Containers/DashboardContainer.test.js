@@ -191,5 +191,17 @@ describe('DashboardContainer', () => {
 
       expect(wrapper.find('FailedNotification').length).toBe(1);
     });
+
+    it('should render FailedNotification when server is not running', async () => {
+      getUserById.mockRejectedValueOnce({ message: 'Network Error' });
+      getWalletByUserId.mockRejectedValueOnce({ message: 'Network Error' });
+      getLastTransactionsByWalletId.mockRejectedValueOnce({
+        message: 'Network Error'
+      });
+      wrapper = shallow(<DashboardContainer navigation={navigation} />);
+      await flushPromises();
+
+      expect(wrapper.find('FailedNotification').length).toBe(1);
+    });
   });
 });

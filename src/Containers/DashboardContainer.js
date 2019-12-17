@@ -34,6 +34,13 @@ export default class DashboardContainer extends React.Component {
     this.setState({ isRefreshing: false });
   };
 
+  _generateErrorMessage = error => {
+    if (error.response) {
+      return error.response.data.message;
+    }
+    return error.message;
+  };
+
   _fetchUser = async () => {
     try {
       const id = 1;
@@ -42,7 +49,7 @@ export default class DashboardContainer extends React.Component {
         user: response.data
       });
     } catch (error) {
-      this.setState({ errorMessage: error.response.data.message });
+      this.setState({ errorMessage: this._generateErrorMessage(error) });
     }
   };
 
@@ -56,7 +63,7 @@ export default class DashboardContainer extends React.Component {
       });
       this._fetchLastTransaction(response.data.id);
     } catch (error) {
-      this.setState({ errorMessage: error.response.data.message });
+      this.setState({ errorMessage: this._generateErrorMessage(error) });
     }
   };
 
@@ -68,7 +75,7 @@ export default class DashboardContainer extends React.Component {
         errorMessage: ''
       });
     } catch (error) {
-      this.setState({ errorMessage: error.response.data.message });
+      this.setState({ errorMessage: this._generateErrorMessage(error) });
     }
   };
 
