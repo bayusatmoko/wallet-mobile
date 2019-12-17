@@ -8,6 +8,8 @@ import WalletInfo from '../Components/WalletInfo';
 import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
 import getUserById from '../Services/getUserById';
 import getWalletByUserId from '../Services/getWalletByUserId';
+import Error from '../Components/Error';
+import NoTransactionsFound from '../Components/NoTransactionsFound';
 
 export default class DashboardContainer extends React.Component {
   constructor(props) {
@@ -75,20 +77,24 @@ export default class DashboardContainer extends React.Component {
     navigation.navigate(menuItem, { onRefresh: this._refreshData });
   };
 
+  _displayError() {
+    const { errorMessage, lastTransactions } = this.state;
+    if (errorMessage !== '') {
+      return <NoTransactionsFound />;
+    }
+    if (lastTransactions.length === 0) {
+      return <Error message={errorMessage} />;
+    }
+  }
+
   render() {
-    const {
-      wallet,
-      user,
-      lastTransactions,
-      isRefreshing,
-      errorMessage
-    } = this.state;
+    const { wallet, user, lastTransactions, isRefreshing } = this.state;
     return (
       <>
         <UserInfo user={user} />
         <WalletInfo wallet={wallet} />
         <MenuComponent onPress={this._handleMenuPress} />
-        {errorMessage !== '' && <FailedNotification message={errorMessage} />}
+        {this._displayError()}
         <LastTransaction
           isRefreshing={isRefreshing}
           onRefresh={this._refreshData}

@@ -166,10 +166,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 20
   },
-  textError: {
-    marginTop: 10,
-    fontSize: 20,
-    textAlign: 'center'
+  container: {
+    width: '80%',
+    alignSelf: 'center',
+    padding: 20,
+    backgroundColor: '#ffacae',
+    borderRadius: 10,
+    marginTop: 100
+  },
+  text: {
+    color: 'red',
+    fontSize: 25,
+    alignSelf: 'center'
   }
 });
 
