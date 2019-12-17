@@ -33,6 +33,18 @@ describe('ReceiverList', () => {
       expect(receiverItemWrapper.props().payee).toEqual(payees[0]);
     });
 
+    it('should render the list with the key', () => {
+      const wrapper = shallow(
+        <PayeeList payees={payees} onPressPayee={mockedOnPress} />
+      );
+      const keyExtractor = wrapper
+        .find('FlatList')
+        .props()
+        .keyExtractor(payees[0]);
+
+      expect(keyExtractor).toBe(payees[0].id.toString());
+    });
+
     it('should call onPress={} when ReceiverItem is clicked', () => {
       const wrapper = shallow(
         <PayeeList payees={payees} onPressPayee={mockedOnPress} />
