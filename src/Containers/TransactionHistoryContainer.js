@@ -19,13 +19,21 @@ export default class TransactionHistoryContainer extends React.Component {
       searchByDescription: '',
       searchAmount: '',
       sortColumn: TransactionSort.COLUMN.DATE,
-      orderBy: TransactionSort.ORDER.DESC
+      orderBy: TransactionSort.ORDER.DESC,
+      filterAmount: ''
     };
   }
 
   async componentDidMount() {
     await this._fetchWallet();
   }
+
+  _generateErrorMessage = error => {
+    if (error.response) {
+      return error.response.data.message;
+    }
+    return error.message;
+  };
 
   _fetchWallet = async () => {
     try {
@@ -38,9 +46,7 @@ export default class TransactionHistoryContainer extends React.Component {
       });
       this._fetchTransaction(response.data.id);
     } catch (error) {
-      this.setState({
-        error: error.message
-      });
+      this.setState({ error: this._generateErrorMessage(error) });
     }
   };
 
@@ -51,14 +57,7 @@ export default class TransactionHistoryContainer extends React.Component {
         transactions: response.data
       });
     } catch (error) {
-      if (error.response.data.statusCode !== 404) {
-        return this.setState({
-          error: error.response.data.message
-        });
-      }
-      return this.setState({
-        error: TransactionHistoryContainer.DOESNT_EXIST
-      });
+      this.setState({ error: this._generateErrorMessage(error) });
     }
   };
 
@@ -96,10 +95,14 @@ export default class TransactionHistoryContainer extends React.Component {
   }
 
   _filterByAmount = list => {
-    const { searchAmount } = this.state;
-    return list.filter(transaction =>
-      transaction.nominal.toString().includes(searchAmount)
-    );
+    const { searchAmount, filterAmount } = this.state;
+    if (filterAmount === 'gte') {
+      return list.filter(transaction => transaction.nominal >= searchAmount);
+    }
+    if (filterAmount === 'lte') {
+      return list.filter(transaction => transaction.nominal <= searchAmount);
+    }
+    return list;
   };
 
   _handleSort = (sortColumn, orderBy) => {
@@ -140,9 +143,10 @@ export default class TransactionHistoryContainer extends React.Component {
     });
   };
 
-  _handleAmount = newAmount => {
+  _handleAmount = (newAmount, filterAmount) => {
     this.setState({
-      searchAmount: newAmount
+      searchAmount: newAmount,
+      filterAmount
     });
   };
 

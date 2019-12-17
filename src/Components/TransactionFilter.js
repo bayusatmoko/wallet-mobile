@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, View } from 'react-native';
+import { TextInput, View, Button } from 'react-native';
 import styles from './walletInfo.style';
 
 class TransactionFilter extends Component {
@@ -7,7 +7,8 @@ class TransactionFilter extends Component {
     super(props);
     this.state = {
       description: '',
-      amount: null
+      amount: null,
+      filterAmount: 'lte'
     };
   }
 
@@ -21,10 +22,20 @@ class TransactionFilter extends Component {
 
   _handleAmount = text => {
     const { onHandleAmount } = this.props;
+    const { filterAmount } = this.state;
     this.setState({
       amount: text
     });
-    onHandleAmount(text);
+    onHandleAmount(text, filterAmount);
+  };
+
+  _changeFilterType = type => {
+    const { onHandleAmount } = this.props;
+    const { amount } = this.state;
+    this.setState({
+      filterAmount: type
+    });
+    onHandleAmount(amount, type);
   };
 
   render() {
@@ -36,6 +47,14 @@ class TransactionFilter extends Component {
           testID="input-description"
           onChangeText={text => this._handleDescription(text)}
           autoCapitalize="none"
+        />
+        <Button
+          title="Less than or equal"
+          onPress={() => this._changeFilterType('lte')}
+        />
+        <Button
+          title="Greater than or equal"
+          onPress={() => this._changeFilterType('gte')}
         />
         <TextInput
           placeholder="Filter By Amount"

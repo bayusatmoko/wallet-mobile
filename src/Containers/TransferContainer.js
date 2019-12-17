@@ -43,6 +43,13 @@ class TransferContainer extends Component {
     this.setState({ payees: data });
   }
 
+  _generateErrorMessage = error => {
+    if (error.response) {
+      return error.response.data.message;
+    }
+    return error.message;
+  };
+
   _handleSearch = async userEmail => {
     try {
       this.setState({ isLoading: true });
@@ -56,7 +63,7 @@ class TransferContainer extends Component {
       });
     } catch (error) {
       this.setState({
-        errorSearch: error.response.data.message,
+        errorSearch: this._generateErrorMessage(error),
         selectedReceiver: {}
       });
     }
