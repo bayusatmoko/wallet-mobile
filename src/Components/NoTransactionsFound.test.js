@@ -7,7 +7,7 @@ describe('NoTransactionFound', () => {
     let noTransactionsFound;
     let wrapper;
     beforeEach(() => {
-      noTransactionsFound = 'No Transaction Found';
+      noTransactionsFound = "Transactions Doesn't Exist";
       wrapper = shallow(<NoTransactionsFound />);
     });
     it('should render error', () => {

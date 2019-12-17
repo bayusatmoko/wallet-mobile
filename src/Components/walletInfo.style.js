@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import favouriteIcon from '../Assets/Images/favorites.png';
 
 const styles = StyleSheet.create({
   backgroundWallet: {
@@ -187,6 +186,19 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 20,
     height: 50
+  },
+  container: {
+    width: '80%',
+    alignSelf: 'center',
+    padding: 20,
+    backgroundColor: '#ffacae',
+    borderRadius: 10,
+    marginTop: 100
+  },
+  text: {
+    color: 'red',
+    fontSize: 25,
+    alignSelf: 'center'
   }
 });
 
