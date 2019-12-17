@@ -187,6 +187,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 20,
     height: 50
+  },
+  payeeTitle: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 15
   }
 });
 
