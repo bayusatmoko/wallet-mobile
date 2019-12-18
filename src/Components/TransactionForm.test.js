@@ -39,5 +39,33 @@ describe('TransactionForm', () => {
 
       expect(wrapper.find({ testID: 'text-error' }).length).toBe(1);
     });
+
+    it('should change the value of nominal input into 10000 when the button is pressed', () => {
+      wrapper.find({ testID: 'predefined-10k' }).simulate('press');
+      expect(wrapper.find({ testID: 'input-amount' }).props().value).toBe(
+        '10000'
+      );
+    });
+
+    it('should change the value of nominal input into 25000 when the button is pressed', () => {
+      wrapper.find({ testID: 'predefined-25k' }).simulate('press');
+      expect(wrapper.find({ testID: 'input-amount' }).props().value).toBe(
+        '25000'
+      );
+    });
+
+    it('should change the value of nominal input into 50000 when the button is pressed', () => {
+      wrapper.find({ testID: 'predefined-50k' }).simulate('press');
+      expect(wrapper.find({ testID: 'input-amount' }).props().value).toBe(
+        '50000'
+      );
+    });
+
+    it('should change the value of nominal input into 100000 when the button is pressed', () => {
+      wrapper.find({ testID: 'predefined-100k' }).simulate('press');
+      expect(wrapper.find({ testID: 'input-amount' }).props().value).toBe(
+        '100000'
+      );
+    });
   });
 });

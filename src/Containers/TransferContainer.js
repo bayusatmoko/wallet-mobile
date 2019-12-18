@@ -196,7 +196,7 @@ class TransferContainer extends Component {
             </>
           )}
           {isSubmitted && this._renderNotification()}
-          {!isSearched && (
+          {!isSearched && !payeeSelected && (
             <PayeeList payees={payees} onPressPayee={this._handlePayee} />
           )}
           {payeeAdded && <SuccessAddPayee />}

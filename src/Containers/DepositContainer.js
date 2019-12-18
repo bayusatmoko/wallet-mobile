@@ -1,6 +1,13 @@
-import React from 'react';
-import { ActivityIndicator, Modal, StyleSheet, View } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
+import React from 'react';
+import {
+  ActivityIndicator,
+  Keyboard,
+  Modal,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
 import FailedNotification from '../Components/FailedNotification';
 import SuccessNotification from '../Components/SuccessNotification';
 import TransactionForm from '../Components/TransactionForm';
@@ -90,14 +97,16 @@ class DepositContainer extends React.PureComponent {
   render() {
     const { isSubmitted, isLoading } = this.state;
     return (
-      <View>
-        {isLoading && this._renderLoading()}
-        <TransactionForm
-          title="Top up your wallet"
-          onSubmit={this._handleSubmit}
-        />
-        {isSubmitted && this._renderNotification()}
-      </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View>
+          {isLoading && this._renderLoading()}
+          <TransactionForm
+            title="Top up your wallet"
+            onSubmit={this._handleSubmit}
+          />
+          {isSubmitted && this._renderNotification()}
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

@@ -33,6 +33,7 @@ describe('TransactionFilter', () => {
 
     it('should call the props function with the filter amount value with filter type is greater than or equal', () => {
       const filterType = 'gte';
+      const anotherFilterType = 'lte';
       const filterAmount = jest.fn();
       const wrapper = shallow(
         <TransactionFilter onHandleAmount={filterAmount} />
@@ -42,12 +43,16 @@ describe('TransactionFilter', () => {
         .find('Button')
         .at(1)
         .simulate('press', filterType);
+      wrapper
+        .find('Button')
+        .at(0)
+        .simulate('press', anotherFilterType);
 
       expect(filterAmount).toHaveBeenCalledWith(null, filterType);
     });
 
     it('should call the props function with the filter amount value with filter type is less than or equal', () => {
-      const filterType = 'lte';
+      const filterType = 'gte';
       const filterAmount = jest.fn();
       const wrapper = shallow(
         <TransactionFilter onHandleAmount={filterAmount} />
@@ -55,7 +60,7 @@ describe('TransactionFilter', () => {
 
       wrapper
         .find('Button')
-        .at(0)
+        .at(1)
         .simulate('press', filterType);
 
       expect(filterAmount).toHaveBeenCalledWith(null, filterType);
