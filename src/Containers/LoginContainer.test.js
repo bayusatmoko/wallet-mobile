@@ -66,18 +66,8 @@ describe('LoginContainer', () => {
 
       expect(userLogin).toHaveBeenCalledWith(user);
       expect(SInfo.setItem).toHaveBeenNthCalledWith(1, 'token', token, {});
-      expect(SInfo.setItem).toHaveBeenNthCalledWith(
-        2,
-        'userId',
-        '1',
-        {}
-      );
-      expect(SInfo.setItem).toHaveBeenNthCalledWith(
-        3,
-        'walletId',
-        '1',
-        {}
-      );
+      expect(SInfo.setItem).toHaveBeenNthCalledWith(2, 'userId', '1', {});
+      expect(SInfo.setItem).toHaveBeenNthCalledWith(3, 'walletId', '1', {});
       expect(navigation.navigate).toHaveBeenCalledWith('Splash');
     });
   });

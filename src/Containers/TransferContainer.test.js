@@ -236,7 +236,7 @@ describe('TransferContainer', () => {
       wrapper.find('AddPayeeForm').simulate('addFavourite', payee);
       await flushPromises();
 
-      expect(wrapper.find('PayeeList').props().payees).toContainEqual(payee);
+      expect(wrapper.find('SuccessAddPayee')).toHaveLength(1);
     });
 
     it('should show loading indicator when searching for receiver', async () => {
@@ -263,7 +263,9 @@ describe('TransferContainer', () => {
     });
 
     it('should render FailedNotification when server is down', async () => {
-      axios.post.mockRejectedValue({ message: 'Network Error!' });
+      axios.post.mockRejectedValue({
+        response: { data: { message: 'Network Error!' } }
+      });
       wrapper = shallow(<TransferContainer API_URL={API_URL} />);
 
       wrapper.find('ReceiverSearch').simulate('submit', users[1].email);
