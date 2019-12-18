@@ -2,10 +2,11 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import SInfo from 'react-native-sensitive-info';
+import getSessionInfo from '../Utils/getSessionInfo';
 
 class SplashScreen extends React.PureComponent {
   async componentDidMount() {
-    const token = await SInfo.getItem('token', {});
+    const token = await SInfo.getItem(getSessionInfo.KEY_TOKEN, {});
     setTimeout(() => {
       if (token) {
         return this.props.navigation.navigate('App');

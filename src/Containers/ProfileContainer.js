@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, SafeAreaView, View } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import getUserById from '../Services/getUserById';
+import getSessionInfo from '../Utils/getSessionInfo';
 
 export default class ProfileContainer extends React.PureComponent {
   constructor(props) {
@@ -13,17 +14,17 @@ export default class ProfileContainer extends React.PureComponent {
     };
   }
   async componentDidMount() {
-    const userId = await SInfo.getItem('userId', {});
-    const token = await SInfo.getItem('token', {});
+    const sessionInfo = await getSessionInfo();
+    const { userId, token } = sessionInfo;
     const response = await getUserById(userId, token);
     this.setState({ user: response.data });
   }
 
   _logout = async () => {
     const { navigation } = this.props;
-    await SInfo.deleteItem('token', {});
-    await SInfo.deleteItem('userId', {});
-    await SInfo.deleteItem('walletId', {});
+    await SInfo.deleteItem(getSessionInfo.KEY_TOKEN, {});
+    await SInfo.deleteItem(getSessionInfo.KEY_USER_ID, {});
+    await SInfo.deleteItem(getSessionInfo.KEY_WALLET_ID, {});
     await navigation.navigate('Splash');
   };
 

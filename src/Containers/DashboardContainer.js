@@ -1,7 +1,5 @@
 import React from 'react';
 import SInfo from 'react-native-sensitive-info';
-import { Button } from 'react-native';
-import FailedNotification from '../Components/FailedNotification';
 import LastTransaction from '../Components/LastTransaction';
 import MenuComponent from '../Components/MenuComponent';
 import UserInfo from '../Components/UserInfo';
@@ -11,6 +9,7 @@ import getUserById from '../Services/getUserById';
 import getWalletByUserId from '../Services/getWalletByUserId';
 import Error from '../Components/Error';
 import NoTransactionsFound from '../Components/NoTransactionsFound';
+import getSessionInfo from '../Utils/getSessionInfo';
 
 export default class DashboardContainer extends React.Component {
   constructor(props) {
@@ -28,9 +27,8 @@ export default class DashboardContainer extends React.Component {
   }
 
   async componentDidMount() {
-    const token = await SInfo.getItem('token', {});
-    const userId = await SInfo.getItem('userId', {});
-    const walletId = await SInfo.getItem('walletId', {});
+    const sessionInfo = await getSessionInfo();
+    const { token, userId, walletId } = sessionInfo;
     this.setState({ token, userId, walletId });
     await this._refreshData();
   }

@@ -13,6 +13,7 @@ import SuccessNotification from '../Components/SuccessNotification';
 import TransactionForm from '../Components/TransactionForm';
 import addTransaction from '../Services/addTransaction';
 import getWalletByUserId from '../Services/getWalletByUserId';
+import getSessionInfo from '../Utils/getSessionInfo';
 
 class DepositContainer extends React.PureComponent {
   constructor(props) {
@@ -29,9 +30,8 @@ class DepositContainer extends React.PureComponent {
   }
 
   componentDidMount = async () => {
-    const token = await SInfo.getItem('token', {});
-    const userId = await SInfo.getItem('userId', {});
-    const walletId = await SInfo.getItem('walletId', {});
+    const sessionInfo = await getSessionInfo();
+    const { token, userId, walletId } = sessionInfo;
     this.setState({ token, userId, walletId });
   };
 

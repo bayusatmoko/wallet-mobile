@@ -8,6 +8,7 @@ import TransactionFilter from '../Components/TransactionFilter';
 import TransactionSort from '../Components/TransactionSort';
 import Error from '../Components/Error';
 import NoTransactionsFound from '../Components/NoTransactionsFound';
+import getSessionInfo from '../Utils/getSessionInfo';
 
 export default class TransactionHistoryContainer extends React.Component {
   constructor(props) {
@@ -29,9 +30,8 @@ export default class TransactionHistoryContainer extends React.Component {
   }
 
   async componentDidMount() {
-    const token = await SInfo.getItem('token', {});
-    const userId = await SInfo.getItem('userId', {});
-    const walletId = await SInfo.getItem('walletId', {});
+    const sessionInfo = await getSessionInfo();
+    const { token, userId, walletId } = sessionInfo;
     this.setState({ token, userId, walletId });
     await this._fetchWallet();
   }
