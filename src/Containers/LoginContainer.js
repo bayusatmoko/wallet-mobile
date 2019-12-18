@@ -51,8 +51,8 @@ export default class LoginContainer extends React.Component {
           {}
         );
       }
-      this.props.navigation.navigate('Splash');
       this.setState({ error: '' });
+      this.props.navigation.navigate('Splash');
     } catch (error) {
       this.setState({ error: this._generateErrorMessage(error) });
     }
@@ -112,19 +112,19 @@ export default class LoginContainer extends React.Component {
             }}
           />
         </View>
-        <View
-          style={{
-            alignSelf: 'center',
-            padding: 15,
-            backgroundColor: 'purple',
-            width: '90%',
-            alignItems: 'center',
-            borderRadius: 20
-          }}>
-          <TouchableOpacity title="Login" onPress={this._handlePress}>
+        <TouchableOpacity title="Login" onPress={this._handlePress}>
+          <View
+            style={{
+              alignSelf: 'center',
+              padding: 15,
+              backgroundColor: 'purple',
+              width: '90%',
+              alignItems: 'center',
+              borderRadius: 20
+            }}>
             <Text style={{ color: 'white' }}>Login</Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
         <View>
           <Text testID="text-error">{error}</Text>
         </View>

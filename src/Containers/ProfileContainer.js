@@ -92,21 +92,21 @@ export default class ProfileContainer extends React.PureComponent {
             {user.email}
           </Text>
         </View>
-        <View
-          style={{
-            width: '90%',
-            backgroundColor: '#B127FC',
-            alignSelf: 'center',
-            borderRadius: 20,
-            padding: 15,
-            alignItems: 'center'
-          }}>
-          <TouchableOpacity onPress={this._logout} testID="touchable-logout">
+        <TouchableOpacity onPress={this._logout} testID="touchable-logout">
+          <View
+            style={{
+              width: '90%',
+              backgroundColor: '#B127FC',
+              alignSelf: 'center',
+              borderRadius: 20,
+              padding: 15,
+              alignItems: 'center'
+            }}>
             <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>
               Sign Out
             </Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   }
