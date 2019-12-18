@@ -135,6 +135,18 @@ describe('TransferContainer', () => {
       expect(wrapper.find('FailedNotification').length).toBe(1);
     });
 
+    it('should render failed notification when failed to transfer', async () => {
+      axios.post.mockRejectedValue(Error('Network Error!'));
+      axios.get.mockRejectedValue(Error('Network Error!'));
+      wrapper = shallow(<TransferContainer API_URL={API_URL} />);
+      await flushPromises();
+
+      wrapper.find('ReceiverSearch').simulate('submit', users[1].email);
+      await flushPromises();
+
+      expect(wrapper.find('FailedNotification').length).toBe(1);
+    });
+
     it('should render success notification when the transaction is successful', async () => {
       wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
       await flushPromises();
@@ -257,7 +269,9 @@ describe('TransferContainer', () => {
     });
 
     it('should render FailedNotification when server is down', async () => {
-      axios.post.mockRejectedValue({ message: 'Network Error!' });
+      axios.post.mockRejectedValue({
+        response: { data: { message: 'Network Error!' } }
+      });
       wrapper = shallow(<TransferContainer API_URL={API_URL} />);
 
       wrapper.find('ReceiverSearch').simulate('submit', users[1].email);
