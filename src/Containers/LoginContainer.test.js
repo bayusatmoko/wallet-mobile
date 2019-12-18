@@ -61,7 +61,7 @@ describe('LoginContainer', () => {
       wrapper
         .find({ testID: 'input-password' })
         .simulate('changeText', user.password);
-      wrapper.find('Button').simulate('press');
+      wrapper.find('TouchableOpacity').simulate('press');
       await flushPromises();
 
       expect(userLogin).toHaveBeenCalledWith(user);
