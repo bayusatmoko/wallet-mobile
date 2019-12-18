@@ -1,9 +1,8 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Image, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createSwitchNavigator } from 'react-navigation';
 import background from '../Assets/Images/background.jpg';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import SplashScreen from '../Components/SplashScreen';
 import DashboardContainer from '../Containers/DashboardContainer';
 import DepositContainer from '../Containers/DepositContainer';
@@ -12,7 +11,8 @@ import TransactionHistoryContainer from '../Containers/TransactionHistoryContain
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import ProfileContainer from '../Containers/ProfileContainer';
 import LoginContainer from '../Containers/LoginContainer';
-import homeButton from '../home-button-bottom.png';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 const styles = StyleSheet.create({
   headerBackground: {
     height: '100%',
@@ -23,11 +23,14 @@ const styles = StyleSheet.create({
 const AuthNavigator = createStackNavigator(
   {
     Login: {
-      screen: LoginContainer,
-      backgroundColor: 'black'
+      screen: LoginContainer
     }
   },
   {
+    cardStyle: {
+      backgroundColor: 'white',
+      opacity: 0.9
+    },
     defaultNavigationOptions: {
       headerTintColor: 'black',
       headerTitleStyle: {
@@ -105,23 +108,27 @@ const AppNavigator = createStackNavigator(
   }
 );
 
+const getTabBarIcon = (navigation, focused, tintColor) => {
+  const { routeName } = navigation.state;
+  let IconComponent = Icon;
+  let iconName = 'home';
+  if (routeName === 'Profile') {
+    iconName = 'user';
+  }
+  return <IconComponent name={iconName} size={25} color={tintColor} />;
+};
+
 const AppBottomNavigator = createMaterialBottomTabNavigator(
   {
-    Home: {
-      screen: AppNavigator,
-      navigationOptions: {
-        tabBarLabel: (
-          <Image style={{ width: 30, height: 40 }} source={homeButton} />
-        )
-      }
-    },
+    Home: { screen: AppNavigator },
     Profile: { screen: ProfileNavigator }
   },
   {
-    initialRouteName: 'Home',
-    activeColor: '#f0edf6',
-    inactiveColor: '#3e2465',
-    barStyle: { backgroundColor: '#694fad' }
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) =>
+        getTabBarIcon(navigation, focused, tintColor)
+    }),
+    barStyle: { backgroundColor: 'rgb(255,255,255)' }
   }
 );
 
