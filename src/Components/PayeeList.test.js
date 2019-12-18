@@ -58,5 +58,13 @@ describe('ReceiverList', () => {
 
       expect(mockedOnPress).toHaveBeenCalledWith(payees[0]);
     });
+
+    it('should render text "No payees added"', () => {
+      const wrapper = shallow(
+        <PayeeList payees={[]} onPressPayee={mockedOnPress} />
+      );
+
+      expect(wrapper.find('Text').props().children).toBe('No payees added');
+    });
   });
 });
