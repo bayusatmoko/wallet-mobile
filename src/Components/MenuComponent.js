@@ -38,6 +38,12 @@ export default class MenuComponent extends React.PureComponent {
               <Text>Transaction</Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity onPress={this._handlePress('Analysis')}>
+            <View style={styles.menuTransaction}>
+              <Image style={styles.transactionImage} source={transaction} />
+              <Text>Analysis</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </>
     );

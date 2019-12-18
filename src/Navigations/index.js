@@ -6,6 +6,7 @@ import background from '../Assets/Images/background.jpg';
 import SplashScreen from '../Components/SplashScreen';
 import DashboardContainer from '../Containers/DashboardContainer';
 import DepositContainer from '../Containers/DepositContainer';
+import SpendingAnalysisContainer from '../Containers/SpendingAnalysisContainer';
 import TransferContainer from '../Containers/TransferContainer';
 import TransactionHistoryContainer from '../Containers/TransactionHistoryContainer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
@@ -85,6 +86,12 @@ const AppNavigator = createStackNavigator(
       screen: TransactionHistoryContainer,
       navigationOptions: {
         title: 'TRANSACTION HISTORY'
+      }
+    },
+    Analysis: {
+      screen: SpendingAnalysisContainer,
+      navigationOptions: {
+        title: 'Spending Analysis'
       }
     }
   },

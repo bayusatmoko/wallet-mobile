@@ -11,14 +11,14 @@ class SpendingChart extends React.PureComponent {
     let transferInTotal = 0;
     let transferTotal = 0;
     transactions.forEach(item => {
-      if (moment(item.createdAt).isBefore(minDate)) {
+      if (moment(item.updatedAt).isBefore(minDate)) {
         return false;
       }
-      if (item.type === TransactionItem.TYPE.DEPOSIT) {
+      if (item.type === 'DEPOSIT') {
         depositTotal += item.nominal;
         return true;
       }
-      if (item.receiverWalletId === Number(walletId)) {
+      if (Number(item.receiverWalletId) === Number(walletId)) {
         transferInTotal += item.nominal;
         return true;
       }
@@ -38,6 +38,8 @@ class SpendingChart extends React.PureComponent {
         name: 'Deposit',
         population: depositTotal,
         color: 'rgba(131, 167, 234, 1)',
+        borderWidth: 1,
+        borderColor: 'black',
         legendFontColor: '#7F7F7F',
         legendFontSize: 15
       },
@@ -45,6 +47,8 @@ class SpendingChart extends React.PureComponent {
         name: 'Transfer Masuk',
         population: transferInTotal,
         color: 'rgba(120, 167, 120, 1)',
+        borderWidth: 1,
+        borderColor: 'black',
         legendFontColor: '#7F7F7F',
         legendFontSize: 15
       },
@@ -52,6 +56,8 @@ class SpendingChart extends React.PureComponent {
         name: 'Transfer Keluar',
         population: transferTotal,
         color: '#F00',
+        borderWidth: 1,
+        borderColor: 'black',
         legendFontColor: '#7F7F7F',
         legendFontSize: 15
       }
@@ -76,10 +82,8 @@ class SpendingChart extends React.PureComponent {
           }}
           accessor="population"
           backgroundColor="transparent"
-          paddingLeft="15"
-          absolute
           style={{
-            margin: 8,
+            margin: 2,
             borderRadius: 8
           }}
         />
@@ -87,5 +91,26 @@ class SpendingChart extends React.PureComponent {
     );
   }
 }
+
+SpendingChart.DATE_RANGE = {
+  ONE_WEEK: moment()
+    .subtract(7, 'd')
+    .format('YYYY-MM-DD'),
+  TWO_WEEK: moment()
+    .subtract(14, 'd')
+    .format('YYYY-MM-DD'),
+  THREE_WEEK: moment()
+    .subtract(21, 'd')
+    .format('YYYY-MM-DD'),
+  ONE_MONTH: moment()
+    .subtract(1, 'm')
+    .format('YYYY-MM-DD'),
+  TWO_MONTH: moment()
+    .subtract(2, 'm')
+    .format('YYYY-MM-DD'),
+  THREE_MONTH: moment()
+    .subtract(3, 'm')
+    .format('YYYY-MM-DD')
+};
 
 export default SpendingChart;
