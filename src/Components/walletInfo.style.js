@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   backgroundImages: {
-    height: 220,
+    height: 250,
     width: '100%',
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40
@@ -61,12 +61,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   borderBalance: {
-    position: 'absolute',
-    top: 80,
-    left: 170,
-    marginLeft: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
+    marginRight: 20,
+    padding: 10,
+    marginTop: -120,
+    marginBottom: 50,
+    flexDirection: 'column',
+    alignSelf: 'flex-end',
     width: 220,
     borderRadius: 10,
     backgroundColor: '#002984',
