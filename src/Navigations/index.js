@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
 const AuthNavigator = createStackNavigator(
   {
     Login: {
-      screen: LoginContainer
+      screen: LoginContainer,
+      backgroundColor: 'black'
     }
   },
   {
@@ -31,8 +32,7 @@ const AuthNavigator = createStackNavigator(
       headerTitleStyle: {
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 20,
-        alignSelf: 'center'
+        fontSize: 20
       },
       header: null
     }
