@@ -125,7 +125,6 @@ class TransferContainer extends Component {
     this.setState({
       isSearched: true,
       payeeSelected: true,
-      payees: [],
       isSubmitted: false,
       selectedReceiver: {
         name: payee.payeeData.name,
@@ -196,7 +195,7 @@ class TransferContainer extends Component {
             </>
           )}
           {isSubmitted && this._renderNotification()}
-          {!isSearched && !payeeSelected && (
+          {!isSearched && (
             <PayeeList payees={payees} onPressPayee={this._handlePayee} />
           )}
           {payeeAdded && <SuccessAddPayee />}

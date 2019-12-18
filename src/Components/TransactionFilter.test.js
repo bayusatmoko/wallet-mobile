@@ -18,52 +18,41 @@ describe('TransactionFilter', () => {
     });
 
     it('should call the props function with the filter amount value', () => {
-      const searchAmount = '9000';
-      const filterType = 'lte';
+      const amountMinimum = '9000';
+      const defaultAmountMaximum = 99999999;
       const filterAmount = jest.fn();
       const wrapper = shallow(
         <TransactionFilter onHandleAmount={filterAmount} />
       );
 
-      const inputAmount = wrapper.find({ testID: 'input-amount' });
-      inputAmount.simulate('changeText', searchAmount);
+      const inputAmountMinimum = wrapper.find({
+        testID: 'input-amount-minimum'
+      });
+      inputAmountMinimum.simulate('changeText', amountMinimum);
 
-      expect(filterAmount).toHaveBeenCalledWith(searchAmount, filterType);
+      expect(filterAmount).toHaveBeenCalledWith(
+        amountMinimum,
+        defaultAmountMaximum
+      );
     });
 
     it('should call the props function with the filter amount value with filter type is greater than or equal', () => {
-      const filterType = 'gte';
-      const anotherFilterType = 'lte';
+      const defaultAmountMinimum = 0;
+      const amountMaximum = '1000000';
       const filterAmount = jest.fn();
       const wrapper = shallow(
         <TransactionFilter onHandleAmount={filterAmount} />
       );
 
-      wrapper
-        .find('Button')
-        .at(1)
-        .simulate('press', filterType);
-      wrapper
-        .find('Button')
-        .at(0)
-        .simulate('press', anotherFilterType);
+      const inputAmountMaximum = wrapper.find({
+        testID: 'input-amount-maximum'
+      });
+      inputAmountMaximum.simulate('changeText', amountMaximum);
 
-      expect(filterAmount).toHaveBeenCalledWith(null, filterType);
-    });
-
-    it('should call the props function with the filter amount value with filter type is less than or equal', () => {
-      const filterType = 'gte';
-      const filterAmount = jest.fn();
-      const wrapper = shallow(
-        <TransactionFilter onHandleAmount={filterAmount} />
+      expect(filterAmount).toHaveBeenCalledWith(
+        defaultAmountMinimum,
+        amountMaximum
       );
-
-      wrapper
-        .find('Button')
-        .at(1)
-        .simulate('press', filterType);
-
-      expect(filterAmount).toHaveBeenCalledWith(null, filterType);
     });
   });
 });
