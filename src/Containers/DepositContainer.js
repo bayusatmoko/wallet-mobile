@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import SInfo from 'react-native-sensitive-info';
+import React from 'react';
 import {
   ActivityIndicator,
   Keyboard,
@@ -12,17 +13,27 @@ import SuccessNotification from '../Components/SuccessNotification';
 import TransactionForm from '../Components/TransactionForm';
 import addTransaction from '../Services/addTransaction';
 import getWalletByUserId from '../Services/getWalletByUserId';
+import getSessionInfo from '../Utils/getSessionInfo';
 
-class DepositContainer extends Component {
+class DepositContainer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      token: '',
+      userId: 1,
+      walletId: 1,
       errorTransaction: '',
       isSubmitted: false,
       isLoading: false,
       balance: 0
     };
   }
+
+  componentDidMount = async () => {
+    const sessionInfo = await getSessionInfo();
+    const { token, userId, walletId } = sessionInfo;
+    this.setState({ token, userId, walletId });
+  };
 
   _generateErrorMessage = error => {
     if (error.response) {
@@ -32,10 +43,10 @@ class DepositContainer extends Component {
   };
 
   _addTransaction = async newTransaction => {
-    const USER_ID = 1;
+    const { userId, token } = this.state;
     try {
-      await addTransaction(newTransaction);
-      const { data: wallet } = await getWalletByUserId(USER_ID);
+      await addTransaction(newTransaction, token);
+      const { data: wallet } = await getWalletByUserId(userId, token);
       this.setState({ balance: wallet.balance, errorTransaction: '' });
     } catch (error) {
       this.setState({ errorTransaction: this._generateErrorMessage(error) });
@@ -48,7 +59,7 @@ class DepositContainer extends Component {
   };
 
   _handleSubmit = async ({ nominal, description }) => {
-    const walletId = 1;
+    const { walletId, token } = this.state;
     const newTransaction = {
       walletId,
       receiverWalletId: walletId,
@@ -57,7 +68,7 @@ class DepositContainer extends Component {
       type: 'DEPOSIT'
     };
     this.setState({ isLoading: true });
-    await this._addTransaction(newTransaction);
+    await this._addTransaction(newTransaction, token);
     this.setState({ isSubmitted: true });
     await this._updateDashboard();
   };

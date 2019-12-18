@@ -1,9 +1,11 @@
 import config from '../../config';
 import axios from 'axios';
 
-const getWalletByUserId = async userId => {
+const getWalletByUserId = async (userId, token) => {
   const fetchUserUrl = `${config.API_URL}/users/${userId}/wallets`;
-  const response = await axios.get(fetchUserUrl);
+  const response = await axios.get(fetchUserUrl, {
+    headers: { Authorization: token }
+  });
   return response;
 };
 

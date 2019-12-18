@@ -1,13 +1,14 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import axios from 'axios';
+import SInfo from 'react-native-sensitive-info';
+import { when } from 'jest-when';
 import DepositContainer from './DepositContainer';
-import getUserById from '../Services/getUserById';
-import getWalletByUserId from '../Services/getWalletByUserId';
-import getLastTransactionsByWalletId from '../Services/getLastTransactionsByWalletId';
-import DashboardContainer from './DashboardContainer';
 
 jest.mock('axios');
+jest.mock('react-native-sensitive-info', () => {
+  return { setItem: jest.fn(), getItem: jest.fn() };
+});
 
 describe('DepositContainer', () => {
   let wrapper;
@@ -35,6 +36,13 @@ describe('DepositContainer', () => {
     };
     axios.post.mockResolvedValue({ data: transaction });
     axios.get.mockResolvedValue({ data: wallet });
+    when(SInfo.getItem)
+      .calledWith('token')
+      .mockResolvedValue('token')
+      .calledWith('userId')
+      .mockResolvedValue('1')
+      .calledWith('walletId')
+      .mockResolvedValue('1');
     wrapper = shallow(<DepositContainer navigation={navigation} />);
   });
 
@@ -48,10 +56,7 @@ describe('DepositContainer', () => {
       wrapper.find('TransactionForm').simulate('submit', transaction);
       await flushPromises();
 
-      expect(axios.post).toHaveBeenCalledWith(
-        `${API_URL}/transactions`,
-        transaction
-      );
+      expect(axios.post).toHaveBeenCalledTimes(1);
     });
 
     it('should call onRefresh when button submit is clicked', async () => {

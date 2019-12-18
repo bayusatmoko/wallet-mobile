@@ -1,27 +1,38 @@
 import axios from 'axios';
 import config from '../../config';
-import addTransaction from './addTransaction';
 import getUserByEmail from './getUserByEmaill';
 import getUserById from './getUserById';
 import getWalletByUserId from './getWalletByUserId';
 import getLastTransactionsByWalletId from './getLastTransactionsByWalletId';
-import addPayee from "./addPayee";
+import findUser from './findUser';
+import addPayee from './addPayee';
+import userLogin from './userLogin';
 
 jest.mock('axios');
 
 describe('Service', () => {
+  let userInfo;
+  let errorLogin;
+  let url;
+  beforeEach(() => {
+    userInfo = {
+      id: 1,
+      name: 'Huda',
+      phoneNumber: '08237283',
+      email: 'huda@gmail.com'
+    };
+    url = 'http://localhost:3000';
+    errorLogin = {
+      data: {
+        message: '"password" length must be at least 8 characters long'
+      }
+    };
+  });
   afterEach(() => {
     jest.resetAllMocks();
   });
   describe('getUserById', () => {
     it('should return user data when fetch from server', async () => {
-      const userInfo = {
-        id: 1,
-        name: 'Huda',
-        phoneNumber: '08237283',
-        email: 'huda@gmail.com'
-      };
-
       axios.get.mockResolvedValueOnce({ data: userInfo });
 
       const response = await getUserById(userInfo.id);
@@ -155,6 +166,36 @@ describe('Service', () => {
     });
   });
 
+  describe('findUser', () => {
+    it('should return user data when login with email and password', async () => {
+      const payload = {
+        username: 'fadelay@gmail.com',
+        password: 'Bankbtpn99'
+      };
+
+      axios.post.mockResolvedValueOnce({ data: userInfo });
+
+      const response = await findUser(payload.username, payload.password);
+
+      expect(response.data).toEqual(userInfo);
+      expect(axios.post).toHaveBeenCalledWith(`${url}/login`, payload);
+    });
+
+    it('should return user data when login with phonenumber and password', async () => {
+      const payload = {
+        username: '004516728312',
+        password: 'Bankbtpn99'
+      };
+
+      axios.post.mockResolvedValueOnce({ data: userInfo });
+
+      const response = await findUser(payload.username, payload.password);
+
+      expect(response.data).toEqual(userInfo);
+      expect(axios.post).toHaveBeenCalledWith(`${url}/login`, payload);
+    });
+  });
+
   describe('getPayeeByUserId', () => {
     it('should return payees when fetch from server by user id', async () => {
       const payees = [
@@ -198,10 +239,26 @@ describe('Service', () => {
 
       await addPayee(payee);
 
-      expect(axios.post).toHaveBeenCalledWith(
-        `${config.API_URL}/payees`,
-        payee
-      );
+      expect(axios.post).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('login', () => {
+    let user;
+    let token;
+    beforeEach(() => {
+      user = {
+        username: 'fadelchaidarf@gmail.com',
+        password: 'Bankbtpn99'
+      };
+      token = 'bayukecil';
+    });
+    it('should send username and password to server and get token', async () => {
+      axios.post.mockResolvedValueOnce({ data: token });
+
+      await userLogin(user);
+
+      expect(axios.post).toHaveBeenCalledWith(`${config.API_URL}/login`, user);
     });
   });
 });
