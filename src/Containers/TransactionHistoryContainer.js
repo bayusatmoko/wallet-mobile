@@ -1,9 +1,10 @@
 import React from 'react';
 import SInfo from 'react-native-sensitive-info';
+import { LineChart, PieChart } from 'react-native-chart-kit';
 import TransactionHistory from '../Components/TransactionHistory';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import getWalletByUserId from '../Services/getWalletByUserId';
-import { ScrollView, View } from 'react-native';
+import { Dimensions } from 'react-native';
 import TransactionFilter from '../Components/TransactionFilter';
 import TransactionSort from '../Components/TransactionSort';
 import Error from '../Components/Error';
@@ -162,8 +163,76 @@ export default class TransactionHistoryContainer extends React.Component {
     this.setState({ searchAmountMin, searchAmountMax });
   };
 
+  _calculateTransactionData = () => {
+    const { transactions, walletId } = this.state;
+    let depositTotal = 0;
+    let transferInTotal = 0;
+    let transferTotal = 0;
+    transactions.forEach(item => {
+      if (item.type === 'DEPOSIT') {
+        depositTotal += item.nominal;
+        return true;
+      }
+      if (item.receiverWalletId === Number(walletId)) {
+        transferInTotal += item.nominal;
+        return true;
+      }
+      transferTotal += item.nominal;
+    });
+    return { depositTotal, transferInTotal, transferTotal };
+  };
+
   render() {
-    return <>{this._displayTransaction()}</>;
+    const chartData = [
+      {
+        name: 'Deposit',
+        population: this._calculateTransactionData().depositTotal,
+        color: 'rgba(131, 167, 234, 1)',
+        legendFontColor: '#7F7F7F',
+        legendFontSize: 15
+      },
+      {
+        name: 'Transfer Masuk',
+        population: this._calculateTransactionData().transferInTotal,
+        color: 'rgba(120, 167, 120, 1)',
+        legendFontColor: '#7F7F7F',
+        legendFontSize: 15
+      },
+      {
+        name: 'Transfer Keluar',
+        population: this._calculateTransactionData().transferTotal,
+        color: '#F00',
+        legendFontColor: '#7F7F7F',
+        legendFontSize: 15
+      }
+    ];
+    return (
+      <>
+        <PieChart
+          data={chartData}
+          width={Dimensions.get('window').width}
+          height={220}
+          chartConfig={{
+            backgroundColor: '#e26a00',
+            backgroundGradientFrom: '#fb8c00',
+            backgroundGradientTo: '#ffa726',
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16
+            }
+          }}
+          accessor="population"
+          backgroundColor="transparent"
+          paddingLeft="15"
+          absolute
+          style={{
+            margin: 8,
+            borderRadius: 16
+          }}
+        />
+        {this._displayTransaction()}
+      </>
+    );
   }
 }
 TransactionHistoryContainer.DOESNT_EXIST = "Transaction doesn't exist!";
