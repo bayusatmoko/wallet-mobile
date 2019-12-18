@@ -21,7 +21,8 @@ export default class TransactionHistoryContainer extends React.Component {
       transactions: [],
       error: '',
       searchByDescription: '',
-      searchAmount: '',
+      searchAmountMin: 0,
+      searchAmountMax: 99999999,
       sortColumn: TransactionSort.COLUMN.DATE,
       orderBy: TransactionSort.ORDER.DESC,
       filterAmount: ''
@@ -102,12 +103,13 @@ export default class TransactionHistoryContainer extends React.Component {
   }
 
   _filterByAmount = list => {
-    const { searchAmount, filterAmount } = this.state;
-    if (filterAmount === 'gte') {
-      return list.filter(transaction => transaction.nominal >= searchAmount);
-    }
-    if (filterAmount === 'lte') {
-      return list.filter(transaction => transaction.nominal <= searchAmount);
+    const { searchAmountMin, searchAmountMax } = this.state;
+    if (searchAmountMin && searchAmountMax) {
+      return list.filter(
+        transaction =>
+          transaction.nominal >= searchAmountMin &&
+          transaction.nominal <= searchAmountMax
+      );
     }
     return list;
   };
@@ -150,11 +152,8 @@ export default class TransactionHistoryContainer extends React.Component {
     });
   };
 
-  _handleAmount = (newAmount, filterAmount) => {
-    this.setState({
-      searchAmount: newAmount,
-      filterAmount
-    });
+  _handleAmount = (searchAmountMin, searchAmountMax) => {
+    this.setState({ searchAmountMin, searchAmountMax });
   };
 
   render() {

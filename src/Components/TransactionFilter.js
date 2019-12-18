@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, View, Button } from 'react-native';
+import { TextInput, View, Text } from 'react-native';
 import styles from './walletInfo.style';
 
 class TransactionFilter extends Component {
@@ -7,8 +7,8 @@ class TransactionFilter extends Component {
     super(props);
     this.state = {
       description: '',
-      amount: null,
-      filterAmount: 'lte'
+      amountMinimum: 0,
+      amountMaximum: 99999999
     };
   }
 
@@ -20,25 +20,26 @@ class TransactionFilter extends Component {
     onHandleDescription(text);
   };
 
-  _handleAmount = text => {
+  _handleAmountMinimum = text => {
     const { onHandleAmount } = this.props;
-    const { filterAmount } = this.state;
+    const { amountMaximum } = this.state;
     this.setState({
-      amount: text
+      amountMinimum: text
     });
-    onHandleAmount(text, filterAmount);
+    onHandleAmount(text, amountMaximum);
   };
 
-  _changeFilterType = type => {
+  _handleAmountMaximum = text => {
     const { onHandleAmount } = this.props;
-    const { amount } = this.state;
+    const { amountMinimum } = this.state;
     this.setState({
-      filterAmount: type
+      amountMaximum: text
     });
-    onHandleAmount(amount, type);
+    onHandleAmount(amountMinimum, text);
   };
 
   render() {
+    const {amountMinimum, amountMaximum} = this.state;
     return (
       <View>
         <TextInput
@@ -48,27 +49,46 @@ class TransactionFilter extends Component {
           onChangeText={text => this._handleDescription(text)}
           autoCapitalize="none"
         />
-        <Button
-          title="Less than or equal"
-          onPress={() => this._changeFilterType('lte')}
-        />
-        <Button
-          title="Greater than or equal"
-          onPress={() => this._changeFilterType('gte')}
-        />
-        <TextInput
-          placeholder="Filter By Amount"
-          style={{
-            marginLeft: 10,
-            borderBottomWidth: 1,
-            marginBottom: 30,
-            marginTop: 30,
-            width: '90%'
-          }}
-          testID="input-amount"
-          onChangeText={text => this._handleAmount(text)}
-          autoCapitalize="none"
-        />
+        <View style={{ flexDirection: 'row' }}>
+          <TextInput
+            placeholder="Minimum Amount"
+            style={{
+              marginLeft: '2%',
+              borderBottomWidth: 1,
+              marginBottom: 30,
+              marginTop: 30,
+              width: '40%'
+            }}
+            testID="input-amount-minimum"
+            onChangeText={text => this._handleAmountMinimum(text)}
+            autoCapitalize="none"
+            value={amountMinimum.toString()}
+          />
+          <Text
+            style={{
+              marginLeft: '3%',
+              marginRight: '3%',
+              borderBottomWidth: 1,
+              marginBottom: 30,
+              marginTop: 30
+            }}>
+            {'-'}
+          </Text>
+          <TextInput
+            placeholder="Maximum Amount"
+            style={{
+              marginRight: '2%',
+              borderBottomWidth: 1,
+              marginBottom: 30,
+              marginTop: 30,
+              width: '40%'
+            }}
+            testID="input-amount-maximum"
+            onChangeText={text => this._handleAmountMaximum(text)}
+            autoCapitalize="none"
+            value={amountMaximum.toString()}
+          />
+        </View>
       </View>
     );
   }
