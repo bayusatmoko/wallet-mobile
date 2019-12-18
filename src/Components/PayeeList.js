@@ -11,9 +11,14 @@ const PayeeList = props => {
     onPressPayee(item);
   };
 
+  let listTitle = 'No payees added';
+  if (payees.length > 0) {
+    listTitle = 'My Favourite Payees';
+  }
+
   return (
     <View>
-      <Text style={styles.payeeTitle}>My Favourite Payees</Text>
+      <Text style={styles.payeeTitle}>{listTitle}</Text>
       <FlatList
         data={payees}
         keyExtractor={item => `${item.id}`}
