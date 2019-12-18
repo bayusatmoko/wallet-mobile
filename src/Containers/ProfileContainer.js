@@ -1,8 +1,15 @@
 import React from 'react';
-import { TouchableOpacity, Text, SafeAreaView, View } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  SafeAreaView,
+  View,
+  StyleSheet
+} from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import getUserById from '../Services/getUserById';
 import getSessionInfo from '../Utils/getSessionInfo';
+import { Gravatar } from 'react-native-gravatar';
 
 export default class ProfileContainer extends React.PureComponent {
   constructor(props) {
@@ -13,6 +20,7 @@ export default class ProfileContainer extends React.PureComponent {
       }
     };
   }
+
   async componentDidMount() {
     const sessionInfo = await getSessionInfo();
     const { userId, token } = sessionInfo;
@@ -30,54 +38,42 @@ export default class ProfileContainer extends React.PureComponent {
 
   render() {
     const { user } = this.state;
-    const nameInitials = user.name
-      .split(' ')
-      .map((word, index) => {
-        if (index < 2) {
-          return word.charAt(0);
-        }
-      })
-      .join('');
+    // const nameInitials = user.name
+    //   .split(' ')
+    //   .map((word, index) => {
+    //     if (index < 2) {
+    //       return word.charAt(0);
+    //     }
+    //   })
+    //   .join('');
     return (
       <SafeAreaView>
-        <View style={{ backgroundColor: '#B127FC', padding: 20 }}>
-          <View
-            style={{
-              borderRadius: 50,
-              width: 100,
-              height: 100,
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignSelf: 'center'
-            }}>
-            <Text
-              style={{ fontSize: 70, color: 'whitesmoke' }}
-              testID="text-initial">
-              {nameInitials}
-            </Text>
+        <View style={styles.borderInitial}>
+          <View style={styles.borderGravatar}>
+            <Gravatar
+              options={{
+                email: 'huda.wiratama@yahoo.com',
+                parameters: { size: '200', d: 'mm' },
+                secure: true
+              }}
+              style={styles.roundedProfileImage}
+            />
           </View>
         </View>
-        <View style={{ alignSelf: 'center', marginTop: 20, marginBottom: 10 }}>
-          <Text style={{ fontSize: 30, color: 'black' }} testID="text-name">
+        <View style={styles.borderName}>
+          <Text style={styles.textName} testID="text-name">
             {user.name}
           </Text>
         </View>
-        <View
-          style={{
-            backgroundColor: '#B127FC',
-            height: 2,
-            width: '90%',
-            alignSelf: 'center'
-          }}
-        />
+        <View style={styles.borderDivider} />
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             margin: 20
           }}>
-          <Text style={{ fontSize: 15 }}>Phone Number</Text>
-          <Text style={{ fontSize: 15 }} testID="text-phone">
+          <Text style={styles.textPhone}>Phone Number</Text>
+          <Text style={styles.textPhone} testID="text-phone">
             {user.phoneNumber}
           </Text>
         </View>
@@ -87,27 +83,79 @@ export default class ProfileContainer extends React.PureComponent {
             justifyContent: 'space-between',
             margin: 20
           }}>
-          <Text style={{ fontSize: 15 }}>Email</Text>
-          <Text style={{ fontSize: 15 }} testID="text-email">
+          <Text style={styles.textEmail}>Email</Text>
+          <Text style={styles.textEmail} testID="text-email">
             {user.email}
           </Text>
         </View>
         <TouchableOpacity onPress={this._logout} testID="touchable-logout">
-          <View
-            style={{
-              width: '90%',
-              backgroundColor: '#B127FC',
-              alignSelf: 'center',
-              borderRadius: 20,
-              padding: 15,
-              alignItems: 'center'
-            }}>
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>
-              Sign Out
-            </Text>
+          <View style={styles.borderButton}>
+            <Text style={styles.textSignOut}>Sign Out</Text>
           </View>
         </TouchableOpacity>
       </SafeAreaView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  borderInitial: {
+    backgroundColor: '#B127FC',
+    padding: 20
+  },
+  contentInitial: {
+    width: 100,
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  textInitial: {
+    fontSize: 70,
+    color: 'whitesmoke'
+  },
+  borderName: {
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 10
+  },
+  textName: {
+    fontSize: 30,
+    color: 'black'
+  },
+  borderDivider: {
+    backgroundColor: '#B127FC',
+    height: 2,
+    width: '90%',
+    alignSelf: 'center'
+  },
+  textPhone: {
+    fontSize: 15
+  },
+  textEmail: {
+    fontSize: 15
+  },
+  borderButton: {
+    width: '90%',
+    backgroundColor: '#B127FC',
+    alignSelf: 'center',
+    borderRadius: 20,
+    padding: 15,
+    alignItems: 'center'
+  },
+  textSignOut: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15
+  },
+  roundedProfileImage: {
+    width: 100,
+    height: 100,
+    borderWidth: 3,
+    borderColor: 'white',
+    borderRadius: 50
+  },
+  borderGravatar: {
+    alignSelf: 'center'
+  }
+});

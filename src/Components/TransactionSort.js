@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
   },
   sortImage: {
     width: 20,
-    height: 20
+    height: 20,
+    marginLeft: '5%'
   }
 });
 

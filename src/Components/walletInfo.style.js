@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     width: 220,
     borderRadius: 10,
-    backgroundColor: '#002984',
+    backgroundColor: '#8127fc',
     fontWeight: 'bold',
     fontSize: 30,
     color: 'white'
@@ -115,29 +115,32 @@ const styles = StyleSheet.create({
   },
   textDate: {
     backgroundColor: 'lightgrey',
-    padding: 10,
+    padding: '3%',
     color: 'black'
   },
   textType: {
     marginBottom: 5
   },
   inputDescription: {
-    marginLeft: 10,
     borderBottomWidth: 1,
+    borderBottomColor: 'grey',
     marginBottom: 10,
-    marginTop: 10,
-    width: '90%'
+    fontSize: 20,
+    height: 50,
+    width: '90%',
+    marginTop: 20,
+    alignSelf: 'center'
   },
   menuTransfer: {
     alignItems: 'center'
   },
   leftPanel: {
     marginTop: 10,
-    paddingLeft: 10
+    paddingLeft: '3%'
   },
   rightPanel: {
     flexDirection: 'row',
-    paddingLeft: 10,
+    paddingLeft: '3%',
     marginBottom: 10,
     justifyContent: 'space-between'
   },
@@ -151,10 +154,12 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   itemTransactionDeposit: {
-    color: 'green'
+    color: 'green',
+    marginRight: '2%'
   },
   itemTransactionTransfer: {
-    color: 'red'
+    color: 'red',
+    marginRight: '2%'
   },
   backgroundError: {
     backgroundColor: 'red',

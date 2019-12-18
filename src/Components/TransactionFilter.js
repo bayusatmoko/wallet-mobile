@@ -39,7 +39,7 @@ class TransactionFilter extends Component {
   };
 
   render() {
-    const {amountMinimum, amountMaximum} = this.state;
+    const { amountMinimum, amountMaximum } = this.state;
     return (
       <View>
         <TextInput
@@ -49,15 +49,19 @@ class TransactionFilter extends Component {
           onChangeText={text => this._handleDescription(text)}
           autoCapitalize="none"
         />
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
           <TextInput
             placeholder="Minimum Amount"
             style={{
               marginLeft: '2%',
-              borderBottomWidth: 1,
               marginBottom: 30,
-              marginTop: 30,
-              width: '40%'
+              marginTop: 10,
+              width: '40%',
+              borderBottomWidth: 1,
+              borderBottomColor: 'grey',
+              fontSize: 20,
+              height: 50,
+              alignSelf: 'center'
             }}
             testID="input-amount-minimum"
             onChangeText={text => this._handleAmountMinimum(text)}
@@ -80,8 +84,12 @@ class TransactionFilter extends Component {
               marginRight: '2%',
               borderBottomWidth: 1,
               marginBottom: 30,
-              marginTop: 30,
-              width: '40%'
+              width: '40%',
+              marginTop: 10,
+              borderBottomColor: 'grey',
+              fontSize: 20,
+              height: 50,
+              alignSelf: 'center'
             }}
             testID="input-amount-maximum"
             onChangeText={text => this._handleAmountMaximum(text)}

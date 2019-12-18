@@ -6,6 +6,7 @@ import {
   Modal,
   StyleSheet,
   TouchableWithoutFeedback,
+  ScrollView,
   View
 } from 'react-native';
 import FailedNotification from '../Components/FailedNotification';
@@ -98,14 +99,14 @@ class DepositContainer extends React.PureComponent {
     const { isSubmitted, isLoading } = this.state;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View>
+        <ScrollView>
           {isLoading && this._renderLoading()}
           <TransactionForm
             title="Top up your wallet"
             onSubmit={this._handleSubmit}
           />
           {isSubmitted && this._renderNotification()}
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     );
   }

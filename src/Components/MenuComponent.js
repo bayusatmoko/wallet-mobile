@@ -39,6 +39,7 @@ export default class MenuComponent extends React.PureComponent {
             </View>
           </TouchableOpacity>
         </View>
+        <View style={{ borderWidth: 4, borderColor: 'whitesmoke', marginTop: 30 }} />
       </>
     );
   }
