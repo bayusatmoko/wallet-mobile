@@ -47,7 +47,7 @@ describe('TransactionFilter', () => {
     });
 
     it('should call the props function with the filter amount value with filter type is less than or equal', () => {
-      const filterType = 'lte';
+      const filterType = 'gte';
       const filterAmount = jest.fn();
       const wrapper = shallow(
         <TransactionFilter onHandleAmount={filterAmount} />
