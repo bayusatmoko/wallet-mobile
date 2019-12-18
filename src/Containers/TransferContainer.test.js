@@ -230,7 +230,7 @@ describe('TransferContainer', () => {
       wrapper.find('AddPayeeForm').simulate('addFavourite', payee);
       await flushPromises();
 
-      expect(wrapper.find('PayeeList').props().payees).toContainEqual(payee);
+      expect(wrapper.find('SuccessAddPayee')).toHaveLength(1);
     });
 
     it('should show loading indicator when searching for receiver', async () => {

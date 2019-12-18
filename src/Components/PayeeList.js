@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import PayeeItem from './PayeeItem';
 import styles from './walletInfo.style';
@@ -12,13 +12,16 @@ const PayeeList = props => {
   };
 
   return (
-    <FlatList
-      data={payees}
-      keyExtractor={item => `${item.id}`}
-      renderItem={({ item }) => (
-        <PayeeItem payee={item} onPressPayee={_handlePress(item)} />
-      )}
-    />
+    <View>
+      <Text style={styles.payeeTitle}>My Favourite Payees</Text>
+      <FlatList
+        data={payees}
+        keyExtractor={item => `${item.id}`}
+        renderItem={({ item }) => (
+          <PayeeItem payee={item} onPressPayee={_handlePress(item)} />
+        )}
+      />
+    </View>
   );
 };
 
