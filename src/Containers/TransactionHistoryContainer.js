@@ -1,4 +1,5 @@
 import React from 'react';
+import SInfo from 'react-native-sensitive-info';
 import TransactionHistory from '../Components/TransactionHistory';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import getWalletByUserId from '../Services/getWalletByUserId';
@@ -7,17 +8,22 @@ import TransactionFilter from '../Components/TransactionFilter';
 import TransactionSort from '../Components/TransactionSort';
 import Error from '../Components/Error';
 import NoTransactionsFound from '../Components/NoTransactionsFound';
+import getSessionInfo from '../Utils/getSessionInfo';
 
 export default class TransactionHistoryContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: 1,
+      walletId: 1,
+      token: '',
       wallet: {},
       user: {},
       transactions: [],
       error: '',
       searchByDescription: '',
-      searchAmount: '',
+      searchAmountMin: 0,
+      searchAmountMax: 99999999,
       sortColumn: TransactionSort.COLUMN.DATE,
       orderBy: TransactionSort.ORDER.DESC,
       filterAmount: ''
@@ -25,6 +31,9 @@ export default class TransactionHistoryContainer extends React.Component {
   }
 
   async componentDidMount() {
+    const sessionInfo = await getSessionInfo();
+    const { token, userId, walletId } = sessionInfo;
+    this.setState({ token, userId, walletId });
     await this._fetchWallet();
   }
 
@@ -36,11 +45,9 @@ export default class TransactionHistoryContainer extends React.Component {
   };
 
   _fetchWallet = async () => {
+    const { userId, token } = this.state;
     try {
-      // const { navigation } = this.props;
-      // const userId = await navigation.getParam('userId');
-      const userId = 1;
-      const response = await getWalletByUserId(userId);
+      const response = await getWalletByUserId(userId, token);
       this.setState({
         wallet: response.data
       });
@@ -51,8 +58,9 @@ export default class TransactionHistoryContainer extends React.Component {
   };
 
   _fetchTransaction = async walletId => {
+    const { token } = this.state;
     try {
-      const response = await getTransactionsByWalletId(walletId);
+      const response = await getTransactionsByWalletId(walletId, token);
       this.setState({
         transactions: response.data
       });
@@ -95,12 +103,13 @@ export default class TransactionHistoryContainer extends React.Component {
   }
 
   _filterByAmount = list => {
-    const { searchAmount, filterAmount } = this.state;
-    if (filterAmount === 'gte') {
-      return list.filter(transaction => transaction.nominal >= searchAmount);
-    }
-    if (filterAmount === 'lte') {
-      return list.filter(transaction => transaction.nominal <= searchAmount);
+    const { searchAmountMin, searchAmountMax } = this.state;
+    if (searchAmountMin && searchAmountMax) {
+      return list.filter(
+        transaction =>
+          transaction.nominal >= searchAmountMin &&
+          transaction.nominal <= searchAmountMax
+      );
     }
     return list;
   };
@@ -111,21 +120,27 @@ export default class TransactionHistoryContainer extends React.Component {
 
   _sortByDate = () => {
     const { transactions, orderBy } = this.state;
-    return [...transactions].sort((a, b) => {
+    return [...transactions].sort((firstTransaction, secondTransaction) => {
       if (orderBy === 'desc') {
-        return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+        return (
+          Date.parse(secondTransaction.createdAt) -
+          Date.parse(firstTransaction.createdAt)
+        );
       }
-      return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+      return (
+        Date.parse(firstTransaction.createdAt) -
+        Date.parse(secondTransaction.createdAt)
+      );
     });
   };
 
   _sortByNominal = () => {
     const { transactions, orderBy } = this.state;
-    return [...transactions].sort((a, b) => {
+    return [...transactions].sort((firstTransaction, secondTransaction) => {
       if (orderBy === 'desc') {
-        return b.nominal - a.nominal;
+        return secondTransaction.nominal - firstTransaction.nominal;
       }
-      return a.nominal - b.nominal;
+      return firstTransaction.nominal - secondTransaction.nominal;
     });
   };
 
@@ -143,11 +158,8 @@ export default class TransactionHistoryContainer extends React.Component {
     });
   };
 
-  _handleAmount = (newAmount, filterAmount) => {
-    this.setState({
-      searchAmount: newAmount,
-      filterAmount
-    });
+  _handleAmount = (searchAmountMin, searchAmountMax) => {
+    this.setState({ searchAmountMin, searchAmountMax });
   };
 
   render() {

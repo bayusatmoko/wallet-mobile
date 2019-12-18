@@ -1,8 +1,8 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
-import AppNavigator from './src/Navigations';
+import AppSwitchNavigator from './src/Navigations';
 
-const AppContainer = createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(AppSwitchNavigator);
 
 const App: () => React$Node = () => {
   return (

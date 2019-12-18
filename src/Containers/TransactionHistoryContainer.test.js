@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { shallow } from 'enzyme';
+import { when } from 'jest-when';
+import SInfo from 'react-native-sensitive-info';
 import TransactionHistoryContainer from './TransactionHistoryContainer';
 import getWalletByUserId from '../Services/getWalletByUserId';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
@@ -8,6 +10,9 @@ import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 jest.mock('../Services/getWalletByUserId', () => jest.fn());
 jest.mock('../Services/getTransactionsByWalletId', () => jest.fn());
 jest.mock('axios');
+jest.mock('react-native-sensitive-info', () => {
+  return { setItem: jest.fn(), getItem: jest.fn() };
+});
 
 describe('TransactionHistoryContainer', () => {
   describe('#render', () => {
@@ -77,7 +82,13 @@ describe('TransactionHistoryContainer', () => {
 
       getWalletByUserId.mockResolvedValueOnce({ data: wallet });
       getTransactionsByWalletId.mockResolvedValueOnce({ data: transactions });
-
+      when(SInfo.getItem)
+        .calledWith('token')
+        .mockResolvedValue('token')
+        .calledWith('userId')
+        .mockResolvedValue('1')
+        .calledWith('walletId')
+        .mockResolvedValue('1');
       wrapper = shallow(<TransactionHistoryContainer />);
       await flushPromises();
     });
@@ -108,7 +119,7 @@ describe('TransactionHistoryContainer', () => {
       wrapperTransactionFilter.simulate(
         'handleAmount',
         transactions[1].nominal,
-        filterTypeAmount
+        transactions[1].nominal
       );
 
       expect(wrapper.find('TransactionHistory').props().transactions).toEqual([
@@ -244,12 +255,11 @@ describe('TransactionHistoryContainer', () => {
 
     it('should render transactions by filter amount with keyword "7700000" and filter type is greater than or equal', async () => {
       const expectedResult = [transactions[0], transactions[3]];
-      const filterAmount = '7700000';
-
-      filterTypeAmount = 'gte';
+      const amountMinimum = '7700000';
+      const amountMaximum = '770000000';
       wrapper
         .find('TransactionFilter')
-        .simulate('handleAmount', filterAmount, filterTypeAmount);
+        .simulate('handleAmount', amountMinimum, amountMaximum);
       await flushPromises();
 
       expect(wrapper.find('TransactionHistory').props().transactions).toEqual(
