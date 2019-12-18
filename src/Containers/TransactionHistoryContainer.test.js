@@ -119,7 +119,7 @@ describe('TransactionHistoryContainer', () => {
       wrapperTransactionFilter.simulate(
         'handleAmount',
         transactions[1].nominal,
-        filterTypeAmount
+        transactions[1].nominal
       );
 
       expect(wrapper.find('TransactionHistory').props().transactions).toEqual([
@@ -255,12 +255,11 @@ describe('TransactionHistoryContainer', () => {
 
     it('should render transactions by filter amount with keyword "7700000" and filter type is greater than or equal', async () => {
       const expectedResult = [transactions[0], transactions[3]];
-      const filterAmount = '7700000';
-
-      filterTypeAmount = 'gte';
+      const amountMinimum = '7700000';
+      const amountMaximum = '770000000';
       wrapper
         .find('TransactionFilter')
-        .simulate('handleAmount', filterAmount, filterTypeAmount);
+        .simulate('handleAmount', amountMinimum, amountMaximum);
       await flushPromises();
 
       expect(wrapper.find('TransactionHistory').props().transactions).toEqual(

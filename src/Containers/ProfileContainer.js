@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, SafeAreaView, View } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import getUserById from '../Services/getUserById';
+import getSessionInfo from '../Utils/getSessionInfo';
 
 export default class ProfileContainer extends React.PureComponent {
   constructor(props) {
@@ -13,17 +14,17 @@ export default class ProfileContainer extends React.PureComponent {
     };
   }
   async componentDidMount() {
-    const userId = await SInfo.getItem('userId', {});
-    const token = await SInfo.getItem('token', {});
+    const sessionInfo = await getSessionInfo();
+    const { userId, token } = sessionInfo;
     const response = await getUserById(userId, token);
     this.setState({ user: response.data });
   }
 
   _logout = async () => {
     const { navigation } = this.props;
-    await SInfo.deleteItem('token', {});
-    await SInfo.deleteItem('userId', {});
-    await SInfo.deleteItem('walletId', {});
+    await SInfo.deleteItem(getSessionInfo.KEY_TOKEN, {});
+    await SInfo.deleteItem(getSessionInfo.KEY_USER_ID, {});
+    await SInfo.deleteItem(getSessionInfo.KEY_WALLET_ID, {});
     await navigation.navigate('Splash');
   };
 
@@ -91,21 +92,21 @@ export default class ProfileContainer extends React.PureComponent {
             {user.email}
           </Text>
         </View>
-        <View
-          style={{
-            width: '90%',
-            backgroundColor: '#B127FC',
-            alignSelf: 'center',
-            borderRadius: 20,
-            padding: 15,
-            alignItems: 'center'
-          }}>
-          <TouchableOpacity onPress={this._logout} testID="touchable-logout">
+        <TouchableOpacity onPress={this._logout} testID="touchable-logout">
+          <View
+            style={{
+              width: '90%',
+              backgroundColor: '#B127FC',
+              alignSelf: 'center',
+              borderRadius: 20,
+              padding: 15,
+              alignItems: 'center'
+            }}>
             <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>
               Sign Out
             </Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   }

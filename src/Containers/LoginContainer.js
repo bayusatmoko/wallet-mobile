@@ -13,6 +13,7 @@ import userLogin from '../Services/userLogin';
 import personLogin from '../person-login.png';
 import passwordIcon from '../lock.png';
 import undraw from '../undraw-login.png';
+import getSessionInfo from '../Utils/getSessionInfo';
 
 export default class LoginContainer extends React.Component {
   constructor(props) {
@@ -45,10 +46,18 @@ export default class LoginContainer extends React.Component {
       const response = await userLogin({ username, password });
       if (response.data) {
         const token = response.data.token;
-        await SInfo.setItem('token', token, {});
+        await SInfo.setItem(getSessionInfo.KEY_TOKEN, token, {});
         const decodedUser = jwtDecode(token);
-        await SInfo.setItem('userId', String(decodedUser.user.id), {});
-        await SInfo.setItem('walletId', String(decodedUser.user.wallet.id), {});
+        await SInfo.setItem(
+          getSessionInfo.KEY_USER_ID,
+          String(decodedUser.user.id),
+          {}
+        );
+        await SInfo.setItem(
+          getSessionInfo.KEY_WALLET_ID,
+          String(decodedUser.user.wallet.id),
+          {}
+        );
       }
       this.setState({ error: '' });
       this.props.navigation.navigate('Splash');

@@ -20,6 +20,7 @@ import PayeeList from '../Components/PayeeList';
 import AddPayeeForm from '../Components/AddPayeeForm';
 import addPayee from '../Services/addPayee';
 import SuccessAddPayee from '../Components/SuccessAddPayee';
+import getSessionInfo from '../Utils/getSessionInfo';
 
 class TransferContainer extends Component {
   constructor(props) {
@@ -42,9 +43,8 @@ class TransferContainer extends Component {
   }
 
   async componentDidMount() {
-    const token = await SInfo.getItem('token', {});
-    const userId = await SInfo.getItem('userId', {});
-    const walletId = await SInfo.getItem('walletId', {});
+    const sessionInfo = await getSessionInfo();
+    const { token, userId, walletId } = sessionInfo;
     const { data } = await getPayeeByUserId(userId, token);
     this.setState({ token, userId, walletId, payees: data });
   }
@@ -125,7 +125,6 @@ class TransferContainer extends Component {
     this.setState({
       isSearched: true,
       payeeSelected: true,
-      payees: [],
       isSubmitted: false,
       selectedReceiver: {
         name: payee.payeeData.name,
@@ -196,7 +195,7 @@ class TransferContainer extends Component {
             </>
           )}
           {isSubmitted && this._renderNotification()}
-          {!isSearched && !payeeSelected && (
+          {!isSearched && (
             <PayeeList payees={payees} onPressPayee={this._handlePayee} />
           )}
           {payeeAdded && <SuccessAddPayee />}
