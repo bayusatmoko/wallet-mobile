@@ -16,6 +16,9 @@ export default class DashboardContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: 1,
+      walletId: 1,
+      token: '',
       wallet: { balance: 0 },
       user: {},
       lastTransactions: [],
@@ -25,16 +28,17 @@ export default class DashboardContainer extends React.Component {
   }
 
   async componentDidMount() {
+    const token = await SInfo.getItem('token', {});
+    const userId = await SInfo.getItem('userId', {});
+    const walletId = await SInfo.getItem('walletId', {});
+    this.setState({ token, userId, walletId });
     await this._refreshData();
   }
 
   _refreshData = async () => {
-    const token = await SInfo.getItem('token', {});
-    const userId = await SInfo.getItem('userId', {});
-    const walletId = await SInfo.getItem('walletId', {});
     this.setState({ isRefreshing: true });
-    await this._fetchUser(userId, token);
-    await this._fetchWallet(userId, walletId, token);
+    await this._fetchUser();
+    await this._fetchWallet();
     this.setState({ isRefreshing: false });
   };
 
@@ -45,9 +49,10 @@ export default class DashboardContainer extends React.Component {
     return error.message;
   };
 
-  _fetchUser = async (id, token) => {
+  _fetchUser = async () => {
+    const { userId, token } = this.state;
     try {
-      const response = await getUserById(id, token);
+      const response = await getUserById(userId, token);
       this.setState({
         user: response.data
       });
@@ -56,7 +61,8 @@ export default class DashboardContainer extends React.Component {
     }
   };
 
-  _fetchWallet = async (userId, walletId, token) => {
+  _fetchWallet = async () => {
+    const { userId, walletId, token } = this.state;
     try {
       const response = await getWalletByUserId(userId, token);
       this.setState({
@@ -69,7 +75,8 @@ export default class DashboardContainer extends React.Component {
     }
   };
 
-  _fetchLastTransaction = async (walletId, token) => {
+  _fetchLastTransaction = async () => {
+    const { walletId, token } = this.state;
     try {
       const response = await getLastTransactionsByWalletId(walletId, token);
       this.setState({

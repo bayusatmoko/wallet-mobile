@@ -70,5 +70,47 @@ describe('LoginContainer', () => {
       expect(SInfo.setItem).toHaveBeenNthCalledWith(3, 'walletId', '1', {});
       expect(navigation.navigate).toHaveBeenCalledWith('Splash');
     });
+
+    it('should display error when login failed', async () => {
+      userLogin.mockRejectedValue({
+        response: { data: { message: 'Failed login' } }
+      });
+      wrapper = shallow(<LoginContainer navigation={navigation} />);
+      await flushPromises();
+
+      wrapper
+        .find({ testID: 'input-user' })
+        .simulate('changeText', user.username);
+      wrapper
+        .find({ testID: 'input-password' })
+        .simulate('changeText', user.password);
+      wrapper.find('TouchableOpacity').simulate('press');
+      await flushPromises();
+
+      expect(wrapper.find({ testID: 'text-error' }).props().children).toBe(
+        'Failed login'
+      );
+      expect(navigation.navigate).not.toHaveBeenCalledWith('Splash');
+    });
+
+    it('should display network error when server down', async () => {
+      userLogin.mockRejectedValue({ message: 'Network Error' });
+      wrapper = shallow(<LoginContainer navigation={navigation} />);
+      await flushPromises();
+
+      wrapper
+        .find({ testID: 'input-user' })
+        .simulate('changeText', user.username);
+      wrapper
+        .find({ testID: 'input-password' })
+        .simulate('changeText', user.password);
+      wrapper.find('TouchableOpacity').simulate('press');
+      await flushPromises();
+
+      expect(wrapper.find({ testID: 'text-error' }).props().children).toBe(
+        'Network Error'
+      );
+      expect(navigation.navigate).not.toHaveBeenCalledWith('Splash');
+    });
   });
 });

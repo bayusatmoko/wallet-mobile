@@ -43,13 +43,14 @@ export default class LoginContainer extends React.Component {
         await SInfo.setItem('walletId', String(decodedUser.user.wallet.id), {});
       }
       this.props.navigation.navigate('Splash');
+      this.setState({ error: '' });
     } catch (error) {
       this.setState({ error: this._generateErrorMessage(error) });
     }
   };
 
   render() {
-    const { username, password } = this.state;
+    const { username, password, error } = this.state;
     return (
       <View
         style={{
@@ -116,7 +117,7 @@ export default class LoginContainer extends React.Component {
           </TouchableOpacity>
         </View>
         <View>
-          <Text>{this.state.error}</Text>
+          <Text testID="text-error">{error}</Text>
         </View>
       </View>
     );
