@@ -6,7 +6,7 @@ class TransactionForm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      nominal: 0,
+      nominal: '',
       description: '',
       isError: false
     };
@@ -29,9 +29,44 @@ class TransactionForm extends PureComponent {
     }
   };
 
+  _handlePredefined = predefinedValue => {
+    this.setState({ nominal: predefinedValue });
+  };
+
+  _renderPredefined = () => {
+    return (
+      <View style={styles.predefinedContainer}>
+        <Button
+          testID="predefined-10k"
+          title="Rp10.000"
+          color="#8020AF"
+          onPress={() => this._handlePredefined(10000)}
+        />
+        <Button
+          testID="predefined-25k"
+          title="Rp25.000"
+          color="#8020AF"
+          onPress={() => this._handlePredefined(25000)}
+        />
+        <Button
+          testID="predefined-50k"
+          title="Rp50.000"
+          color="#8020AF"
+          onPress={() => this._handlePredefined(50000)}
+        />
+        <Button
+          testID="predefined-100k"
+          title="Rp100.000"
+          color="#8020AF"
+          onPress={() => this._handlePredefined(100000)}
+        />
+      </View>
+    );
+  };
+
   render() {
     const { title } = this.props;
-    const { isError, description } = this.state;
+    const { isError, nominal, description } = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
@@ -40,6 +75,7 @@ class TransactionForm extends PureComponent {
           keyboardType="numeric"
           style={styles.input}
           testID="input-amount"
+          value={nominal.toString()}
           onChangeText={text => {
             this.setState({ nominal: text });
             this._checkIsNominalInRange(text);
@@ -50,9 +86,10 @@ class TransactionForm extends PureComponent {
             Amount must be between Rp1.000 and Rp100.000.000
           </Text>
         )}
+        {this._renderPredefined()}
         <View>
           <TextInput
-            placeholder="Description (Optional)"
+            placeholder="Description"
             style={styles.input}
             testID="input-description"
             maxLength={30}
@@ -97,7 +134,12 @@ const styles = StyleSheet.create({
   descriptionCounter: {
     marginTop: -10,
     alignSelf: 'flex-end',
-    fontSize: 10
+    fontSize: 15
+  },
+  predefinedContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 20
   }
 });
 

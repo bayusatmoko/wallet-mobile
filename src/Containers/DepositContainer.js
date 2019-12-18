@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Modal, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Keyboard,
+  Modal,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
 import FailedNotification from '../Components/FailedNotification';
 import SuccessNotification from '../Components/SuccessNotification';
 import TransactionForm from '../Components/TransactionForm';
@@ -79,14 +86,16 @@ class DepositContainer extends Component {
   render() {
     const { isSubmitted, isLoading } = this.state;
     return (
-      <View>
-        {isLoading && this._renderLoading()}
-        <TransactionForm
-          title="Top up your wallet"
-          onSubmit={this._handleSubmit}
-        />
-        {isSubmitted && this._renderNotification()}
-      </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View>
+          {isLoading && this._renderLoading()}
+          <TransactionForm
+            title="Top up your wallet"
+            onSubmit={this._handleSubmit}
+          />
+          {isSubmitted && this._renderNotification()}
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
