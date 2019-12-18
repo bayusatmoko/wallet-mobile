@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createSwitchNavigator } from 'react-navigation';
 import background from '../Assets/Images/background.jpg';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import SplashScreen from '../Components/SplashScreen';
 import DashboardContainer from '../Containers/DashboardContainer';
 import DepositContainer from '../Containers/DepositContainer';
@@ -11,7 +12,7 @@ import TransactionHistoryContainer from '../Containers/TransactionHistoryContain
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import ProfileContainer from '../Containers/ProfileContainer';
 import LoginContainer from '../Containers/LoginContainer';
-
+import homeButton from '../home-button-bottom.png';
 const styles = StyleSheet.create({
   headerBackground: {
     height: '100%',
@@ -106,7 +107,14 @@ const AppNavigator = createStackNavigator(
 
 const AppBottomNavigator = createMaterialBottomTabNavigator(
   {
-    Home: { screen: AppNavigator },
+    Home: {
+      screen: AppNavigator,
+      navigationOptions: {
+        tabBarLabel: (
+          <Image style={{ width: 30, height: 40 }} source={homeButton} />
+        )
+      }
+    },
     Profile: { screen: ProfileNavigator }
   },
   {
