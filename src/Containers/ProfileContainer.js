@@ -15,26 +15,28 @@ export default class ProfileContainer extends React.PureComponent {
   async componentDidMount() {
     const userId = await SInfo.getItem('userId', {});
     const token = await SInfo.getItem('token', {});
-    const user = await getUserById(userId, token);
-    this.setState({
-      user: user.data
-    });
+    const response = await getUserById(userId, token);
+    this.setState({ user: response.data });
   }
 
   _logout = async () => {
     const { navigation } = this.props;
     await SInfo.deleteItem('token', {});
-    await SInfo.deleteItem('user', {});
+    await SInfo.deleteItem('userId', {});
+    await SInfo.deleteItem('walletId', {});
     await navigation.navigate('Splash');
   };
 
   render() {
     const { user } = this.state;
-    const nameInitials = user.name.split(' ').map((word, index) => {
-      if (index < 2) {
-        return word.charAt(0);
-      }
-    });
+    const nameInitials = user.name
+      .split(' ')
+      .map((word, index) => {
+        if (index < 2) {
+          return word.charAt(0);
+        }
+      })
+      .join('');
     return (
       <SafeAreaView>
         <View style={{ backgroundColor: '#B127FC', padding: 20 }}>
@@ -47,13 +49,17 @@ export default class ProfileContainer extends React.PureComponent {
               justifyContent: 'center',
               alignSelf: 'center'
             }}>
-            <Text style={{ fontSize: 70, color: 'whitesmoke' }}>
+            <Text
+              style={{ fontSize: 70, color: 'whitesmoke' }}
+              testID="text-initial">
               {nameInitials}
             </Text>
           </View>
         </View>
         <View style={{ alignSelf: 'center', marginTop: 20, marginBottom: 10 }}>
-          <Text style={{ fontSize: 30, color: 'black' }}>{user.name}</Text>
+          <Text style={{ fontSize: 30, color: 'black' }} testID="text-name">
+            {user.name}
+          </Text>
         </View>
         <View
           style={{
@@ -70,7 +76,9 @@ export default class ProfileContainer extends React.PureComponent {
             margin: 20
           }}>
           <Text style={{ fontSize: 15 }}>Phone Number</Text>
-          <Text style={{ fontSize: 15 }}>{user.phoneNumber}</Text>
+          <Text style={{ fontSize: 15 }} testID="text-phone">
+            {user.phoneNumber}
+          </Text>
         </View>
         <View
           style={{
@@ -79,7 +87,9 @@ export default class ProfileContainer extends React.PureComponent {
             margin: 20
           }}>
           <Text style={{ fontSize: 15 }}>Email</Text>
-          <Text style={{ fontSize: 15 }}>{user.email}</Text>
+          <Text style={{ fontSize: 15 }} testID="text-email">
+            {user.email}
+          </Text>
         </View>
         <View
           style={{
@@ -90,7 +100,7 @@ export default class ProfileContainer extends React.PureComponent {
             padding: 15,
             alignItems: 'center'
           }}>
-          <TouchableOpacity onPress={this._logout}>
+          <TouchableOpacity onPress={this._logout} testID="touchable-logout">
             <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>
               Sign Out
             </Text>
