@@ -1,10 +1,18 @@
 import React from 'react';
-import { TouchableOpacity, View, TextInput, Text, Image } from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  TextInput,
+  Text,
+  Image,
+  StyleSheet
+} from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import jwtDecode from 'jwt-decode';
 import userLogin from '../Services/userLogin';
 import personLogin from '../person-login.png';
 import passwordIcon from '../lock.png';
+import undraw from '../undraw-login.png';
 import getSessionInfo from '../Utils/getSessionInfo';
 
 export default class LoginContainer extends React.Component {
@@ -61,74 +69,126 @@ export default class LoginContainer extends React.Component {
   render() {
     const { username, password, error } = this.state;
     return (
-      <View
-        style={{
-          width: '100%',
-          alignSelf: 'center',
-          flex: 1,
-          justifyContent: 'center'
-        }}>
-        <View style={{ width: '90%', alignSelf: 'center' }}>
-          <View style={{ flexDirection: 'row' }}>
-            <Image style={{ width: 20, height: 30 }} source={personLogin} />
-            <TextInput
-              autoCapitalize="none"
-              testID="input-user"
-              style={{
-                height: 40,
-                width: '80%',
-                marginLeft: 20
-              }}
-              placeholder="name"
-              onChangeText={this._handleNameChange}
-              value={username}
-            />
+      <>
+        <View
+          style={styles.flexLogin}>
+          <View style={styles.borderUsername}>
+            <View style={styles.flexUsername}>
+              <Image style={styles.imageLogin} source={personLogin} />
+              <TextInput
+                autoCapitalize="none"
+                testID="input-user"
+                style={styles.textUsername}
+                placeholder="name"
+                onChangeText={this._handleNameChange}
+                value={username}
+              />
+            </View>
+            <View style={styles.borderDivider} />
+            <View style={styles.flexPassword}>
+              <Image style={styles.imagePassword} source={passwordIcon} />
+              <TextInput
+                autoCapitalize="none"
+                placeholder="password"
+                testID="input-password"
+                style={styles.textPassword}
+                secureTextEntry
+                onChangeText={text => this._handlePasswordChange(text)}
+                value={password}
+              />
+            </View>
+            <View style={styles.borderDivider} />
           </View>
-          <View style={{ borderBottomWidth: 1, borderBottomColor: 'black' }} />
-          <View style={{ flexDirection: 'row', marginTop: 20 }}>
-            <Image
-              style={{ width: 20, height: 20, marginTop: 8 }}
-              source={passwordIcon}
-            />
-            <TextInput
-              autoCapitalize="none"
-              placeholder="password"
-              testID="input-password"
-              style={{
-                height: 40,
-                width: '80%',
-                marginLeft: 20
-              }}
-              secureTextEntry
-              onChangeText={text => this._handlePasswordChange(text)}
-              value={password}
-            />
+          <View>
+            <TouchableOpacity title="Login" onPress={this._handlePress}>
+              <View style={styles.borderLogin}>
+                <Text style={styles.textLogin}>Login</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          <View
-            style={{
-              borderBottomWidth: 1,
-              borderBottomColor: 'black',
-              marginBottom: 20
-            }}
-          />
+          {error !== '' && (
+            <View style={styles.borderError}>
+              <Text style={styles.textError} testID="text-error">
+                {error}
+              </Text>
+            </View>
+          )}
         </View>
-        <TouchableOpacity title="Login" onPress={this._handlePress}>
-          <View
-            style={{
-              alignSelf: 'center',
-              padding: 15,
-              backgroundColor: 'purple',
-              width: '90%',
-              alignItems: 'center',
-              borderRadius: 20
-            }}>
-            <Text style={{ color: 'white' }}>Login</Text>
-          </View>
-        </TouchableOpacity>
-        <View>
-          <Text testID="text-error">{error}</Text>
+        <View style={styles.undrawImage}>
+          <Image source={undraw} style={{ width: 200, height: 200 }} />
         </View>
-      </View>
+      </>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  borderError: {
+    alignSelf: 'center',
+    backgroundColor: '#ffacae',
+    marginTop: 40,
+    borderRadius: 10,
+    padding: 15
+  },
+  textError: {
+    color: 'black'
+  },
+  undrawImage: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+  textLogin: {
+    color: 'white'
+  },
+  borderLogin: {
+    alignSelf: 'center',
+    padding: 15,
+    backgroundColor: 'purple',
+    width: '90%',
+    alignItems: 'center',
+    borderRadius: 20
+  },
+  imagePassword: {
+    width: 20,
+    height: 20,
+    marginTop: 8
+  },
+  borderDivider: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+    marginBottom: 20
+  },
+  textPassword: {
+    height: 40,
+    width: '80%',
+    marginLeft: 20
+  },
+  textUsername: {
+    height: 40,
+    width: '80%',
+    marginLeft: 20
+  },
+  imageLogin: {
+    width: 20,
+    height: 30
+  },
+  flexPassword: {
+    flexDirection: 'row',
+    marginTop: 20
+  },
+  flexUsername: {
+    flexDirection: 'row'
+  },
+  borderUsername: {
+    width: '90%',
+    alignSelf: 'center'
+  },
+  flexLogin: {
+    width: '100%',
+    alignSelf: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: 100
+  }
+});

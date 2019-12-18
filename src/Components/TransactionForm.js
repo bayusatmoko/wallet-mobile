@@ -20,7 +20,7 @@ class TransactionForm extends PureComponent {
     };
   }
 
-  _checkIsNominalInRange = nominal => {
+  _checkValidInput = nominal => {
     const isInRange = nominal >= 1000 && nominal <= 100000000;
     this.setState({ isError: !isInRange });
     return isInRange;
@@ -28,8 +28,12 @@ class TransactionForm extends PureComponent {
 
   _handleSubmit = () => {
     const { nominal, description } = this.state;
+    const isDescriptionEmpty = description === '';
+    if (isDescriptionEmpty) {
+      Alert.alert('Description cannot be empty');
+    }
     const { onSubmit } = this.props;
-    if (this._checkIsNominalInRange(nominal)) {
+    if (this._checkValidInput(nominal, description) && !isDescriptionEmpty) {
       this.setState({ nominal: 0, description: description });
       onSubmit({ nominal, description });
     } else {

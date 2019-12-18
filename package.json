@@ -31,7 +31,8 @@
     "react-navigation": "^4.0.10",
     "react-navigation-animated-switch": "^0.4.0",
     "react-navigation-material-bottom-tabs": "^2.1.5",
-    "react-navigation-stack": "^1.10.3"
+    "react-navigation-stack": "^1.10.3",
+    "react-svg": "^11.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -52,6 +53,8 @@
     "metro-react-native-babel-preset": "^0.56.0",
     "prop-types": "latest",
     "react-native-elements": "^1.2.7",
+    "react-native-svg": "^9.13.6",
+    "react-native-svg-uri": "^1.2.3",
     "react-test-renderer": "16.9.0"
   },
   "jest": {
