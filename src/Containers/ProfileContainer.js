@@ -42,7 +42,7 @@ export default class ProfileContainer extends React.PureComponent {
   render() {
     const { user } = this.state;
     return (
-      <>
+      <ScrollView>
         <StatusBar backgroundColor="#B127FC" />
         <View style={styles.borderInitial}>
           <View style={styles.borderGravatar}>
@@ -139,7 +139,7 @@ export default class ProfileContainer extends React.PureComponent {
             </View>
           </ScrollView>
         </SafeAreaView>
-      </>
+      </ScrollView>
     );
   }
 }
