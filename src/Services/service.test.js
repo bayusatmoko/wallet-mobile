@@ -21,7 +21,7 @@ describe('Service', () => {
       phoneNumber: '08237283',
       email: 'huda@gmail.com'
     };
-    url = 'http://localhost:3000';
+    url = 'https://7653f94d.ngrok.io';
     errorLogin = {
       data: {
         message: '"password" length must be at least 8 characters long'

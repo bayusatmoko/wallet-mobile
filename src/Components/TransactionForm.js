@@ -81,6 +81,7 @@ class TransactionForm extends PureComponent {
 
   render() {
     const { title } = this.props;
+    console.log(title);
     const { isError, nominal, description } = this.state;
     return (
       <View style={styles.container}>

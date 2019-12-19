@@ -52,7 +52,7 @@ describe('TransferContainer', () => {
       }
     }
   ];
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'https://7653f94d.ngrok.io';
   let navigation;
   const onRefresh = jest.fn();
 
@@ -63,18 +63,18 @@ describe('TransferContainer', () => {
       goBack: jest.fn()
     };
     when(axios.get)
-      .calledWith('http://localhost:3000/users?email=fadelcf@gmail.com')
+      .calledWith('https://7653f94d.ngrok.io/users?email=fadelcf@gmail.com')
       .mockResolvedValue({ data: payees[0] })
-      .calledWith('http://localhost:3000/users?email=hudah@btpn.com')
+      .calledWith('https://7653f94d.ngrok.io/users?email=hudah@btpn.com')
       .mockResolvedValue({ data: users[1] })
-      .calledWith('http://localhost:3000/users/1/wallets')
+      .calledWith('https://7653f94d.ngrok.io/users/1/wallets')
       .mockResolvedValue({ data: users[0].wallet })
-      .calledWith('http://localhost:3000/users/1/payees')
+      .calledWith('https://7653f94d.ngrok.io/users/1/payees')
       .mockResolvedValueOnce({ data: payees });
     when(axios.post)
-      .calledWith('http://localhost:3000/transactions')
+      .calledWith('https://7653f94d.ngrok.io/transactions')
       .mockResolvedValue({ data: transaction })
-      .calledWith('http://localhost:3000/payees')
+      .calledWith('https://7653f94d.ngrok.io/payees')
       .mockResolvedValue({ data: payees[0] });
     when(SInfo.getItem)
       .calledWith('token')
@@ -96,7 +96,7 @@ describe('TransferContainer', () => {
     it('should display receiver name and email based on email in ReceiverSearch', async () => {
       wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
       await flushPromises();
-
+      jest.runAllTimers();
       expect(wrapper.find('TransactionForm').props().title).toContain(
         users[1].name
       );
@@ -178,7 +178,7 @@ describe('TransferContainer', () => {
 
     it('should render walletError when receiver is not found', async () => {
       when(axios.get)
-        .calledWith('http://localhost:3000/users?email=fadele@btpn.com')
+        .calledWith('https://7653f94d.ngrok.io/users?email=fadele@btpn.com')
         .mockRejectedValue({
           response: { data: { message: 'Receiver not found!' } }
         });
@@ -240,7 +240,7 @@ describe('TransferContainer', () => {
       };
       const searchedEmail = 'hudah@btpn.com';
       when(axios.get)
-        .calledWith('http://localhost:3000/users/1/payees')
+        .calledWith('https://7653f94d.ngrok.io/users/1/payees')
         .mockResolvedValueOnce({ data: [...payees, payee] });
 
       wrapper.find('ReceiverSearch').simulate('submit', searchedEmail);
