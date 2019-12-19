@@ -221,6 +221,8 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.5)
   - RNGestureHandler (1.5.2):
     - React
+  - RNPermissions (2.0.8):
+    - React
   - RNReanimated (1.4.0):
     - React
   - RNScreens (2.0.0-alpha.18):
@@ -261,6 +263,7 @@ DEPENDENCIES:
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -324,6 +327,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -363,6 +368,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
+  RNPermissions: 409e55ed060f7e35d4a3dfc3a336f94a5811dec1
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNScreens: 5a7b407132e42765bb136932d2a84bdb90c3ef33
   RNSVG: 8ba35cbeb385a52fd960fd28db9d7d18b4c2974f
