@@ -159,8 +159,8 @@ class TransferContainer extends Component {
   };
 
   render() {
-    const USER_ID = 1;
     const {
+      userId,
       selectedReceiver,
       payeeSelected,
       errorSearch,
@@ -181,7 +181,7 @@ class TransferContainer extends Component {
             <>
               {!payeeSelected && !this._isFavourited() && (
                 <AddPayeeForm
-                  id={USER_ID}
+                  id={Number(userId)}
                   receiverId={selectedReceiver.id}
                   onAddFavourite={this._handleFavourite}
                   receiverName={selectedReceiver.name}
