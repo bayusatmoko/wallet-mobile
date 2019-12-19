@@ -30,6 +30,7 @@ class TransactionForm extends PureComponent {
     const isDescriptionEmpty = description === '';
     if (isDescriptionEmpty) {
       Alert.alert('Description cannot be empty');
+      return false;
     }
     const { onSubmit } = this.props;
     if (this._checkValidInput(nominal, description) && !isDescriptionEmpty) {
