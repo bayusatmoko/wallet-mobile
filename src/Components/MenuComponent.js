@@ -6,6 +6,9 @@ import transaction from '../Assets/Images/history-image.jpeg';
 import NAVIGATION from '../Constants/navigation';
 import styles from './walletInfo.style';
 import chart from '../chart.png';
+import deposit from '../deposit.png';
+import transfer from '../transfer.png';
+import transactions from '../transactions.png';
 
 export default class MenuComponent extends React.PureComponent {
   _handlePress = menu => () => {
@@ -21,7 +24,7 @@ export default class MenuComponent extends React.PureComponent {
             testID="menu-transfer"
             onPress={this._handlePress(NAVIGATION.TRANSFER)}>
             <View style={styles.menuTransfer}>
-              <Image style={styles.transferImage} source={transferImage} />
+              <Image style={styles.transferImage} source={transfer} />
               <Text>Transfer</Text>
             </View>
           </TouchableOpacity>
@@ -29,14 +32,14 @@ export default class MenuComponent extends React.PureComponent {
             testID="menu-deposit"
             onPress={this._handlePress(NAVIGATION.DEPOSIT)}>
             <View style={styles.menuDeposit}>
-              <Image style={styles.payeeImage} source={payeeImage} />
+              <Image style={styles.payeeImage} source={deposit} />
               <Text>Deposit</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={this._handlePress(NAVIGATION.TRANSACTION_HISTORY)}>
             <View style={styles.menuTransaction}>
-              <Image style={styles.transactionImage} source={transaction} />
+              <Image style={styles.transactionImage} source={transactions} />
               <Text>Transaction</Text>
             </View>
           </TouchableOpacity>
