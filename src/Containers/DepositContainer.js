@@ -47,9 +47,15 @@ class DepositContainer extends React.PureComponent {
     try {
       await addTransaction(newTransaction, token);
       const { data: wallet } = await getWalletByUserId(userId, token);
-      this.setState({ balance: wallet.balance, errorTransaction: '' });
+      this.setState({
+        balance: wallet.balance,
+        errorTransaction: ''
+      });
     } catch (error) {
-      this.setState({ errorTransaction: this._generateErrorMessage(error) });
+      this.setState({
+        errorTransaction: this._generateErrorMessage(error),
+        isLoading: false
+      });
     }
   };
 
@@ -60,6 +66,7 @@ class DepositContainer extends React.PureComponent {
 
   _handleSubmit = async ({ nominal, description }) => {
     const { walletId, token } = this.state;
+    this.setState({ isLoading: true, errorTransaction: '' });
     const newTransaction = {
       walletId,
       receiverWalletId: walletId,
@@ -67,10 +74,10 @@ class DepositContainer extends React.PureComponent {
       description,
       type: 'DEPOSIT'
     };
-    this.setState({ isLoading: true });
     await this._addTransaction(newTransaction, token);
     this.setState({ isSubmitted: true });
     await this._updateDashboard();
+    this.setState({ isLoading: false });
   };
 
   _renderNotification = () => {
@@ -82,29 +89,36 @@ class DepositContainer extends React.PureComponent {
   };
 
   _renderLoading = () => {
-    setTimeout(() => {
-      this.setState({ isLoading: false });
-    }, 2000);
     return (
       <Modal transparent={false} visible={this.state.isLoading}>
         <View style={styles.loading}>
-          <ActivityIndicator />
+          <ActivityIndicator size="large" color="#0000ff" />
         </View>
       </Modal>
     );
   };
 
+  _renderTransaction = () => {
+    const { isSubmitted } = this.state;
+    return (
+      <>
+        <TransactionForm
+          title="Top up your wallet"
+          onSubmit={this._handleSubmit}
+        />
+        {isSubmitted && this._renderNotification()}
+      </>
+    );
+  };
+
   render() {
-    const { isSubmitted, isLoading } = this.state;
+    const { isLoading, errorTransaction } = this.state;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView>
-          {isLoading && this._renderLoading()}
-          <TransactionForm
-            title="Top up your wallet"
-            onSubmit={this._handleSubmit}
-          />
-          {isSubmitted && this._renderNotification()}
+          {isLoading && errorTransaction === ''
+            ? this._renderLoading()
+            : this._renderTransaction()}
         </ScrollView>
       </TouchableWithoutFeedback>
     );
