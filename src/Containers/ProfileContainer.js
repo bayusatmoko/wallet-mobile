@@ -50,6 +50,7 @@ export default class ProfileContainer extends React.PureComponent {
               options={{
                 email: 'teukuhuda.wiratama@gmail.com',
                 parameters: { size: '200', d: 'mm' },
+                defaultImage: 'retro',
                 secure: true
               }}
               style={styles.roundedProfileImage}
