@@ -46,7 +46,6 @@ class ReceiverSearch extends PureComponent {
         <QRCodeScanner
           testID="qr-scanner"
           onRead={this._handleScan}
-          // flashMode={QRCodeScanner.Constants.FlashMode.torch}
           topContent={
             <Text style={styles.centerText}>Scan your friend's QR code!</Text>
           }

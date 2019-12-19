@@ -41,14 +41,6 @@ export default class ProfileContainer extends React.PureComponent {
 
   render() {
     const { user } = this.state;
-    const nameInitials = user.name
-      .split(' ')
-      .map((word, index) => {
-        if (index < 2) {
-          return word.charAt(0);
-        }
-      })
-      .join('');
     return (
       <>
         <StatusBar backgroundColor="#B127FC" />
