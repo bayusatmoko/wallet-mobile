@@ -24,6 +24,7 @@
     "react-native-gesture-handler": "^1.5.2",
     "react-native-gradient-header": "^0.2.0",
     "react-native-paper": "^3.4.0",
+    "react-native-picker-select": "^6.3.3",
     "react-native-reanimated": "^1.4.0",
     "react-native-screens": "^2.0.0-alpha.18",
     "react-native-sensitive-info": "^5.5.3",

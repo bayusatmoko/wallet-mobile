@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Picker, Dimensions } from 'react-native';
-import { PieChart } from 'react-native-chart-kit';
+import { View, Picker, Dimensions, Text } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import Error from '../Components/Error';
 import SpendingChart from '../Components/SpendingChart';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import getSessionInfo from '../Utils/getSessionInfo';
 
-class SpendingAnalysisContainer extends React.PureComponent {
+class SpendingAnalysisContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,38 +47,45 @@ class SpendingAnalysisContainer extends React.PureComponent {
     const { walletId, transactions, error, selectedDateRange } = this.state;
     return (
       <View>
-        <View>
-          <Picker
-            selectedValue={this.state.selectedDateRange}
-            style={{ height: 200, width: Dimensions.get('window').width }}
-            onValueChange={itemValue =>
-              this.setState({ selectedDateRange: itemValue })
-            }>
-            <Picker.Item
-              label="Last week"
-              value={SpendingChart.DATE_RANGE.ONE_WEEK}
-            />
-            <Picker.Item
-              label="Last two weeks"
-              value={SpendingChart.DATE_RANGE.TWO_WEEK}
-            />
-            <Picker.Item
-              label="Last three weeks"
-              value={SpendingChart.DATE_RANGE.THREE_WEEK}
-            />
-            <Picker.Item
-              label="Last month"
-              value={SpendingChart.DATE_RANGE.ONE_MONTH}
-            />
-            <Picker.Item
-              label="Last two months"
-              value={SpendingChart.DATE_RANGE.TWO_MONTH}
-            />
-            <Picker.Item
-              label="Last three months"
-              value={SpendingChart.DATE_RANGE.THREE_MONTH}
-            />
-          </Picker>
+        <View style={{ marginTop: 5 }}>
+          <Text>Select transaction data:</Text>
+          <RNPickerSelect
+            value={selectedDateRange}
+            useNativeAndroidPickerStyle={false}
+            onValueChange={value => this.setState({ selectedDateRange: value })}
+            items={[
+              {
+                key: 0,
+                label: 'Last week',
+                value: SpendingChart.DATE_RANGE.ONE_WEEK
+              },
+              {
+                key: 1,
+                label: 'Last two week',
+                value: SpendingChart.DATE_RANGE.TWO_WEEK
+              },
+              {
+                key: 2,
+                label: 'Last three week',
+                value: SpendingChart.DATE_RANGE.THREE_WEEK
+              },
+              {
+                key: 3,
+                label: 'Last one month',
+                value: SpendingChart.DATE_RANGE.ONE_MONTH
+              },
+              {
+                key: 4,
+                label: 'Last two months',
+                value: SpendingChart.DATE_RANGE.TWO_MONTH
+              },
+              {
+                key: 5,
+                label: 'Last three months',
+                value: SpendingChart.DATE_RANGE.THREE_MONTH
+              }
+            ]}
+          />
         </View>
         {error !== '' && <Error message={error} />}
         <SpendingChart
