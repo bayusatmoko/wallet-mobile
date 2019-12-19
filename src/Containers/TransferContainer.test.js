@@ -4,6 +4,7 @@ import axios from 'axios';
 import { when } from 'jest-when';
 import SInfo from 'react-native-sensitive-info';
 import TransferContainer from './TransferContainer';
+import config from '../../config/index';
 
 jest.mock('axios');
 jest.mock('react-native-sensitive-info', () => {
@@ -52,7 +53,7 @@ describe('TransferContainer', () => {
       }
     }
   ];
-  const API_URL = 'http://localhost:3000';
+  const API_URL = config.API_URL;
   let navigation;
   const onRefresh = jest.fn();
 
@@ -63,18 +64,18 @@ describe('TransferContainer', () => {
       goBack: jest.fn()
     };
     when(axios.get)
-      .calledWith('http://localhost:3000/users?email=fadelcf@gmail.com')
+      .calledWith(`${API_URL}/users?email=fadelcf@gmail.com`)
       .mockResolvedValue({ data: payees[0] })
-      .calledWith('http://localhost:3000/users?email=hudah@btpn.com')
+      .calledWith(`${API_URL}/users?email=hudah@btpn.com`)
       .mockResolvedValue({ data: users[1] })
-      .calledWith('http://localhost:3000/users/1/wallets')
+      .calledWith(`${API_URL}/users/1/wallets`)
       .mockResolvedValue({ data: users[0].wallet })
-      .calledWith('http://localhost:3000/users/1/payees')
+      .calledWith(`${API_URL}/users/1/payees`)
       .mockResolvedValueOnce({ data: payees });
     when(axios.post)
-      .calledWith('http://localhost:3000/transactions')
+      .calledWith(`${API_URL}/transactions`)
       .mockResolvedValue({ data: transaction })
-      .calledWith('http://localhost:3000/payees')
+      .calledWith(`${API_URL}/payees`)
       .mockResolvedValue({ data: payees[0] });
     when(SInfo.getItem)
       .calledWith('token')
@@ -96,7 +97,7 @@ describe('TransferContainer', () => {
     it('should display receiver name and email based on email in ReceiverSearch', async () => {
       wrapper.find('ReceiverSearch').simulate('submit', 'hudah@btpn.com');
       await flushPromises();
-
+      jest.runAllTimers();
       expect(wrapper.find('TransactionForm').props().title).toContain(
         users[1].name
       );
@@ -178,7 +179,7 @@ describe('TransferContainer', () => {
 
     it('should render walletError when receiver is not found', async () => {
       when(axios.get)
-        .calledWith('http://localhost:3000/users?email=fadele@btpn.com')
+        .calledWith(`${API_URL}/users?email=fadele@btpn.com`)
         .mockRejectedValue({
           response: { data: { message: 'Receiver not found!' } }
         });
@@ -240,7 +241,7 @@ describe('TransferContainer', () => {
       };
       const searchedEmail = 'hudah@btpn.com';
       when(axios.get)
-        .calledWith('http://localhost:3000/users/1/payees')
+        .calledWith(`${API_URL}/users/1/payees`)
         .mockResolvedValueOnce({ data: [...payees, payee] });
 
       wrapper.find('ReceiverSearch').simulate('submit', searchedEmail);
