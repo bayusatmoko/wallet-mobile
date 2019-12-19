@@ -14,6 +14,7 @@ import userLogin from '../Services/userLogin';
 import personLogin from '../person-login.png';
 import passwordIcon from '../lock.png';
 import undraw from '../undraw-login.png';
+import logo from '../Assets/Images/phoenix.png';
 import getSessionInfo from '../Utils/getSessionInfo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -74,6 +75,10 @@ export default class LoginContainer extends React.Component {
       <>
         <KeyboardAwareScrollView>
           <StatusBar backgroundColor="#8127fc" barStyle="light-content" />
+          <View style={styles.logoView}>
+            <Image source={logo} style={styles.logo} />
+            <Text style={styles.logoTitle}>Phoenix Wallet</Text>
+          </View>
           <View style={styles.flexLogin}>
             <View style={styles.borderUsername}>
               <View style={styles.flexUsername}>
@@ -195,10 +200,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
     justifyContent: 'center',
-    marginTop: 200
+    marginTop: 50
   },
   imageUndraw: {
     width: 200,
     height: 200
+  },
+  logoView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: '20%',
+    marginBottom: 5
+  },
+  logo: {
+    width: 100,
+    height: 100
+  },
+  logoTitle: {
+    fontSize: 20,
+    fontWeight: 'bold'
   }
 });
