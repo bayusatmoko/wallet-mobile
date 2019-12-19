@@ -48,7 +48,7 @@ export default class ProfileContainer extends React.PureComponent {
           <View style={styles.borderGravatar}>
             <Gravatar
               options={{
-                email: 'teukuhuda.wiratama@gmail.com',
+                email: user.email,
                 parameters: { size: '200', d: 'mm' },
                 defaultImage: 'retro',
                 secure: true
