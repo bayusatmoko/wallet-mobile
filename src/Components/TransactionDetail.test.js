@@ -85,8 +85,11 @@ describe('TransactionDetail', () => {
     });
 
     it('should text color of amount is green when the type is DEPOSIT', () => {
-      const expectedStyle = { color: 'green' };
-      expect(wrapper.find({ testID: 'nominal' }).props().style).toContainEqual(
+      const expectedStyle = [
+        { fontSize: 16, fontWeight: 'bold' },
+        { color: 'green', marginRight: '2%' }
+      ];
+      expect(wrapper.find({ testID: 'nominal' }).props().style).toMatchObject(
         expectedStyle
       );
       expect(wrapper.find({ testID: 'receiver' }).props().children).toEqual('');
@@ -101,8 +104,11 @@ describe('TransactionDetail', () => {
       );
       const expectedText = `To ${transferTransaction.receiver.user.name}`;
 
-      const expectedStyle = { color: 'red' };
-      expect(wrapper.find({ testID: 'nominal' }).props().style).toContainEqual(
+      const expectedStyle = [
+        { fontSize: 16, fontWeight: 'bold' },
+        { color: 'red', marginRight: '2%' }
+      ];
+      expect(wrapper.find({ testID: 'nominal' }).props().style).toMatchObject(
         expectedStyle
       );
       expect(wrapper.find({ testID: 'receiver' }).props().children).toEqual(
@@ -119,8 +125,11 @@ describe('TransactionDetail', () => {
       );
       const expectedText = `From ${transferTransaction.sender.user.name}`;
 
-      const expectedStyle = { color: 'green' };
-      expect(wrapper.find({ testID: 'nominal' }).props().style).toContainEqual(
+      const expectedStyle = [
+        { fontSize: 16, fontWeight: 'bold' },
+        { color: 'green', marginRight: '2%' }
+      ];
+      expect(wrapper.find({ testID: 'nominal' }).props().style).toMatchObject(
         expectedStyle
       );
       expect(wrapper.find({ testID: 'receiver' }).props().children).toEqual(

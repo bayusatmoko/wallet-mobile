@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-  TouchableOpacity,
-  View,
-  TextInput,
-  Text,
   Image,
-  StyleSheet
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import jwtDecode from 'jwt-decode';
@@ -14,6 +15,7 @@ import personLogin from '../person-login.png';
 import passwordIcon from '../lock.png';
 import undraw from '../undraw-login.png';
 import getSessionInfo from '../Utils/getSessionInfo';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class LoginContainer extends React.Component {
   constructor(props) {
@@ -60,7 +62,7 @@ export default class LoginContainer extends React.Component {
         );
       }
       this.setState({ error: '' });
-      this.props.navigation.navigate('Splash');
+      this.props.navigation.navigate('App');
     } catch (error) {
       this.setState({ error: this._generateErrorMessage(error) });
     }
@@ -70,53 +72,53 @@ export default class LoginContainer extends React.Component {
     const { username, password, error } = this.state;
     return (
       <>
-        <View
-          style={styles.flexLogin}>
-          <View style={styles.borderUsername}>
-            <View style={styles.flexUsername}>
-              <Image style={styles.imageLogin} source={personLogin} />
-              <TextInput
-                autoCapitalize="none"
-                testID="input-user"
-                style={styles.textUsername}
-                placeholder="name"
-                onChangeText={this._handleNameChange}
-                value={username}
-              />
-            </View>
-            <View style={styles.borderDivider} />
-            <View style={styles.flexPassword}>
-              <Image style={styles.imagePassword} source={passwordIcon} />
-              <TextInput
-                autoCapitalize="none"
-                placeholder="password"
-                testID="input-password"
-                style={styles.textPassword}
-                secureTextEntry
-                onChangeText={text => this._handlePasswordChange(text)}
-                value={password}
-              />
-            </View>
-            <View style={styles.borderDivider} />
-          </View>
-          <View>
-            <TouchableOpacity title="Login" onPress={this._handlePress}>
-              <View style={styles.borderLogin}>
-                <Text style={styles.textLogin}>Login</Text>
+        <KeyboardAwareScrollView>
+          <StatusBar backgroundColor="#8127fc" barStyle="light-content" />
+          <View style={styles.flexLogin}>
+            <View style={styles.borderUsername}>
+              <View style={styles.flexUsername}>
+                <Image style={styles.imageLogin} source={personLogin} />
+                <TextInput
+                  autoCapitalize="none"
+                  testID="input-user"
+                  style={styles.textUsername}
+                  placeholder="name"
+                  onChangeText={this._handleNameChange}
+                  value={username}
+                />
               </View>
-            </TouchableOpacity>
-          </View>
-          {error !== '' && (
-            <View style={styles.borderError}>
-              <Text style={styles.textError} testID="text-error">
-                {error}
-              </Text>
+              <View style={styles.borderDivider} />
+              <View style={styles.flexPassword}>
+                <Image style={styles.imagePassword} source={passwordIcon} />
+                <TextInput
+                  autoCapitalize="none"
+                  placeholder="password"
+                  testID="input-password"
+                  style={styles.textPassword}
+                  secureTextEntry
+                  onChangeText={text => this._handlePasswordChange(text)}
+                  value={password}
+                />
+              </View>
+              <View style={styles.borderDivider} />
+              <TouchableOpacity title="Login" onPress={this._handlePress}>
+                <View style={styles.borderLogin}>
+                  <Text style={styles.textLogin}>Login</Text>
+                </View>
+              </TouchableOpacity>
             </View>
-          )}
-        </View>
-        <View style={styles.undrawImage}>
-          <Image source={undraw} style={{ width: 200, height: 200 }} />
-        </View>
+            {error !== '' && (
+              <View style={styles.borderError}>
+                <Text style={styles.textError} testID="text-error">
+                  {error}
+                </Text>
+              </View>
+            )}
+          </View>
+          <View style={styles.undrawImage}>
+            <Image source={undraw} style={styles.imageUndraw} />
+          </View>
+        </KeyboardAwareScrollView>
       </>
     );
   }
@@ -136,7 +138,8 @@ const styles = StyleSheet.create({
   undrawImage: {
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
+    flex: 1
   },
   textLogin: {
     color: 'white'
@@ -182,13 +185,20 @@ const styles = StyleSheet.create({
   },
   borderUsername: {
     width: '90%',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    flex: 1
   },
   flexLogin: {
     width: '100%',
     alignSelf: 'center',
     flex: 1,
     justifyContent: 'center',
-    marginTop: 100
+    marginTop: 200
+  },
+  imageUndraw: {
+    width: 200,
+    height: 200
   }
 });

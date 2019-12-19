@@ -13,10 +13,7 @@ const PayeeItem = props => {
         {payee.nickName}
       </Text>
       <TouchableOpacity onPress={onPressPayee} testID="payee-item">
-        <Image
-          style={{ width: 40, height: 40, marginRight: 20 }}
-          source={sendPayee}
-        />
+        <Image style={styles.imagePayee} source={sendPayee} />
       </TouchableOpacity>
     </View>
   );

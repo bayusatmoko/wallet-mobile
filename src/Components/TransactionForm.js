@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import {
-  Button,
-  Text,
-  View,
-  TextInput,
-  StyleSheet,
   Alert,
-  TouchableOpacity
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 class TransactionForm extends PureComponent {
@@ -94,7 +93,7 @@ class TransactionForm extends PureComponent {
           value={nominal.toString()}
           onChangeText={text => {
             this.setState({ nominal: text });
-            this._checkIsNominalInRange(text);
+            this._checkValidInput(text);
           }}
         />
         {isError && (
@@ -118,20 +117,8 @@ class TransactionForm extends PureComponent {
           color="#8020AF"
           onPress={this._handleSubmit}
           title="Submit">
-          <View
-            style={{
-              backgroundColor: '#8127fc',
-              width: '90%',
-              padding: 15,
-              alignSelf: 'center',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 40,
-              borderRadius: 20
-            }}>
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>
-              Submit
-            </Text>
+          <View style={styles.borderButton}>
+            <Text style={styles.textButton}>Submit</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -142,7 +129,7 @@ class TransactionForm extends PureComponent {
 const styles = StyleSheet.create({
   containerButton: {
     backgroundColor: '#8127fc',
-    padding: 8,
+    padding: '2%',
     borderRadius: 5
   },
   textValue: {
@@ -178,6 +165,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 20
+  },
+  borderButton: {
+    backgroundColor: '#8127fc',
+    width: '90%',
+    padding: 15,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 40,
+    borderRadius: 20
+  },
+  textButton: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20
   }
 });
 

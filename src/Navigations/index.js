@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createSwitchNavigator } from 'react-navigation';
 import background from '../Assets/Images/background.jpg';
@@ -52,15 +52,13 @@ const ProfileNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       headerTintColor: 'black',
+      header: null,
       headerTitleStyle: {
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 20,
         alignSelf: 'center'
-      },
-      headerBackground: (
-        <Image source={background} style={styles.headerBackground} />
-      )
+      }
     }
   }
 );
