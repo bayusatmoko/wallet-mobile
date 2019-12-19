@@ -16,70 +16,66 @@ jest.mock('react-native-sensitive-info', () => {
 
 describe('TransactionHistoryContainer', () => {
   describe('#render', () => {
-    let wallet;
+    const wallet = {
+      id: 1,
+      userId: 1,
+      balance: 'IDR500,000'
+    };
     let wrapper;
-    let transactions;
-    let filterTypeAmount = 'lte';
-    beforeEach(async () => {
-      wallet = {
+    const transactions = [
+      {
         id: 1,
-        userId: 1,
-        balance: 'IDR500,000'
-      };
-
-      transactions = [
-        {
-          id: 1,
-          walletId: 1,
-          type: 'deposit',
-          nominal: 7700000,
-          description: 'Payslip 2019-11-28',
-          receiverWalletId: null,
-          createdAt: '2019-11-28T13:26:15.063Z',
-          updatedAt: '2019-11-28T13:26:15.063Z'
-        },
-        {
-          id: 2,
-          walletId: 1,
-          type: 'withdraw',
-          nominal: 30,
-          description: 'Buy Cheeseburger for lunch',
-          receiverWalletId: null,
-          createdAt: '2019-11-27T13:26:15.063Z',
-          updatedAt: '2019-11-28T13:26:15.063Z'
-        },
-        {
-          id: 3,
-          walletId: 1,
-          type: 'withdraw',
-          nominal: 100,
-          description: 'Dinner at Italian Steak House',
-          receiverWalletId: null,
-          createdAt: '2019-11-26T13:26:15.063Z',
-          updatedAt: '2019-11-28T13:26:15.063Z'
-        },
-        {
-          id: 4,
-          walletId: 1,
-          type: 'deposit',
-          nominal: 8800000,
-          description: 'Payslip 2019-11-29',
-          receiverWalletId: null,
-          createdAt: '2019-11-25T13:26:15.063Z',
-          updatedAt: '2019-11-29T13:26:15.063Z'
-        },
-        {
-          id: 5,
-          walletId: 1,
-          type: 'withdraw',
-          nominal: 40,
-          description: 'Buy Big Macs for lunch',
-          receiverWalletId: null,
-          createdAt: '2019-11-24T13:26:15.063Z',
-          updatedAt: '2019-11-29T13:26:15.063Z'
-        }
-      ];
-
+        walletId: 1,
+        type: 'deposit',
+        nominal: 7700000,
+        description: 'Payslip 2019-11-28',
+        receiverWalletId: null,
+        createdAt: '2019-11-28T13:26:15.063Z',
+        updatedAt: '2019-11-28T13:26:15.063Z'
+      },
+      {
+        id: 2,
+        walletId: 1,
+        type: 'withdraw',
+        nominal: 30,
+        description: 'Buy Cheeseburger for lunch',
+        receiverWalletId: null,
+        createdAt: '2019-11-27T13:26:15.063Z',
+        updatedAt: '2019-11-28T13:26:15.063Z'
+      },
+      {
+        id: 3,
+        walletId: 1,
+        type: 'withdraw',
+        nominal: 100,
+        description: 'Dinner at Italian Steak House',
+        receiverWalletId: null,
+        createdAt: '2019-11-26T13:26:15.063Z',
+        updatedAt: '2019-11-28T13:26:15.063Z'
+      },
+      {
+        id: 4,
+        walletId: 1,
+        type: 'deposit',
+        nominal: 8800000,
+        description: 'Payslip 2019-11-29',
+        receiverWalletId: null,
+        createdAt: '2019-11-25T13:26:15.063Z',
+        updatedAt: '2019-11-29T13:26:15.063Z'
+      },
+      {
+        id: 5,
+        walletId: 1,
+        type: 'withdraw',
+        nominal: 40,
+        description: 'Buy Big Macs for lunch',
+        receiverWalletId: null,
+        createdAt: '2019-11-24T13:26:15.063Z',
+        updatedAt: '2019-11-29T13:26:15.063Z'
+      }
+    ];
+    beforeEach(async () => {
+      jest.useFakeTimers();
       getWalletByUserId.mockResolvedValueOnce({ data: wallet });
       getTransactionsByWalletId.mockResolvedValueOnce({ data: transactions });
       when(SInfo.getItem)
@@ -94,6 +90,7 @@ describe('TransactionHistoryContainer', () => {
     });
 
     afterEach(() => {
+      jest.useRealTimers();
       jest.resetAllMocks();
     });
 
@@ -289,6 +286,12 @@ describe('TransactionHistoryContainer', () => {
       await flushPromises();
 
       expect(wrapper.find('Error')).toHaveLength(1);
+    });
+
+    it('should not show loading when the timer ran out', () => {
+      jest.runAllTimers();
+
+      expect(wrapper.find('ActivityIndicator')).toHaveLength(0);
     });
   });
 });
