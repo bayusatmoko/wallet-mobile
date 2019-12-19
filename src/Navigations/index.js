@@ -52,15 +52,13 @@ const ProfileNavigator = createStackNavigator(
   {
     defaultNavigationOptions: {
       headerTintColor: 'black',
+      header: null,
       headerTitleStyle: {
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 20,
         alignSelf: 'center'
-      },
-      headerBackground: (
-        <Image source={background} style={styles.headerBackground} />
-      )
+      }
     }
   }
 );

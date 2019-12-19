@@ -10,6 +10,7 @@ import getWalletByUserId from '../Services/getWalletByUserId';
 import Error from '../Components/Error';
 import NoTransactionsFound from '../Components/NoTransactionsFound';
 import getSessionInfo from '../Utils/getSessionInfo';
+import { ActivityIndicator, Modal, StyleSheet, View } from 'react-native';
 
 export default class DashboardContainer extends React.Component {
   constructor(props) {
@@ -22,7 +23,8 @@ export default class DashboardContainer extends React.Component {
       user: {},
       lastTransactions: [],
       isRefreshing: false,
-      errorMessage: ''
+      errorMessage: '',
+      isLoading: false
     };
   }
 
@@ -33,11 +35,23 @@ export default class DashboardContainer extends React.Component {
     await this._refreshData();
   }
 
+  _renderLoading = () => {
+    setTimeout(() => {
+      this.setState({ isRefreshing: false });
+    }, 1000);
+    return (
+      <Modal transparent={false} visible={this.state.isRefreshing}>
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      </Modal>
+    );
+  };
+
   _refreshData = async () => {
     this.setState({ isRefreshing: true });
     await this._fetchUser();
     await this._fetchWallet();
-    this.setState({ isRefreshing: false });
   };
 
   _generateErrorMessage = error => {
@@ -105,6 +119,7 @@ export default class DashboardContainer extends React.Component {
     const { wallet, user, lastTransactions, isRefreshing } = this.state;
     return (
       <>
+        {isRefreshing && this._renderLoading()}
         <UserInfo user={user} />
         <WalletInfo wallet={wallet} />
         <MenuComponent onPress={this._handleMenuPress} />
@@ -119,3 +134,11 @@ export default class DashboardContainer extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%'
+  }
+});

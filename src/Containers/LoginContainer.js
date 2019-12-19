@@ -63,7 +63,7 @@ export default class LoginContainer extends React.Component {
         );
       }
       this.setState({ error: '' });
-      this.props.navigation.navigate('Splash');
+      this.props.navigation.navigate('App');
     } catch (error) {
       this.setState({ error: this._generateErrorMessage(error) });
     }

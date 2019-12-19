@@ -68,7 +68,7 @@ describe('LoginContainer', () => {
       expect(SInfo.setItem).toHaveBeenNthCalledWith(1, 'token', token, {});
       expect(SInfo.setItem).toHaveBeenNthCalledWith(2, 'userId', '1', {});
       expect(SInfo.setItem).toHaveBeenNthCalledWith(3, 'walletId', '1', {});
-      expect(navigation.navigate).toHaveBeenCalledWith('Splash');
+      expect(navigation.navigate).toHaveBeenCalledWith('App');
     });
 
     it('should display error when login failed', async () => {
@@ -90,7 +90,7 @@ describe('LoginContainer', () => {
       expect(wrapper.find({ testID: 'text-error' }).props().children).toBe(
         'Failed login'
       );
-      expect(navigation.navigate).not.toHaveBeenCalledWith('Splash');
+      expect(navigation.navigate).not.toHaveBeenCalledWith('App');
     });
 
     it('should display network error when server down', async () => {

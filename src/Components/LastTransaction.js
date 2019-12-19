@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Modal,
+  RefreshControl,
+  StyleSheet,
+  View,
+  Text
+} from 'react-native';
 import TransactionItem from './TransactionItem';
 import PropTypes from 'prop-types';
 
@@ -18,18 +26,20 @@ class LastTransaction extends Component {
   render() {
     const { transactions, walletId, isRefreshing, onRefresh } = this.props;
     return (
-      <View style={styles.transactionList}>
-        <FlatList
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-          }
-          data={transactions}
-          renderItem={({ item }) => (
-            <TransactionItem transaction={item} walletId={walletId} />
-          )}
-          keyExtractor={item => item.id.toString()}
-        />
-      </View>
+      <>
+        <View style={styles.transactionList}>
+          <FlatList
+            refreshControl={
+              <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+            }
+            data={transactions}
+            renderItem={({ item }) => (
+              <TransactionItem transaction={item} walletId={walletId} />
+            )}
+            keyExtractor={item => item.id.toString()}
+          />
+        </View>
+      </>
     );
   }
 }

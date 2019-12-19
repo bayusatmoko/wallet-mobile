@@ -2,7 +2,7 @@ import React from 'react';
 import {
   TouchableOpacity,
   Text,
-  SafeAreaView,
+  StatusBar,
   View,
   StyleSheet
 } from 'react-native';
@@ -47,12 +47,13 @@ export default class ProfileContainer extends React.PureComponent {
     //   })
     //   .join('');
     return (
-      <SafeAreaView>
+      <>
+        <StatusBar backgroundColor="#B127FC" />
         <View style={styles.borderInitial}>
           <View style={styles.borderGravatar}>
             <Gravatar
               options={{
-                email: 'huda.wiratama@yahoo.com',
+                email: 'teukuhuda.wiratama@gmail.com',
                 parameters: { size: '200', d: 'mm' },
                 secure: true
               }}
@@ -93,7 +94,7 @@ export default class ProfileContainer extends React.PureComponent {
             <Text style={styles.textSignOut}>Sign Out</Text>
           </View>
         </TouchableOpacity>
-      </SafeAreaView>
+      </>
     );
   }
 }
@@ -101,7 +102,8 @@ export default class ProfileContainer extends React.PureComponent {
 const styles = StyleSheet.create({
   borderInitial: {
     backgroundColor: '#B127FC',
-    padding: 20
+    padding: 20,
+    height: 200
   },
   contentInitial: {
     width: 100,
@@ -156,6 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 50
   },
   borderGravatar: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: 50
   }
 });
