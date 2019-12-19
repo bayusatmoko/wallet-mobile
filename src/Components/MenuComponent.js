@@ -1,21 +1,17 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import transferImage from '../Assets/Images/transafer.jpeg';
-import payeeImage from '../Assets/Images/payee.jpeg';
-import transaction from '../Assets/Images/history-image.jpeg';
 import NAVIGATION from '../Constants/navigation';
 import styles from './walletInfo.style';
-import chart from '../chart.png';
-import deposit from '../deposit.png';
-import transfer from '../transfer.png';
-import transactions from '../transactions.png';
+import chart from '../Assets/Images/chart.png';
+import deposit from '../Assets/Images/deposit.png';
+import transfer from '../Assets/Images/transfer.png';
+import transactions from '../Assets/Images/transactions.png';
 
 export default class MenuComponent extends React.PureComponent {
   _handlePress = menu => () => {
     const { onPress } = this.props;
     onPress(menu);
   };
-
   render() {
     return (
       <>

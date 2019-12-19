@@ -11,8 +11,6 @@ import {
   TouchableOpacity
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import search from '../searchs.png';
-import qrCode from '../qrcode.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 class ReceiverSearch extends PureComponent {

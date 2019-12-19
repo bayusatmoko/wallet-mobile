@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getBaseURL } from '../config';
+import { getBaseURL } from '../../config';
 
 export default class NewsService {
   constructor() {

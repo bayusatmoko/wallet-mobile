@@ -11,9 +11,9 @@ import {
 import SInfo from 'react-native-sensitive-info';
 import jwtDecode from 'jwt-decode';
 import userLogin from '../Services/userLogin';
-import personLogin from '../person-login.png';
-import passwordIcon from '../lock.png';
-import undraw from '../undraw-login.png';
+import personLogin from '../Assets/Images/person-login.png';
+import passwordIcon from '../Assets/Images/lock.png';
+import undraw from '../Assets/Images/undraw-login.png';
 import logo from '../Assets/Images/phoenix.png';
 import getSessionInfo from '../Utils/getSessionInfo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
