@@ -4,6 +4,7 @@ import { PieChart } from 'react-native-chart-kit';
 import moment from 'moment';
 import DATE from '../Constants/date';
 import Balance from './Balance';
+import TransactionItem from './TransactionItem';
 
 class SpendingChart extends React.PureComponent {
   _calculateTransactionData = () => {
@@ -15,7 +16,7 @@ class SpendingChart extends React.PureComponent {
       if (moment(item.createdAt).isBefore(minDate)) {
         return false;
       }
-      if (item.type === 'DEPOSIT') {
+      if (item.type === TransactionItem.TYPE.DEPOSIT) {
         depositTotal += item.nominal;
         return true;
       }
