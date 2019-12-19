@@ -2,6 +2,7 @@ import React from 'react';
 import { Dimensions, Text, View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import moment from 'moment';
+import DATE from '../Constants/date';
 import Balance from './Balance';
 
 class SpendingChart extends React.PureComponent {
@@ -149,23 +150,23 @@ class SpendingChart extends React.PureComponent {
 
 SpendingChart.DATE_RANGE = {
   ONE_WEEK: moment()
-    .subtract(7, 'd')
-    .format('YYYY-MM-DD'),
+    .subtract(7, DATE.DAY)
+    .format(DATE.FORMAT),
   TWO_WEEK: moment()
-    .subtract(14, 'd')
-    .format('YYYY-MM-DD'),
+    .subtract(14, DATE.DAY)
+    .format(DATE.FORMAT),
   THREE_WEEK: moment()
-    .subtract(21, 'd')
-    .format('YYYY-MM-DD'),
+    .subtract(21, DATE.DAY)
+    .format(DATE.FORMAT),
   ONE_MONTH: moment()
-    .subtract(1, 'month')
-    .format('YYYY-MM-DD'),
+    .subtract(1, DATE.MONTH)
+    .format(DATE.FORMAT),
   TWO_MONTH: moment()
-    .subtract(2, 'month')
-    .format('YYYY-MM-DD'),
+    .subtract(2, DATE.MONTH)
+    .format(DATE.FORMAT),
   THREE_MONTH: moment()
-    .subtract(3, 'month')
-    .format('YYYY-MM-DD')
+    .subtract(3, DATE.MONTH)
+    .format(DATE.FORMAT)
 };
 
 export default SpendingChart;
