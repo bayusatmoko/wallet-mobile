@@ -12,15 +12,15 @@ class ReceiverSearch extends PureComponent {
     };
   }
 
-  _handleSubmit = () => {
+  _handleSubmit = data => {
     const { query } = this.state;
     const { onSubmit } = this.props;
-    onSubmit(query);
+    onSubmit(query || data);
   };
 
   _handleScan = e => {
-    this.setState({ query: e.data });
-    this._handleSubmit();
+    this.setState({ query: e.data, isScanning: false });
+    this._handleSubmit(e.data);
   };
 
   _renderScanner = () => (
@@ -54,6 +54,7 @@ class ReceiverSearch extends PureComponent {
 
   render() {
     const { query, isScanning } = this.state;
+    console.log('NIH RENDER RS');
     return (
       <View style={styles.container}>
         <Text style={styles.label}>Search Receiver</Text>
@@ -72,6 +73,7 @@ class ReceiverSearch extends PureComponent {
           onPress={this._handleSubmit}
           title="Search"
         />
+        <View style={{ marginVertical: 5 }} />
         <Button
           style={styles.button}
           testID="scan-qr"
@@ -102,7 +104,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 200
-    // marginVertical: 100,
   },
   centerText: {
     flex: 1,
