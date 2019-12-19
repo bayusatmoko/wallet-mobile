@@ -1,12 +1,12 @@
 import React from 'react';
-import TransactionHistory from '../Components/TransactionHistory';
-import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
-import getWalletByUserId from '../Services/getWalletByUserId';
 import { ActivityIndicator, Modal, StyleSheet, View } from 'react-native';
-import TransactionFilter from '../Components/TransactionFilter';
-import TransactionSort from '../Components/TransactionSort';
 import Error from '../Components/Error';
 import NoTransactionsFound from '../Components/NoTransactionsFound';
+import TransactionFilter from '../Components/TransactionFilter';
+import TransactionHistory from '../Components/TransactionHistory';
+import TransactionSort from '../Components/TransactionSort';
+import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
+import getWalletByUserId from '../Services/getWalletByUserId';
 import getSessionInfo from '../Utils/getSessionInfo';
 
 export default class TransactionHistoryContainer extends React.Component {
