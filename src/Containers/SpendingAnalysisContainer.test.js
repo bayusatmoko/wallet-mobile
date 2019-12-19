@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { when } from 'jest-when';
 import SInfo from 'react-native-sensitive-info';
+import SpendingChart from '../Components/SpendingChart';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import SpendingAnalysisContainer from './SpendingAnalysisContainer';
 
@@ -83,6 +84,18 @@ describe('SpendingAnalysisContainer', () => {
       await flushPromises();
 
       expect(wrapper.find('Error')).toHaveLength(1);
+    });
+
+    it('should display min date to two weeks ago when selected "Last two weeks" option', async () => {
+      wrapper
+        .find('RNPickerSelect')
+        .simulate('valueChange', SpendingChart.DATE_RANGE.TWO_WEEK);
+
+      await flushPromises();
+
+      expect(wrapper.find('SpendingChart').props().minDate).not.toEqual(
+        SpendingChart.DATE_RANGE.ONE_WEEK
+      );
     });
   });
 });

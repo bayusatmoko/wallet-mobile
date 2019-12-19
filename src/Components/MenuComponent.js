@@ -4,7 +4,7 @@ import transferImage from '../Assets/Images/transafer.jpeg';
 import payeeImage from '../Assets/Images/payee.jpeg';
 import transaction from '../Assets/Images/history-image.jpeg';
 import styles from './walletInfo.style';
-import payee from '../Assets/Images/payee-img.jpg';
+import chart from '../chart.png';
 
 export default class MenuComponent extends React.PureComponent {
   _handlePress = menu => () => {
@@ -40,7 +40,7 @@ export default class MenuComponent extends React.PureComponent {
           </TouchableOpacity>
           <TouchableOpacity onPress={this._handlePress('Analysis')}>
             <View style={styles.menuTransaction}>
-              <Image style={styles.transactionImage} source={transaction} />
+              <Image style={styles.transactionImage} source={chart} />
               <Text>Analysis</Text>
             </View>
           </TouchableOpacity>

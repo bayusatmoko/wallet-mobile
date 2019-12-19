@@ -91,7 +91,7 @@ const AppNavigator = createStackNavigator(
     Analysis: {
       screen: SpendingAnalysisContainer,
       navigationOptions: {
-        title: 'Spending Analysis'
+        title: 'SPENDING ANALYSIS'
       }
     }
   },

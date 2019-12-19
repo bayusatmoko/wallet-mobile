@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Text } from 'react-native';
+import { Dimensions, Text, View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import moment from 'moment';
 import Balance from './Balance';
@@ -33,21 +33,21 @@ class SpendingChart extends React.PureComponent {
         name: 'Deposit',
         population: depositTotal,
         color: 'purple',
-        legendFontColor: '#7F7F7F',
+        legendFontColor: '#2f2f2f',
         legendFontSize: 12
       },
       {
         name: 'Transfer In',
         population: transferInTotal,
-        color: 'orange',
-        legendFontColor: '#7F7F7F',
+        color: '#ef6c00',
+        legendFontColor: '#2f2f2f',
         legendFontSize: 12
       },
       {
         name: 'Transfer Out',
         population: transferTotal,
         color: 'red',
-        legendFontColor: '#7F7F7F',
+        legendFontColor: '#2f2f2f',
         legendFontSize: 12
       }
     ];
@@ -82,18 +82,66 @@ class SpendingChart extends React.PureComponent {
             margin: 2
           }}
         />
-        <Text>
-          {'Total deposit: '}
-          <Balance balance={depositTotal} />
-        </Text>
-        <Text>
-          {'Total transfer in: '}
-          <Balance balance={transferInTotal} />
-        </Text>
-        <Text>
-          {'Total transfer out: '}
-          <Balance balance={transferTotal} />
-        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            margin: 10
+          }}>
+          <Text>{'Total deposit: '}</Text>
+          <Text style={{ fontSize: 20, color: 'purple' }}>
+            <Balance balance={depositTotal} />
+          </Text>
+        </View>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: '#8127fc',
+            width: '95%',
+            alignSelf: 'center',
+            marginBottom: 10
+          }}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            margin: 10
+          }}>
+          <Text>{'Total transfer in: '}</Text>
+          <Text style={{ fontSize: 20, color: '#ef6c00' }}>
+            <Balance balance={transferInTotal} />
+          </Text>
+        </View>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: '#ef6c00',
+            width: '95%',
+            alignSelf: 'center',
+            marginBottom: 10
+          }}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            margin: 10
+          }}>
+          <Text>{'Total transfer out: '}</Text>
+          <Text style={{ fontSize: 20, color: 'red' }}>
+            <Balance balance={transferTotal} />
+          </Text>
+        </View>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: 'red',
+            width: '95%',
+            alignSelf: 'center',
+            marginBottom: 10
+          }}
+        />
       </>
     );
   }
