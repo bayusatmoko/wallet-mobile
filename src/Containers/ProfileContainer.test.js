@@ -8,7 +8,6 @@ import ProfileContainer from './ProfileContainer';
 jest.mock('react-native-sensitive-info', () => {
   return { setItem: jest.fn(), getItem: jest.fn(), deleteItem: jest.fn() };
 });
-
 jest.mock('../Services/getUserById', () => jest.fn());
 
 describe('ProfileContainer', () => {
@@ -57,6 +56,24 @@ describe('ProfileContainer', () => {
       expect(SInfo.deleteItem).toHaveBeenNthCalledWith(2, 'userId', {});
       expect(SInfo.deleteItem).toHaveBeenNthCalledWith(3, 'walletId', {});
       expect(navigation.navigate).toHaveBeenCalledWith('Splash');
+    });
+
+    it('should render Error when server is not running', async () => {
+      getUserById.mockRejectedValue({ message: 'Network Error' });
+      wrapper = shallow(<ProfileContainer />);
+      await flushPromises();
+
+      expect(wrapper.find('Error').length).toBe(1);
+    });
+
+    it('should render Error when failed to fetch', async () => {
+      getUserById.mockRejectedValue({
+        response: { data: { message: 'Network Error' } }
+      });
+      wrapper = shallow(<ProfileContainer />);
+      await flushPromises();
+
+      expect(wrapper.find('Error').length).toBe(1);
     });
   });
 });
