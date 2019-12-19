@@ -41,7 +41,7 @@ class ReceiverSearch extends PureComponent {
           bottomContent={
             <Button
               style={styles.button}
-              testID="scan-qr"
+              testID="stop-scanning"
               color="#8020AF"
               onPress={() => this.setState({ isScanning: false })}
               title="Stop Scanning"
@@ -54,7 +54,6 @@ class ReceiverSearch extends PureComponent {
 
   render() {
     const { query, isScanning } = this.state;
-    console.log('NIH RENDER RS');
     return (
       <View style={styles.container}>
         <Text style={styles.label}>Search Receiver</Text>
