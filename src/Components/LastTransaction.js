@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Modal,
-  RefreshControl,
-  StyleSheet,
-  View,
-  Text
-} from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import TransactionItem from './TransactionItem';
 import PropTypes from 'prop-types';
 

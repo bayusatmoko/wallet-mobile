@@ -1,12 +1,11 @@
-import SInfo from 'react-native-sensitive-info';
 import React from 'react';
 import {
   ActivityIndicator,
   Keyboard,
   Modal,
+  ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
-  ScrollView,
   View
 } from 'react-native';
 import FailedNotification from '../Components/FailedNotification';

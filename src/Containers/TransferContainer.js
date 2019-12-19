@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native';
-import SInfo from 'react-native-sensitive-info';
 import FailedNotification from '../Components/FailedNotification';
 import ReceiverSearch from '../Components/ReceiverSearch';
 import SuccessNotification from '../Components/SuccessNotification';

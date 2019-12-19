@@ -1,10 +1,9 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import transferImage from '../Assets/Images/transafer.jpeg';
 import payeeImage from '../Assets/Images/payee.jpeg';
 import transaction from '../Assets/Images/history-image.jpeg';
 import styles from './walletInfo.style';
-import payee from '../Assets/Images/payee-img.jpg';
 
 export default class MenuComponent extends React.PureComponent {
   _handlePress = menu => () => {
@@ -39,7 +38,7 @@ export default class MenuComponent extends React.PureComponent {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={{ borderWidth: 4, borderColor: 'whitesmoke', marginTop: 30 }} />
+        <View style={styles.borderDividers} />
       </>
     );
   }

@@ -1,15 +1,8 @@
 import React from 'react';
-import SInfo from 'react-native-sensitive-info';
 import TransactionHistory from '../Components/TransactionHistory';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
 import getWalletByUserId from '../Services/getWalletByUserId';
-import {
-  ActivityIndicator,
-  Modal,
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native';
+import { ActivityIndicator, Modal, StyleSheet, View } from 'react-native';
 import TransactionFilter from '../Components/TransactionFilter';
 import TransactionSort from '../Components/TransactionSort';
 import Error from '../Components/Error';

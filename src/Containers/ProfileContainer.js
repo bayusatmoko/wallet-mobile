@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  TouchableOpacity,
-  Text,
   StatusBar,
-  View,
-  StyleSheet
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import getUserById from '../Services/getUserById';
@@ -67,23 +67,13 @@ export default class ProfileContainer extends React.PureComponent {
           </Text>
         </View>
         <View style={styles.borderDivider} />
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            margin: 20
-          }}>
+        <View style={styles.viewPhone}>
           <Text style={styles.textPhone}>Phone Number</Text>
           <Text style={styles.textPhone} testID="text-phone">
             {user.phoneNumber}
           </Text>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            margin: 20
-          }}>
+        <View style={styles.viewEmail}>
           <Text style={styles.textEmail}>Email</Text>
           <Text style={styles.textEmail} testID="text-email">
             {user.email}
@@ -160,5 +150,15 @@ const styles = StyleSheet.create({
   borderGravatar: {
     alignSelf: 'center',
     marginTop: 50
+  },
+  viewPhone: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 20
+  },
+  viewEmail: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 20
   }
 });

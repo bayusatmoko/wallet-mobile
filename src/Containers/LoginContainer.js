@@ -1,13 +1,12 @@
 import React from 'react';
 import {
-  TouchableOpacity,
-  View,
-  TextInput,
-  Text,
   Image,
-  StyleSheet,
   StatusBar,
-  KeyboardAvoidingView
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
 import jwtDecode from 'jwt-decode';
@@ -117,7 +116,7 @@ export default class LoginContainer extends React.Component {
             )}
           </View>
           <View style={styles.undrawImage}>
-            <Image source={undraw} style={{ width: 200, height: 200 }} />
+            <Image source={undraw} style={styles.imageUndraw} />
           </View>
         </KeyboardAwareScrollView>
       </>
@@ -197,5 +196,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginTop: 200
+  },
+  imageUndraw: {
+    width: 200,
+    height: 200
   }
 });

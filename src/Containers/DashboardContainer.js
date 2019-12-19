@@ -1,5 +1,4 @@
 import React from 'react';
-import SInfo from 'react-native-sensitive-info';
 import LastTransaction from '../Components/LastTransaction';
 import MenuComponent from '../Components/MenuComponent';
 import UserInfo from '../Components/UserInfo';

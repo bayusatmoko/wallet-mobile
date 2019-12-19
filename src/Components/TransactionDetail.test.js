@@ -125,7 +125,10 @@ describe('TransactionDetail', () => {
       );
       const expectedText = `From ${transferTransaction.sender.user.name}`;
 
-      const expectedStyle = [{"fontSize": 16, "fontWeight": "bold"}, {"color": "green", "marginRight": "2%"}];
+      const expectedStyle = [
+        { fontSize: 16, fontWeight: 'bold' },
+        { color: 'green', marginRight: '2%' }
+      ];
       expect(wrapper.find({ testID: 'nominal' }).props().style).toMatchObject(
         expectedStyle
       );

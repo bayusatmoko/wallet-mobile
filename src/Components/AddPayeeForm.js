@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import {
-  TouchableOpacity,
-  View,
-  TextInput,
-  StyleSheet,
   Alert,
+  Button,
   Image,
-  Button
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import favouriteIcon from '../Assets/Images/favorites.png';
 import styles from './walletInfo.style';
@@ -82,10 +81,7 @@ class AddPayeeForm extends PureComponent {
             testID="favourite-button"
             color="#8020AF"
             onPress={this._handleAdd}>
-            <Image
-              style={styles.favouriteIcon}
-              source={favouriteIcon}
-            />
+            <Image style={styles.favouriteIcon} source={favouriteIcon} />
           </TouchableOpacity>
         )}
         {this._displayFavouriteForm()}

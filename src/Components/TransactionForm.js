@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import {
-  Button,
-  Text,
-  View,
-  TextInput,
-  StyleSheet,
   Alert,
-  TouchableOpacity
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 class TransactionForm extends PureComponent {

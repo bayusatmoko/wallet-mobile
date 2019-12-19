@@ -39,12 +39,10 @@ describe('ProfileContainer', () => {
 
     it('should render user info', async () => {
       const textName = wrapper.find({ testID: 'text-name' });
-      const textInitial = wrapper.find({ testID: 'text-initial' });
       const textPhone = wrapper.find({ testID: 'text-phone' });
       const textEmail = wrapper.find({ testID: 'text-email' });
 
       expect(textName.props().children).toBe(userInfo.name);
-      // expect(textInitial.props().children).toBe('HU');
       expect(textPhone.props().children).toBe(userInfo.phoneNumber);
       expect(textEmail.props().children).toBe(userInfo.email);
     });

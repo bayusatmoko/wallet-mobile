@@ -209,6 +209,49 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 25,
     alignSelf: 'center'
+  },
+  borderDividers: {
+    borderWidth: 4,
+    borderColor: 'whitesmoke',
+    marginTop: 30
+  },
+  imagePayee: {
+    width: 40,
+    height: 40,
+    marginRight: 20
+  },
+  borderMinimum: {
+    flexDirection: 'row',
+    alignSelf: 'center'
+  },
+  textMinimum: {
+    marginLeft: '2%',
+    marginBottom: 30,
+    marginTop: 10,
+    width: '40%',
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
+    fontSize: 20,
+    height: 50,
+    alignSelf: 'center'
+  },
+  dividerMinimum: {
+    marginLeft: '3%',
+    marginRight: '3%',
+    borderBottomWidth: 1,
+    marginBottom: 30,
+    marginTop: 30
+  },
+  textMaximum: {
+    marginRight: '2%',
+    borderBottomWidth: 1,
+    marginBottom: 30,
+    width: '40%',
+    marginTop: 10,
+    borderBottomColor: 'grey',
+    fontSize: 20,
+    height: 50,
+    alignSelf: 'center'
   }
 });
 
