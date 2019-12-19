@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
-const DEFAULT_BASE_URL = 'http://localhost:3000';
-const ANDROID_BASE_URL = 'http://10.0.2.2:3000';
+const DEFAULT_BASE_URL = 'https://7653f94d.ngrok.io';
+const ANDROID_BASE_URL = 'https://7653f94d.ngrok.io';
 
 export const PLATFORM = {
   ANDROID: 'android'

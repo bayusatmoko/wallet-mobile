@@ -1,5 +1,5 @@
 import axios from 'axios';
-import config from '../../config';
+import config from '../../config/index';
 import getUserByEmail from './getUserByEmaill';
 import getUserById from './getUserById';
 import getWalletByUserId from './getWalletByUserId';
@@ -21,7 +21,7 @@ describe('Service', () => {
       phoneNumber: '08237283',
       email: 'huda@gmail.com'
     };
-    url = 'http://localhost:3000';
+    url = config.API_URL;
     errorLogin = {
       data: {
         message: '"password" length must be at least 8 characters long'

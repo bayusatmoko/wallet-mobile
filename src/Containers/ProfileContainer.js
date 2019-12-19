@@ -1,14 +1,18 @@
 import React from 'react';
 import {
-  StatusBar,
-  StyleSheet,
-  Text,
   TouchableOpacity,
-  View
+  Text,
+  SafeAreaView,
+  View,
+  ScrollView,
+  StatusBar,
+  StyleSheet
 } from 'react-native';
 import SInfo from 'react-native-sensitive-info';
+import QRCode from 'react-native-qrcode-svg';
 import getUserById from '../Services/getUserById';
 import getSessionInfo from '../Utils/getSessionInfo';
+import phoenix from '../Assets/Images/phoenix.png';
 import { Gravatar } from 'react-native-gravatar';
 
 export default class ProfileContainer extends React.PureComponent {
@@ -20,7 +24,6 @@ export default class ProfileContainer extends React.PureComponent {
       }
     };
   }
-
   async componentDidMount() {
     const sessionInfo = await getSessionInfo();
     const { userId, token } = sessionInfo;
@@ -38,14 +41,6 @@ export default class ProfileContainer extends React.PureComponent {
 
   render() {
     const { user } = this.state;
-    // const nameInitials = user.name
-    //   .split(' ')
-    //   .map((word, index) => {
-    //     if (index < 2) {
-    //       return word.charAt(0);
-    //     }
-    //   })
-    //   .join('');
     return (
       <>
         <StatusBar backgroundColor="#B127FC" />
@@ -61,85 +56,94 @@ export default class ProfileContainer extends React.PureComponent {
             />
           </View>
         </View>
-        <View style={styles.borderName}>
-          <Text style={styles.textName} testID="text-name">
-            {user.name}
-          </Text>
-        </View>
-        <View style={styles.borderDivider} />
-        <View style={styles.viewPhone}>
-          <Text style={styles.textPhone}>Phone Number</Text>
-          <Text style={styles.textPhone} testID="text-phone">
-            {user.phoneNumber}
-          </Text>
-        </View>
-        <View style={styles.viewEmail}>
-          <Text style={styles.textEmail}>Email</Text>
-          <Text style={styles.textEmail} testID="text-email">
-            {user.email}
-          </Text>
-        </View>
-        <TouchableOpacity onPress={this._logout} testID="touchable-logout">
-          <View style={styles.borderButton}>
-            <Text style={styles.textSignOut}>Sign Out</Text>
-          </View>
-        </TouchableOpacity>
+        <SafeAreaView>
+          <ScrollView>
+            <View
+              style={{ alignSelf: 'center', marginTop: 20, marginBottom: 10 }}>
+              <Text style={{ fontSize: 30, color: 'black' }} testID="text-name">
+                {user.name}
+              </Text>
+            </View>
+            <View
+              style={{
+                backgroundColor: '#B127FC',
+                height: 2,
+                width: '90%',
+                alignSelf: 'center'
+              }}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                margin: 20
+              }}>
+              <Text style={{ fontSize: 15 }}>Phone Number</Text>
+              <Text style={{ fontSize: 15 }} testID="text-phone">
+                {user.phoneNumber}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                margin: 20
+              }}>
+              <Text style={{ fontSize: 15 }}>Email</Text>
+              <Text style={{ fontSize: 15 }} testID="text-email">
+                {user.email}
+              </Text>
+            </View>
+            <TouchableOpacity onPress={this._logout} testID="touchable-logout">
+              <View
+                style={{
+                  width: '90%',
+                  backgroundColor: '#B127FC',
+                  alignSelf: 'center',
+                  borderRadius: 20,
+                  padding: 15,
+                  alignItems: 'center'
+                }}>
+                <Text
+                  style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>
+                  Log Out
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  marginTop: 40,
+                  marginBottom: 10
+                }}>
+                Pay Me
+              </Text>
+              <QRCode
+                value={user.email}
+                size={200}
+                color="black"
+                logo={phoenix}
+                logoBackgroundColor="white"
+                logoMargin={5}
+                logoBorderRadius={100}
+              />
+            </View>
+          </ScrollView>
+        </SafeAreaView>
       </>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  borderInitial: {
-    backgroundColor: '#B127FC',
-    padding: 20,
-    height: 200
-  },
-  contentInitial: {
-    width: 100,
-    height: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center'
-  },
-  textInitial: {
-    fontSize: 70,
-    color: 'whitesmoke'
-  },
-  borderName: {
-    alignSelf: 'center',
-    marginTop: 20,
-    marginBottom: 10
-  },
-  textName: {
-    fontSize: 30,
-    color: 'black'
-  },
-  borderDivider: {
-    backgroundColor: '#B127FC',
-    height: 2,
-    width: '90%',
-    alignSelf: 'center'
-  },
-  textPhone: {
-    fontSize: 15
-  },
-  textEmail: {
-    fontSize: 15
-  },
-  borderButton: {
-    width: '90%',
-    backgroundColor: '#B127FC',
-    alignSelf: 'center',
-    borderRadius: 20,
-    padding: 15,
-    alignItems: 'center'
-  },
-  textSignOut: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 15
-  },
   roundedProfileImage: {
     width: 100,
     height: 100,
@@ -151,14 +155,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 50
   },
-  viewPhone: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    margin: 20
+  borderInitial: {
+    backgroundColor: '#B127FC',
+    padding: 20,
+    height: 200
   },
-  viewEmail: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    margin: 20
+  contentInitial: {
+    width: 100,
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center'
   }
 });
