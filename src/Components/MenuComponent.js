@@ -3,7 +3,9 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import transferImage from '../Assets/Images/transafer.jpeg';
 import payeeImage from '../Assets/Images/payee.jpeg';
 import transaction from '../Assets/Images/history-image.jpeg';
+import NAVIGATION from '../Constants/navigation';
 import styles from './walletInfo.style';
+import chart from '../chart.png';
 
 export default class MenuComponent extends React.PureComponent {
   _handlePress = menu => () => {
@@ -17,7 +19,7 @@ export default class MenuComponent extends React.PureComponent {
         <View style={styles.borderMenu}>
           <TouchableOpacity
             testID="menu-transfer"
-            onPress={this._handlePress('Transfer')}>
+            onPress={this._handlePress(NAVIGATION.TRANSFER)}>
             <View style={styles.menuTransfer}>
               <Image style={styles.transferImage} source={transferImage} />
               <Text>Transfer</Text>
@@ -25,16 +27,24 @@ export default class MenuComponent extends React.PureComponent {
           </TouchableOpacity>
           <TouchableOpacity
             testID="menu-deposit"
-            onPress={this._handlePress('Deposit')}>
+            onPress={this._handlePress(NAVIGATION.DEPOSIT)}>
             <View style={styles.menuDeposit}>
               <Image style={styles.payeeImage} source={payeeImage} />
               <Text>Deposit</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this._handlePress('TransactionHistory')}>
+          <TouchableOpacity
+            onPress={this._handlePress(NAVIGATION.TRANSACTION_HISTORY)}>
             <View style={styles.menuTransaction}>
               <Image style={styles.transactionImage} source={transaction} />
               <Text>Transaction</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this._handlePress(NAVIGATION.SPENDING_ANALYSIS)}>
+            <View style={styles.menuTransaction}>
+              <Image style={styles.transactionImage} source={chart} />
+              <Text>Analysis</Text>
             </View>
           </TouchableOpacity>
         </View>
