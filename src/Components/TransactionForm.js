@@ -88,7 +88,7 @@ class TransactionForm extends PureComponent {
         <Text style={styles.title}>{title}</Text>
         <TextInput
           placeholder="Amount"
-          keyboardType="numeric"
+          keyboardType="number-pad"
           style={styles.input}
           testID="input-amount"
           value={nominal.toString()}

@@ -89,9 +89,11 @@ export default class LoginContainer extends React.Component {
             <Image style={styles.imageLogin} source={personLogin} />
             <TextInput
               autoCapitalize="none"
+              autoCompleteType="email"
+              keyboardType="email-address"
               testID="input-user"
               style={styles.textUsername}
-              placeholder="name"
+              placeholder="Username"
               onChangeText={this._handleNameChange}
               value={username}
             />
@@ -101,7 +103,8 @@ export default class LoginContainer extends React.Component {
             <Image style={styles.imagePassword} source={passwordIcon} />
             <TextInput
               autoCapitalize="none"
-              placeholder="password"
+              autoCompleteType="password"
+              placeholder="Password"
               testID="input-password"
               style={styles.textPassword}
               secureTextEntry
