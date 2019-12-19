@@ -21,5 +21,12 @@ describe('ReceiverSearch', () => {
 
       expect(mockedOnSubmit).toHaveBeenCalledWith(query);
     });
+
+    it('should called mockedOnSubmit when successfully scan a qr code', () => {
+      const email = 'fadelay@gmail.com';
+      wrapper.find({ testID: 'scan-qr' }).simulate('press');
+      wrapper.find({ testID: 'qr-scanner' }).simulate('read', { data: email });
+      expect(mockedOnSubmit).toHaveBeenCalledWith(email);
+    });
   });
 });

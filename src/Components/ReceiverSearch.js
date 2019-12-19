@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Text } from 'react-native';
-import { Button, View, TextInput, StyleSheet } from 'react-native';
+import { Button, Modal, StyleSheet, Text, TextInput, View } from 'react-native';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 
 class ReceiverSearch extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      query: ''
+      query: '',
+      isScanning: false
     };
   }
 
@@ -17,8 +18,42 @@ class ReceiverSearch extends PureComponent {
     onSubmit(query);
   };
 
+  _handleScan = e => {
+    this.setState({ query: e.data });
+    this._handleSubmit();
+  };
+
+  _renderScanner = () => (
+    <Modal transparent={false} visible={this.state.isScanning}>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%'
+        }}>
+        <QRCodeScanner
+          testID="qr-scanner"
+          onRead={this._handleScan}
+          // flashMode={QRCodeScanner.Constants.FlashMode.torch}
+          topContent={
+            <Text style={styles.centerText}>Scan your friend's QR code!</Text>
+          }
+          bottomContent={
+            <Button
+              style={styles.button}
+              testID="scan-qr"
+              color="#8020AF"
+              onPress={() => this.setState({ isScanning: false })}
+              title="Stop Scanning"
+            />
+          }
+        />
+      </View>
+    </Modal>
+  );
+
   render() {
-    const { query } = this.state;
+    const { query, isScanning } = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.label}>Search Receiver</Text>
@@ -37,6 +72,14 @@ class ReceiverSearch extends PureComponent {
           onPress={this._handleSubmit}
           title="Search"
         />
+        <Button
+          style={styles.button}
+          testID="scan-qr"
+          color="#8020AF"
+          onPress={() => this.setState({ isScanning: true })}
+          title="Scan QR"
+        />
+        {isScanning && this._renderScanner()}
       </View>
     );
   }
@@ -58,7 +101,18 @@ const styles = StyleSheet.create({
     height: 50
   },
   button: {
-    marginVertical: 10
+    marginTop: 200
+    // marginVertical: 100,
+  },
+  centerText: {
+    flex: 1,
+    fontSize: 18,
+    padding: 32,
+    color: '#777'
+  },
+  textBold: {
+    fontWeight: '500',
+    color: '#000'
   }
 });
 
