@@ -1,6 +1,8 @@
 import React from 'react';
 import {
+  ActivityIndicator,
   Image,
+  Modal,
   StatusBar,
   StyleSheet,
   Text,
@@ -24,7 +26,8 @@ export default class LoginContainer extends React.Component {
     this.state = {
       username: '',
       password: '',
-      error: ''
+      error: '',
+      isLoading: false
     };
   }
 
@@ -45,6 +48,7 @@ export default class LoginContainer extends React.Component {
 
   _handlePress = async () => {
     const { username, password } = this.state;
+    this.setState({ isLoading: true, error: '' });
     try {
       const response = await userLogin({ username, password });
       if (response.data) {
@@ -62,15 +66,69 @@ export default class LoginContainer extends React.Component {
           {}
         );
       }
-      this.setState({ error: '' });
+      this.setState({ error: '', isLoading: false });
       this.props.navigation.navigate('App');
     } catch (error) {
-      this.setState({ error: this._generateErrorMessage(error) });
+      this.setState({
+        error: this._generateErrorMessage(error),
+        isLoading: false
+      });
     }
   };
 
-  render() {
+  _renderLoading = () => {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  };
+
+  _renderLoginForm = () => {
     const { username, password, error } = this.state;
+    return (
+      <View style={styles.flexLogin}>
+        <View style={styles.borderUsername}>
+          <View style={styles.flexUsername}>
+            <Image style={styles.imageLogin} source={personLogin} />
+            <TextInput
+              autoCapitalize="none"
+              testID="input-user"
+              style={styles.textUsername}
+              placeholder="name"
+              onChangeText={this._handleNameChange}
+              value={username}
+            />
+          </View>
+          <View style={styles.borderDivider} />
+          <View style={styles.flexPassword}>
+            <Image style={styles.imagePassword} source={passwordIcon} />
+            <TextInput
+              autoCapitalize="none"
+              placeholder="password"
+              testID="input-password"
+              style={styles.textPassword}
+              secureTextEntry
+              onChangeText={text => this._handlePasswordChange(text)}
+              value={password}
+            />
+          </View>
+          <View style={styles.borderDivider} />
+          <TouchableOpacity title="Login" onPress={this._handlePress}>
+            <View style={styles.borderLogin}>
+              <Text style={styles.textLogin}>Login</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        {error !== '' && (
+          <View style={styles.borderError}>
+            <Text style={styles.textError} testID="text-error">
+              {error}
+            </Text>
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  render() {
+    const { error, isLoading } = this.state;
     return (
       <>
         <KeyboardAwareScrollView>
@@ -79,47 +137,9 @@ export default class LoginContainer extends React.Component {
             <Image source={logo} style={styles.logo} />
             <Text style={styles.logoTitle}>Phoenix Wallet</Text>
           </View>
-          <View style={styles.flexLogin}>
-            <View style={styles.borderUsername}>
-              <View style={styles.flexUsername}>
-                <Image style={styles.imageLogin} source={personLogin} />
-                <TextInput
-                  autoCapitalize="none"
-                  testID="input-user"
-                  style={styles.textUsername}
-                  placeholder="name"
-                  onChangeText={this._handleNameChange}
-                  value={username}
-                />
-              </View>
-              <View style={styles.borderDivider} />
-              <View style={styles.flexPassword}>
-                <Image style={styles.imagePassword} source={passwordIcon} />
-                <TextInput
-                  autoCapitalize="none"
-                  placeholder="password"
-                  testID="input-password"
-                  style={styles.textPassword}
-                  secureTextEntry
-                  onChangeText={text => this._handlePasswordChange(text)}
-                  value={password}
-                />
-              </View>
-              <View style={styles.borderDivider} />
-              <TouchableOpacity title="Login" onPress={this._handlePress}>
-                <View style={styles.borderLogin}>
-                  <Text style={styles.textLogin}>Login</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            {error !== '' && (
-              <View style={styles.borderError}>
-                <Text style={styles.textError} testID="text-error">
-                  {error}
-                </Text>
-              </View>
-            )}
-          </View>
+          {isLoading && error === ''
+            ? this._renderLoading()
+            : this._renderLoginForm()}
           <View style={styles.undrawImage}>
             <Image source={undraw} style={styles.imageUndraw} />
           </View>
