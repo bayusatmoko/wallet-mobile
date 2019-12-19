@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 import formatCurrency from '../Utils/formatCurrency';
 import styles from './walletInfo.style';

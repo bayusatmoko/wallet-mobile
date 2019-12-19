@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import Intl from 'intl';
 import locale from 'intl/locale-data/jsonp/id-ID';
 import PropTypes from 'prop-types';
