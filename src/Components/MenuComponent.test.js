@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import NAVIGATION from '../Constants/navigation';
 import MenuComponent from './MenuComponent';
 
 describe('MenuComponent', () => {
@@ -19,7 +20,7 @@ describe('MenuComponent', () => {
 
       menuTransfer.simulate('press');
 
-      expect(mockedOnPress).toHaveBeenCalledWith('Transfer');
+      expect(mockedOnPress).toHaveBeenCalledWith(NAVIGATION.TRANSFER);
     });
 
     it('should called onPress with "Deposit" when menu-deposit is pressed', () => {
@@ -27,7 +28,8 @@ describe('MenuComponent', () => {
 
       menuTransfer.simulate('press');
 
-      expect(mockedOnPress).toHaveBeenCalledWith('Deposit');
+      expect(mockedOnPress).toHaveBeenCalledWith(NAVIGATION.DEPOSIT);
+      expect(mockedOnPress).not.toHaveBeenCalledWith(NAVIGATION.TRANSFER);
     });
   });
 });
