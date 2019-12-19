@@ -1,4 +1,5 @@
 import React from 'react';
+import { ActivityIndicator, Modal, StyleSheet, View } from 'react-native';
 import Error from '../Components/Error';
 import NoTransactionsFound from '../Components/NoTransactionsFound';
 import TransactionFilter from '../Components/TransactionFilter';
@@ -19,6 +20,7 @@ export default class TransactionHistoryContainer extends React.Component {
       user: {},
       transactions: [],
       error: '',
+      isRefreshing: false,
       searchByDescription: '',
       searchAmountMin: 0,
       searchAmountMax: 99999999,
@@ -35,6 +37,19 @@ export default class TransactionHistoryContainer extends React.Component {
     await this._fetchWallet();
   }
 
+  _renderLoading = () => {
+    setTimeout(() => {
+      this.setState({ isRefreshing: false });
+    }, 1000);
+    return (
+      <Modal transparent={false} visible={this.state.isRefreshing}>
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      </Modal>
+    );
+  };
+
   _generateErrorMessage = error => {
     if (error.response) {
       return error.response.data.message;
@@ -47,7 +62,8 @@ export default class TransactionHistoryContainer extends React.Component {
     try {
       const response = await getWalletByUserId(userId, token);
       this.setState({
-        wallet: response.data
+        wallet: response.data,
+        isRefreshing: true
       });
       this._fetchTransaction(response.data.id);
     } catch (error) {
@@ -161,7 +177,21 @@ export default class TransactionHistoryContainer extends React.Component {
   };
 
   render() {
-    return <>{this._displayTransaction()}</>;
+    const { isRefreshing } = this.state;
+    return (
+      <>
+        {isRefreshing && this._renderLoading()}
+        {this._displayTransaction()}
+      </>
+    );
   }
 }
 TransactionHistoryContainer.DOESNT_EXIST = "Transaction doesn't exist!";
+
+const styles = StyleSheet.create({
+  loading: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%'
+  }
+});

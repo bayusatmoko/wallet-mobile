@@ -1,6 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Button, Text, View, TextInput, StyleSheet, Alert } from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
 
 class TransactionForm extends PureComponent {
   constructor(props) {
@@ -12,7 +19,7 @@ class TransactionForm extends PureComponent {
     };
   }
 
-  _checkIsNominalInRange = nominal => {
+  _checkValidInput = nominal => {
     const isInRange = nominal >= 1000 && nominal <= 100000000;
     this.setState({ isError: !isInRange });
     return isInRange;
@@ -20,8 +27,12 @@ class TransactionForm extends PureComponent {
 
   _handleSubmit = () => {
     const { nominal, description } = this.state;
+    const isDescriptionEmpty = description === '';
+    if (isDescriptionEmpty) {
+      Alert.alert('Description cannot be empty');
+    }
     const { onSubmit } = this.props;
-    if (this._checkIsNominalInRange(nominal)) {
+    if (this._checkValidInput(nominal, description) && !isDescriptionEmpty) {
       this.setState({ nominal: 0, description: description });
       onSubmit({ nominal, description });
     } else {
@@ -36,30 +47,34 @@ class TransactionForm extends PureComponent {
   _renderPredefined = () => {
     return (
       <View style={styles.predefinedContainer}>
-        <Button
-          testID="predefined-10k"
-          title="Rp10.000"
-          color="#8020AF"
-          onPress={() => this._handlePredefined(10000)}
-        />
-        <Button
-          testID="predefined-25k"
-          title="Rp25.000"
-          color="#8020AF"
-          onPress={() => this._handlePredefined(25000)}
-        />
-        <Button
-          testID="predefined-50k"
-          title="Rp50.000"
-          color="#8020AF"
-          onPress={() => this._handlePredefined(50000)}
-        />
-        <Button
-          testID="predefined-100k"
-          title="Rp100.000"
-          color="#8020AF"
-          onPress={() => this._handlePredefined(100000)}
-        />
+        <View style={styles.containerButton}>
+          <TouchableOpacity
+            testID="predefined-10k"
+            onPress={() => this._handlePredefined(10000)}>
+            <Text style={styles.textValue}>Rp10.000</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.containerButton}>
+          <TouchableOpacity
+            testID="predefined-25k"
+            onPress={() => this._handlePredefined(25000)}>
+            <Text style={styles.textValue}>Rp25.000</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.containerButton}>
+          <TouchableOpacity
+            testID="predefined-50k"
+            onPress={() => this._handlePredefined(50000)}>
+            <Text style={styles.textValue}>Rp50.000</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.containerButton}>
+          <TouchableOpacity
+            testID="predefined-100k"
+            onPress={() => this._handlePredefined(100000)}>
+            <Text style={styles.textValue}>Rp100.000</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -78,7 +93,7 @@ class TransactionForm extends PureComponent {
           value={nominal.toString()}
           onChangeText={text => {
             this.setState({ nominal: text });
-            this._checkIsNominalInRange(text);
+            this._checkValidInput(text);
           }}
         />
         {isError && (
@@ -97,32 +112,42 @@ class TransactionForm extends PureComponent {
           />
           <Text style={styles.descriptionCounter}>{description.length}/30</Text>
         </View>
-        <View>
-          <Button
-            testID="button"
-            color="#8020AF"
-            onPress={this._handleSubmit}
-            title="Submit"
-          />
-        </View>
+        <TouchableOpacity
+          testID="button"
+          color="#8020AF"
+          onPress={this._handleSubmit}
+          title="Submit">
+          <View style={styles.borderButton}>
+            <Text style={styles.textButton}>Submit</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  containerButton: {
+    backgroundColor: '#8127fc',
+    padding: '2%',
+    borderRadius: 5
+  },
+  textValue: {
+    color: 'white'
+  },
   container: {
     margin: 30
   },
   title: {
-    backgroundColor: '#eeedf1',
+    backgroundColor: '#b459dc',
     borderRadius: 20,
     overflow: 'hidden',
     padding: 20,
     alignSelf: 'center',
     fontWeight: 'bold',
     fontSize: 20,
-    marginBottom: 20
+    marginBottom: 20,
+    color: 'white'
   },
   input: {
     borderBottomWidth: 1,
@@ -140,6 +165,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 20
+  },
+  borderButton: {
+    backgroundColor: '#8127fc',
+    width: '90%',
+    padding: 15,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 40,
+    borderRadius: 20
+  },
+  textButton: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 20
   }
 });
 

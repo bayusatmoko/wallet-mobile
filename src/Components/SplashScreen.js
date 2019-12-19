@@ -1,6 +1,5 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 import SInfo from 'react-native-sensitive-info';
 import getSessionInfo from '../Utils/getSessionInfo';
 

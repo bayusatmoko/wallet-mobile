@@ -1,9 +1,9 @@
-import SInfo from 'react-native-sensitive-info';
 import React from 'react';
 import {
   ActivityIndicator,
   Keyboard,
   Modal,
+  ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
   View
@@ -98,14 +98,14 @@ class DepositContainer extends React.PureComponent {
     const { isSubmitted, isLoading } = this.state;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View>
+        <ScrollView>
           {isLoading && this._renderLoading()}
           <TransactionForm
             title="Top up your wallet"
             onSubmit={this._handleSubmit}
           />
           {isSubmitted && this._renderNotification()}
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     );
   }
