@@ -21,9 +21,8 @@ export default class DashboardContainer extends React.Component {
       wallet: { balance: 0 },
       user: {},
       lastTransactions: [],
-      isRefreshing: false,
-      errorMessage: '',
-      isLoading: false
+      isRefreshing: true,
+      errorMessage: ''
     };
   }
 
@@ -35,9 +34,6 @@ export default class DashboardContainer extends React.Component {
   }
 
   _renderLoading = () => {
-    setTimeout(() => {
-      this.setState({ isRefreshing: false });
-    }, 1000);
     return (
       <Modal transparent={false} visible={this.state.isRefreshing}>
         <View style={styles.loading}>
@@ -51,6 +47,7 @@ export default class DashboardContainer extends React.Component {
     this.setState({ isRefreshing: true });
     await this._fetchUser();
     await this._fetchWallet();
+    this.setState({ isRefreshing: false });
   };
 
   _generateErrorMessage = error => {
@@ -65,10 +62,14 @@ export default class DashboardContainer extends React.Component {
     try {
       const response = await getUserById(userId, token);
       this.setState({
-        user: response.data
+        user: response.data,
+        errorMessage: ''
       });
     } catch (error) {
-      this.setState({ errorMessage: this._generateErrorMessage(error) });
+      this.setState({
+        errorMessage: this._generateErrorMessage(error),
+        isRefreshing: false
+      });
     }
   };
 
@@ -80,9 +81,12 @@ export default class DashboardContainer extends React.Component {
         wallet: response.data,
         errorMessage: ''
       });
-      this._fetchLastTransaction(walletId, token);
+      await this._fetchLastTransaction(walletId, token);
     } catch (error) {
-      this.setState({ errorMessage: this._generateErrorMessage(error) });
+      this.setState({
+        errorMessage: this._generateErrorMessage(error),
+        isRefreshing: false
+      });
     }
   };
 
@@ -95,7 +99,10 @@ export default class DashboardContainer extends React.Component {
         errorMessage: ''
       });
     } catch (error) {
-      this.setState({ errorMessage: this._generateErrorMessage(error) });
+      this.setState({
+        errorMessage: this._generateErrorMessage(error),
+        isRefreshing: false
+      });
     }
   };
 
@@ -114,11 +121,10 @@ export default class DashboardContainer extends React.Component {
     }
   }
 
-  render() {
+  _displayDashboard = () => {
     const { wallet, user, lastTransactions, isRefreshing } = this.state;
     return (
       <>
-        {isRefreshing && this._renderLoading()}
         <UserInfo user={user} />
         <WalletInfo wallet={wallet} />
         <MenuComponent onPress={this._handleMenuPress} />
@@ -129,6 +135,17 @@ export default class DashboardContainer extends React.Component {
           transactions={lastTransactions}
           walletId={wallet.id}
         />
+      </>
+    );
+  };
+
+  render() {
+    const { errorMessage, isRefreshing } = this.state;
+    return (
+      <>
+        {isRefreshing && errorMessage === ''
+          ? this._renderLoading()
+          : this._displayDashboard()}
       </>
     );
   }

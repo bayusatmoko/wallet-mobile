@@ -86,7 +86,6 @@ describe('DepositContainer', () => {
 
     it('should show loading indicator when submit the deposit', async () => {
       wrapper.find('TransactionForm').simulate('submit', transaction);
-      await flushPromises();
 
       expect(wrapper.find('ActivityIndicator')).toHaveLength(1);
     });

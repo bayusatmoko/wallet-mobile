@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import calendar from '../calendar.jpeg';
+import calendar from '../Assets/Images/calendar.jpeg';
 import Error from '../Components/Error';
 import SpendingChart from '../Components/SpendingChart';
 import getTransactionsByWalletId from '../Services/getTransactionsByWalletId';
