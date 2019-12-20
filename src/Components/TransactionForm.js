@@ -30,6 +30,7 @@ class TransactionForm extends PureComponent {
     const isDescriptionEmpty = description === '';
     if (isDescriptionEmpty) {
       Alert.alert('Description cannot be empty');
+      return false;
     }
     const { onSubmit } = this.props;
     if (this._checkValidInput(nominal, description) && !isDescriptionEmpty) {
@@ -87,7 +88,7 @@ class TransactionForm extends PureComponent {
         <Text style={styles.title}>{title}</Text>
         <TextInput
           placeholder="Amount"
-          keyboardType="numeric"
+          keyboardType="number-pad"
           style={styles.input}
           testID="input-amount"
           value={nominal.toString()}
@@ -105,6 +106,7 @@ class TransactionForm extends PureComponent {
         <View>
           <TextInput
             placeholder="Description"
+            autoCorrect={false}
             style={styles.input}
             testID="input-description"
             maxLength={30}

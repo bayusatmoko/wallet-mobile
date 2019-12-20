@@ -47,11 +47,11 @@ class TransactionFilter extends Component {
           style={styles.inputDescription}
           testID="input-description"
           onChangeText={text => this._handleDescription(text)}
-          autoCapitalize="none"
         />
         <View style={styles.borderMinimum}>
           <TextInput
             placeholder="Minimum Amount"
+            keyboardType="number-pad"
             style={styles.textMinimum}
             testID="input-amount-minimum"
             onChangeText={text => this._handleAmountMinimum(text)}
@@ -61,6 +61,7 @@ class TransactionFilter extends Component {
           <Text style={styles.dividerMinimum}>{'-'}</Text>
           <TextInput
             placeholder="Maximum Amount"
+            keyboardType="number-pad"
             style={styles.textMaximum}
             testID="input-amount-maximum"
             onChangeText={text => this._handleAmountMaximum(text)}

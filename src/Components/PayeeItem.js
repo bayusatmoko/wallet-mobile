@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity, Image, View } from 'react-native';
 import styles from './walletInfo.style';
-import sendPayee from '../sendPayee.png';
+import sendPayee from '../Assets/Images/sendPayee.png';
 import PropTypes from 'prop-types';
 
 const PayeeItem = props => {

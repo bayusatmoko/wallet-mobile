@@ -20,7 +20,7 @@ export default class TransactionHistoryContainer extends React.Component {
       user: {},
       transactions: [],
       error: '',
-      isRefreshing: false,
+      isRefreshing: true,
       searchByDescription: '',
       searchAmountMin: 0,
       searchAmountMax: 99999999,
@@ -38,9 +38,6 @@ export default class TransactionHistoryContainer extends React.Component {
   }
 
   _renderLoading = () => {
-    setTimeout(() => {
-      this.setState({ isRefreshing: false });
-    }, 1000);
     return (
       <Modal transparent={false} visible={this.state.isRefreshing}>
         <View style={styles.loading}>
@@ -62,12 +59,14 @@ export default class TransactionHistoryContainer extends React.Component {
     try {
       const response = await getWalletByUserId(userId, token);
       this.setState({
-        wallet: response.data,
-        isRefreshing: true
+        wallet: response.data
       });
       this._fetchTransaction(response.data.id);
     } catch (error) {
-      this.setState({ error: this._generateErrorMessage(error) });
+      this.setState({
+        error: this._generateErrorMessage(error),
+        isRefreshing: false
+      });
     }
   };
 
@@ -76,22 +75,30 @@ export default class TransactionHistoryContainer extends React.Component {
     try {
       const response = await getTransactionsByWalletId(walletId, token);
       this.setState({
-        transactions: response.data
+        transactions: response.data,
+        isRefreshing: false,
+        error:
+          response.data.length === 0
+            ? TransactionHistoryContainer.DOESNT_EXIST
+            : ''
       });
     } catch (error) {
-      this.setState({ error: this._generateErrorMessage(error) });
+      this.setState({
+        error: this._generateErrorMessage(error),
+        isRefreshing: false
+      });
     }
   };
 
   _displayTransaction = () => {
     const { wallet, transactions, error } = this.state;
-    const sortedDescription = this._sortTransactions(transactions);
     if (error && error !== TransactionHistoryContainer.DOESNT_EXIST) {
       return <Error message={error} />;
     }
     if (transactions.length === 0) {
       return <NoTransactionsFound />;
     }
+    const sortedDescription = this._sortTransactions(transactions);
     const filteredDescription = this._filterByDescription(sortedDescription);
     const filteredAmount = this._filterByAmount(filteredDescription);
     return (
@@ -177,11 +184,12 @@ export default class TransactionHistoryContainer extends React.Component {
   };
 
   render() {
-    const { isRefreshing } = this.state;
+    const { isRefreshing, error } = this.state;
     return (
       <>
-        {isRefreshing && this._renderLoading()}
-        {this._displayTransaction()}
+        {isRefreshing && error === ''
+          ? this._renderLoading()
+          : this._displayTransaction()}
       </>
     );
   }
